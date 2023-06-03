@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Análises Econométricas</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Luísa Gisele Böck" />
+    <script src="03-manipulacao_files/header-attrs/header-attrs.js"></script>
+    <script src="03-manipulacao_files/clipboard/clipboard.min.js"></script>
+    <link href="03-manipulacao_files/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="03-manipulacao_files/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <script src="03-manipulacao_files/xaringanExtra_fit-screen/fit-screen.js"></script>
+    <link href="03-manipulacao_files/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <link href="03-manipulacao_files/shareon/shareon.min.css" rel="stylesheet" />
+    <script src="03-manipulacao_files/shareon/shareon.min.js"></script>
+    <link href="03-manipulacao_files/xaringanExtra-shareagain/shareagain.css" rel="stylesheet" />
+    <script src="03-manipulacao_files/xaringanExtra-shareagain/shareagain.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+    <link rel="stylesheet" href="footer-header.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+
+
+&lt;!-- inicio font awesome --&gt;
+&lt;script src="https://kit.fontawesome.com/1f72d6921a.js" crossorigin="anonymous"&gt;&lt;/script&gt;
+&lt;!-- final font awesome --&gt;
+
+&lt;!-- inicio github buttons  --&gt;
+&lt;script async defer src="https://buttons.github.io/buttons.js"&gt;&lt;/script&gt;
+&lt;!-- final github buttons  --&gt;
+
+
+.pull-left[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+## Análises Econométricas
+
+### Manipulação de Dados
+
+**[Luísa Gisele Böck](https://luisa.rbind.io/)**&amp;nbsp;&amp;nbsp;    &lt;a href='mailto:luisa.bock@acad.ufsm.br'&gt;&lt;i class="far fa-envelope"&gt;&lt;/i&gt;&lt;/a&gt;    &lt;a href='https://twitter.com/lgiselebock'&gt;&lt;i class="fab fa-twitter"&gt;&lt;/i&gt;   &lt;a href='https://github.com/lgiselebock'&gt;&lt;i class="fab fa-github"&gt;&lt;/i&gt;&lt;/a&gt;
+
+__.can-edit[Junho de 2023]__
+
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="img/slides/26-intro-allison-horst-03.png" width="400px" /&gt;
+
+.center[Ilustração por [Allison Horst](https://twitter.com/allison_horst/)]
+]
+
+---
+
+### Pipe:  %&gt;% ou |&gt;  
+
+- `CTRL` + `SHIFT` + `M`: cria o &amp;nbsp; `%&gt;%` &amp;nbsp; (ou `|&gt;`).
+
+Imagine uma receita de bolo: 
+
+
+```r
+esfrie(
+  asse(
+    coloque(
+      bata(
+        acrescente(
+          recipiente(rep("farinha", 2), "água", 
+                     "fermento", "leite", "óleo"), 
+          "farinha", até = "macio"), 
+        duração = "3min"), 
+      lugar = "forma", tipo = "grande", 
+      untada = TRUE), duração = "50min"), 
+  "geladeira", "20min")
+```
+
+Assim, é preciso pensar **de dentro para fora**. O primeiro comando lido é `esfrie`, sendo que essa é a última operação que será realizada.
+
+Complicado, né? Veja como a mesma receita é escrita usando o operador `%&gt;%`:
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://abjur.github.io/r4jurimetrics/pipe.html"&gt;R para Jurimetria&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Pipe:  %&gt;% ou |&gt;  
+
+- `CTRL` + `SHIFT` + `M`: cria o &amp;nbsp; `%&gt;%` &amp;nbsp; (ou `|&gt;`).
+
+Receita de bolo escrita com o `%&gt;%`:
+
+
+```r
+recipiente(rep("farinha", 2), "água", "fermento", "leite", "óleo") %&gt;%
+  acrescente("farinha", até = "macio") %&gt;%
+  bata(duração = "3min") %&gt;%
+  coloque(lugar = "forma", tipo = "grande", untada = TRUE) %&gt;%
+  asse(duração = "50min") %&gt;%
+  esfrie("geladeira", "20min")
+```
+
+Agora o código possui uma leitura muito mais intuitiva!
+
+Pense no `%&gt;%` como um operador que efetua as operações à direita nos valores que estão à esquerda, ou seja, ele passa o que está à esquerda como argumento para a operação da direita.
+
+.footnote[Para mais informações sobre e exemplos de utilização do `%&gt;%`, visite [Ceci n’est pas un pipe](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html). Desde a versão 4.1 do `R`, foi disponibilizado o operador `pipe` (`|&gt;`) nativo. Para mais informações, acesse [New features in R 4.1.0](https://www.jumpingrivers.com/blog/new-features-r410-pipe-anonymous-functions/).]
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/2020-R-Ladies-SP-Basico/#1"&gt;R-Ladies São Paulo&lt;/a&gt; e &lt;a href="https://abjur.github.io/r4jurimetrics/pipe.html"&gt;R para Jurimetria&lt;/a&gt;&lt;/div&gt;
+
+---
+
+class: inverse center middle
+
+# Manipulação de dados
+
+.center[(Acompanhe no arquivo `03-manipulacao.R`)]
+
+---
+
+Os exemplos apresentados aqui serão das bases abaixo. Não esqueça de carregar o pacote `tidyverse` e carregar as bases de dados.
+
+
+```r
+library(tidyverse)
+
+pinguins &lt;- read_csv("dados/pinguins/pinguins.csv")
+```
+
+---
+
+### Pacote &amp;nbsp; `dplyr`
+
+É o pacote mais útil para realizar a manipulação dos dados, pois possui funções para fazer qualquer tipo de transformação nas linhas e nas colunas da base.
+
+As principais funções do `dplyr` são:
+
+- `filter()`: filtra as linhas
+- `select()`: seleciona as colunas
+- `arrange()`: ordena as linhas conforme os valores de uma coluna
+- `mutate()`: modifica ou cria novas colunas
+- `group_by()`: agrupa a base conforme uma coluna
+- `summarise()`: sumariza (resume) as colunas
+- `left_join()`: junta tabelas
+
+&lt;br&gt;
+
+Todas essas funções seguem as seguintes características:
+
+- A função sempre recebe uma `tibble` e sempre retorna uma `tibble`.
+
+- A `tibble` é colocada no primeiro argumento e o que se quer fazer nos demais argumentos.
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Selecionando Colunas:  &amp;nbsp; `select()`
+
+O primeiro argumento da função é a base de dados e os demais argumentos são os nomes das colunas que se quer selecionar. Repare que não se coloca o nome da coluna entre aspas.
+
+
+```r
+select(pinguins, especie)
+```
+
+```
+## # A tibble: 344 x 1
+##    especie                 
+##    &lt;chr&gt;                   
+##  1 "Pinguim-de-ad\u00e9lia"
+##  2 "Pinguim-de-ad\u00e9lia"
+##  3 "Pinguim-de-ad\u00e9lia"
+##  4 "Pinguim-de-ad\u00e9lia"
+##  5 "Pinguim-de-ad\u00e9lia"
+##  6 "Pinguim-de-ad\u00e9lia"
+##  7 "Pinguim-de-ad\u00e9lia"
+##  8 "Pinguim-de-ad\u00e9lia"
+##  9 "Pinguim-de-ad\u00e9lia"
+## 10 "Pinguim-de-ad\u00e9lia"
+## # i 334 more rows
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Selecionando Colunas:  &amp;nbsp; `select()`
+
+Também é possível selecionar várias colunas.
+
+
+```r
+select(pinguins, especie, sexo, massa_corporal)
+```
+
+```
+## # A tibble: 344 x 3
+##    especie                  sexo         massa_corporal
+##    &lt;chr&gt;                    &lt;chr&gt;                 &lt;dbl&gt;
+##  1 "Pinguim-de-ad\u00e9lia" "macho"                3750
+##  2 "Pinguim-de-ad\u00e9lia" "f\u00eamea"           3800
+##  3 "Pinguim-de-ad\u00e9lia" "f\u00eamea"           3250
+##  4 "Pinguim-de-ad\u00e9lia"  &lt;NA&gt;                    NA
+##  5 "Pinguim-de-ad\u00e9lia" "f\u00eamea"           3450
+##  6 "Pinguim-de-ad\u00e9lia" "macho"                3650
+##  7 "Pinguim-de-ad\u00e9lia" "f\u00eamea"           3625
+##  8 "Pinguim-de-ad\u00e9lia" "macho"                4675
+##  9 "Pinguim-de-ad\u00e9lia"  &lt;NA&gt;                  3475
+## 10 "Pinguim-de-ad\u00e9lia"  &lt;NA&gt;                  4250
+## # i 334 more rows
+```
+
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Selecionando Colunas:  &amp;nbsp; `select()`
+
+O operador `:` é muito útil para selecionar colunas consecutivas.
+
+
+```r
+select(pinguins, ilha:massa_corporal)
+```
+
+```
+## # A tibble: 344 x 5
+##    ilha      comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal
+##    &lt;chr&gt;                &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt;
+##  1 Torgersen             39.1              18.7                   181           3750
+##  2 Torgersen             39.5              17.4                   186           3800
+##  3 Torgersen             40.3              18                     195           3250
+##  4 Torgersen             NA                NA                      NA             NA
+##  5 Torgersen             36.7              19.3                   193           3450
+##  6 Torgersen             39.3              20.6                   190           3650
+##  7 Torgersen             38.9              17.8                   181           3625
+##  8 Torgersen             39.2              19.6                   195           4675
+##  9 Torgersen             34.1              18.1                   193           3475
+## 10 Torgersen             42                20.2                   190           4250
+## # i 334 more rows
+```
+
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Selecionando Colunas:  &amp;nbsp; `select()`
+
+O `dplyr` possui um conjunto de funções auxiliares úteis para a seleção de colunas.
+
+- `starts_with()`: para colunas que começam com um texto padrão &lt;br&gt;
+- `ends_with()`: para colunas que terminam com um texto padrão &lt;br&gt;
+- `contains()`: para colunas que contêm um texto padrão &lt;br&gt;
+
+
+```r
+select(pinguins, ends_with("bico"))
+```
+
+```
+## # A tibble: 344 x 2
+##    comprimento_bico profundidade_bico
+##               &lt;dbl&gt;             &lt;dbl&gt;
+##  1             39.1              18.7
+##  2             39.5              17.4
+##  3             40.3              18  
+##  4             NA                NA  
+##  5             36.7              19.3
+##  6             39.3              20.6
+##  7             38.9              17.8
+##  8             39.2              19.6
+##  9             34.1              18.1
+## 10             42                20.2
+## # i 334 more rows
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Selecionando Colunas:  &amp;nbsp; `select()`
+
+A(s) coluna(s) pode(m) ser excluída(s) inserindo o caracter `-` na frente da(s) coluna(s).
+
+
+```r
+select(pinguins, -ano)
+```
+
+```
+## # A tibble: 344 x 7
+##    especie                  ilha   comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal sexo 
+##    &lt;chr&gt;                    &lt;chr&gt;             &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt;
+##  1 "Pinguim-de-ad\u00e9lia" Torge~             39.1              18.7                   181           3750 "mac~
+##  2 "Pinguim-de-ad\u00e9lia" Torge~             39.5              17.4                   186           3800 "f\u~
+##  3 "Pinguim-de-ad\u00e9lia" Torge~             40.3              18                     195           3250 "f\u~
+##  4 "Pinguim-de-ad\u00e9lia" Torge~             NA                NA                      NA             NA  &lt;NA&gt;
+##  5 "Pinguim-de-ad\u00e9lia" Torge~             36.7              19.3                   193           3450 "f\u~
+##  6 "Pinguim-de-ad\u00e9lia" Torge~             39.3              20.6                   190           3650 "mac~
+##  7 "Pinguim-de-ad\u00e9lia" Torge~             38.9              17.8                   181           3625 "f\u~
+##  8 "Pinguim-de-ad\u00e9lia" Torge~             39.2              19.6                   195           4675 "mac~
+##  9 "Pinguim-de-ad\u00e9lia" Torge~             34.1              18.1                   193           3475  &lt;NA&gt;
+## 10 "Pinguim-de-ad\u00e9lia" Torge~             42                20.2                   190           4250  &lt;NA&gt;
+## # i 334 more rows
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Selecionando Colunas:  &amp;nbsp; `select()`
+
+A(s) coluna(s) pode(m) ser excluída(s) inserindo o caracter `-` na frente de vetor de colunas.
+
+
+```r
+select(pinguins, -c(ano, sexo))
+```
+
+```
+## # A tibble: 344 x 6
+##    especie                  ilha      comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal
+##    &lt;chr&gt;                    &lt;chr&gt;                &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt;
+##  1 "Pinguim-de-ad\u00e9lia" Torgersen             39.1              18.7                   181           3750
+##  2 "Pinguim-de-ad\u00e9lia" Torgersen             39.5              17.4                   186           3800
+##  3 "Pinguim-de-ad\u00e9lia" Torgersen             40.3              18                     195           3250
+##  4 "Pinguim-de-ad\u00e9lia" Torgersen             NA                NA                      NA             NA
+##  5 "Pinguim-de-ad\u00e9lia" Torgersen             36.7              19.3                   193           3450
+##  6 "Pinguim-de-ad\u00e9lia" Torgersen             39.3              20.6                   190           3650
+##  7 "Pinguim-de-ad\u00e9lia" Torgersen             38.9              17.8                   181           3625
+##  8 "Pinguim-de-ad\u00e9lia" Torgersen             39.2              19.6                   195           4675
+##  9 "Pinguim-de-ad\u00e9lia" Torgersen             34.1              18.1                   193           3475
+## 10 "Pinguim-de-ad\u00e9lia" Torgersen             42                20.2                   190           4250
+## # i 334 more rows
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Ordenando linhas: &amp;nbsp; `arrange()`
+
+Serve para ordenar as linhas. O primeiro argumento é a base de dados, e os demais argumentos são as colunas pelas quais serão ordenadas as linhas. No próximo exemplo, serão ordenadas as linhas da base por ordem crescente da massa corporal dos pinguins.
+
+
+```r
+arrange(pinguins, massa_corporal)
+```
+
+```
+## # A tibble: 344 x 8
+##    especie             ilha  comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal sexo    ano
+##    &lt;chr&gt;               &lt;chr&gt;            &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1 "Pinguim-de-barbic~ Dream             46.9              16.6                   192           2700 "f\u~  2008
+##  2 "Pinguim-de-ad\u00~ Bisc~             36.5              16.6                   181           2850 "f\u~  2008
+##  3 "Pinguim-de-ad\u00~ Bisc~             36.4              17.1                   184           2850 "f\u~  2008
+##  4 "Pinguim-de-ad\u00~ Bisc~             34.5              18.1                   187           2900 "f\u~  2008
+##  5 "Pinguim-de-ad\u00~ Dream             33.1              16.1                   178           2900 "f\u~  2008
+##  6 "Pinguim-de-ad\u00~ Torg~             38.6              17                     188           2900 "f\u~  2009
+##  7 "Pinguim-de-barbic~ Dream             43.2              16.6                   187           2900 "f\u~  2007
+##  8 "Pinguim-de-ad\u00~ Bisc~             37.9              18.6                   193           2925 "f\u~  2009
+##  9 "Pinguim-de-ad\u00~ Dream             37.5              18.9                   179           2975  &lt;NA&gt;  2007
+## 10 "Pinguim-de-ad\u00~ Dream             37                16.9                   185           3000 "f\u~  2007
+## # i 334 more rows
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Ordenando linhas: &amp;nbsp; `arrange()`
+
+É possível ordenar de forma decrescente usando a função `desc()` como argumento da função `arrange()`. Neste exemplo, serão ordenadas as linhas da base por ordem decrescente da massa corporal dos pinguins.
+
+
+```r
+arrange(pinguins, desc(massa_corporal))
+```
+
+```
+## # A tibble: 344 x 8
+##    especie        ilha   comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal sexo    ano
+##    &lt;chr&gt;          &lt;chr&gt;             &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1 Pinguim-gentoo Biscoe             49.2              15.2                   221           6300 macho  2007
+##  2 Pinguim-gentoo Biscoe             59.6              17                     230           6050 macho  2007
+##  3 Pinguim-gentoo Biscoe             51.1              16.3                   220           6000 macho  2008
+##  4 Pinguim-gentoo Biscoe             48.8              16.2                   222           6000 macho  2009
+##  5 Pinguim-gentoo Biscoe             45.2              16.4                   223           5950 macho  2008
+##  6 Pinguim-gentoo Biscoe             49.8              15.9                   229           5950 macho  2009
+##  7 Pinguim-gentoo Biscoe             48.4              14.6                   213           5850 macho  2007
+##  8 Pinguim-gentoo Biscoe             49.3              15.7                   217           5850 macho  2007
+##  9 Pinguim-gentoo Biscoe             55.1              16                     230           5850 macho  2009
+## 10 Pinguim-gentoo Biscoe             49.5              16.2                   229           5800 macho  2008
+## # i 334 more rows
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Ordenando linhas: &amp;nbsp; `arrange()`
+
+Também é possível ordenar segundo duas ou mais colunas. Por exemplo, as linhas da base serão ordenadas de forma decrescente para o comprimento do bico e crescente para a profundidade do bico dos pinguins.
+
+
+```r
+arrange(pinguins, desc(comprimento_bico), profundidade_bico)
+```
+
+```
+## # A tibble: 344 x 8
+##    especie             ilha  comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal sexo    ano
+##    &lt;chr&gt;               &lt;chr&gt;            &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1 Pinguim-gentoo      Bisc~             59.6              17                     230           6050 "mac~  2007
+##  2 Pinguim-de-barbicha Dream             58                17.8                   181           3700 "f\u~  2007
+##  3 Pinguim-gentoo      Bisc~             55.9              17                     228           5600 "mac~  2009
+##  4 Pinguim-de-barbicha Dream             55.8              19.8                   207           4000 "mac~  2009
+##  5 Pinguim-gentoo      Bisc~             55.1              16                     230           5850 "mac~  2009
+##  6 Pinguim-gentoo      Bisc~             54.3              15.7                   231           5650 "mac~  2008
+##  7 Pinguim-de-barbicha Dream             54.2              20.8                   201           4300 "mac~  2008
+##  8 Pinguim-de-barbicha Dream             53.5              19.9                   205           4500 "mac~  2008
+##  9 Pinguim-gentoo      Bisc~             53.4              15.8                   219           5500 "mac~  2009
+## 10 Pinguim-de-barbicha Dream             52.8              20                     205           4550 "mac~  2008
+## # i 334 more rows
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Aplicando mais de uma função
+
+Na maioria dos casos, é aplicado mais de uma função na manipulação de uma base. Por exemplo, pode-se querer uma tabela apenas com a espécie dos pinguins e a massa corporal ordenada crescentemente.
+
+
+```r
+arrange(select(pinguins, especie, massa_corporal), massa_corporal)
+```
+
+A solução para aplicar diversas operações de manipulação em uma base de dados é utilizar o operador `pipe`: `%&gt;%`
+
+
+```r
+pinguins %&gt;% 
+  select(especie, massa_corporal) %&gt;% 
+  arrange(massa_corporal)
+```
+
+O que está acontecendo no código com o `pipe`? Da primeira para a segunda linha, aplicamos a função `select()` à base "ideb". Da segunda para a terceira linha, utilizamos a função `arrange()` à base resultante da função `select()`.
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Filtrando linhas: &amp;nbsp; `filter()`
+
+Filtra valores (linhas) de uma coluna da base.
+
+Foram filtradas as linhas que possuem comprimento da nadadeira superior a 140 mm.
+
+
+```r
+filter(pinguins, comprimento_nadadeira &gt; 140)
+```
+
+```
+## # A tibble: 342 x 8
+##    especie             ilha  comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal sexo    ano
+##    &lt;chr&gt;               &lt;chr&gt;            &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1 "Pinguim-de-ad\u00~ Torg~             39.1              18.7                   181           3750 "mac~  2007
+##  2 "Pinguim-de-ad\u00~ Torg~             39.5              17.4                   186           3800 "f\u~  2007
+##  3 "Pinguim-de-ad\u00~ Torg~             40.3              18                     195           3250 "f\u~  2007
+##  4 "Pinguim-de-ad\u00~ Torg~             36.7              19.3                   193           3450 "f\u~  2007
+##  5 "Pinguim-de-ad\u00~ Torg~             39.3              20.6                   190           3650 "mac~  2007
+##  6 "Pinguim-de-ad\u00~ Torg~             38.9              17.8                   181           3625 "f\u~  2007
+##  7 "Pinguim-de-ad\u00~ Torg~             39.2              19.6                   195           4675 "mac~  2007
+##  8 "Pinguim-de-ad\u00~ Torg~             34.1              18.1                   193           3475  &lt;NA&gt;  2007
+##  9 "Pinguim-de-ad\u00~ Torg~             42                20.2                   190           4250  &lt;NA&gt;  2007
+## 10 "Pinguim-de-ad\u00~ Torg~             37.8              17.1                   186           3300  &lt;NA&gt;  2007
+## # i 332 more rows
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Filtrando linhas: &amp;nbsp; `filter()`
+
+É possível selecionar apenas as colunas da espécie e do comprimento da nadadeira, filtrando apenas aqueles com comprimento de nadadeira superior a 140 mm.
+
+
+```r
+pinguins %&gt;% 
+  select(especie, comprimento_nadadeira) %&gt;% 
+  filter(comprimento_nadadeira &gt; 140)
+```
+
+```
+## # A tibble: 342 x 2
+##    especie                  comprimento_nadadeira
+##    &lt;chr&gt;                                    &lt;dbl&gt;
+##  1 "Pinguim-de-ad\u00e9lia"                   181
+##  2 "Pinguim-de-ad\u00e9lia"                   186
+##  3 "Pinguim-de-ad\u00e9lia"                   195
+##  4 "Pinguim-de-ad\u00e9lia"                   193
+##  5 "Pinguim-de-ad\u00e9lia"                   190
+##  6 "Pinguim-de-ad\u00e9lia"                   181
+##  7 "Pinguim-de-ad\u00e9lia"                   195
+##  8 "Pinguim-de-ad\u00e9lia"                   193
+##  9 "Pinguim-de-ad\u00e9lia"                   190
+## 10 "Pinguim-de-ad\u00e9lia"                   186
+## # i 332 more rows
+```
+
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Filtrando linhas: &amp;nbsp; `filter()`
+
+Estendendo o filtro para duas ou mais colunas. Para isso, cada operação é separada por uma vírgula. O código abaixo retorna uma tabela com todos os pinguins da ilha de Torgersen com profundidade de bico maior que 15 (mm).
+
+
+```r
+pinguins %&gt;% 
+  filter(ilha == "Torgersen", profundidade_bico &gt; 15)
+```
+
+```
+## # A tibble: 51 x 8
+##    especie             ilha  comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal sexo    ano
+##    &lt;chr&gt;               &lt;chr&gt;            &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1 "Pinguim-de-ad\u00~ Torg~             39.1              18.7                   181           3750 "mac~  2007
+##  2 "Pinguim-de-ad\u00~ Torg~             39.5              17.4                   186           3800 "f\u~  2007
+##  3 "Pinguim-de-ad\u00~ Torg~             40.3              18                     195           3250 "f\u~  2007
+##  4 "Pinguim-de-ad\u00~ Torg~             36.7              19.3                   193           3450 "f\u~  2007
+##  5 "Pinguim-de-ad\u00~ Torg~             39.3              20.6                   190           3650 "mac~  2007
+##  6 "Pinguim-de-ad\u00~ Torg~             38.9              17.8                   181           3625 "f\u~  2007
+##  7 "Pinguim-de-ad\u00~ Torg~             39.2              19.6                   195           4675 "mac~  2007
+##  8 "Pinguim-de-ad\u00~ Torg~             34.1              18.1                   193           3475  &lt;NA&gt;  2007
+##  9 "Pinguim-de-ad\u00~ Torg~             42                20.2                   190           4250  &lt;NA&gt;  2007
+## 10 "Pinguim-de-ad\u00~ Torg~             37.8              17.1                   186           3300  &lt;NA&gt;  2007
+## # i 41 more rows
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Filtrando linhas: &amp;nbsp; `filter()`
+
+Também é possível realizar operações com as colunas da base dentro da função `filter()`. No exemplo abaixo devolve uma tabela apenas com os pinguins que possuem massa corporal maior que a média da massa corporal.
+
+
+```r
+pinguins %&gt;% 
+  filter(massa_corporal &gt; mean(massa_corporal, na.rm = TRUE))
+```
+
+```
+## # A tibble: 149 x 8
+##    especie             ilha  comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal sexo    ano
+##    &lt;chr&gt;               &lt;chr&gt;            &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1 "Pinguim-de-ad\u00~ Torg~             39.2              19.6                   195           4675 macho  2007
+##  2 "Pinguim-de-ad\u00~ Torg~             42                20.2                   190           4250 &lt;NA&gt;   2007
+##  3 "Pinguim-de-ad\u00~ Torg~             34.6              21.1                   198           4400 macho  2007
+##  4 "Pinguim-de-ad\u00~ Torg~             42.5              20.7                   197           4500 macho  2007
+##  5 "Pinguim-de-ad\u00~ Dream             39.8              19.1                   184           4650 macho  2007
+##  6 "Pinguim-de-ad\u00~ Dream             44.1              19.7                   196           4400 macho  2007
+##  7 "Pinguim-de-ad\u00~ Dream             39.6              18.8                   190           4600 macho  2007
+##  8 "Pinguim-de-ad\u00~ Bisc~             40.1              18.9                   188           4300 macho  2008
+##  9 "Pinguim-de-ad\u00~ Bisc~             41.3              21.1                   195           4400 macho  2008
+## 10 "Pinguim-de-ad\u00~ Torg~             41.8              19.4                   198           4450 macho  2008
+## # i 139 more rows
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Criando novas colunas: &amp;nbsp; `mutate()`
+
+Utilizado para modificar uma coluna já existente ou para criar uma nova coluna. O código a seguir, divide os valores da coluna `comprimento_bico` por 10, alterando a unidade de medida dessa variável de milímetros (mm) para centímetros (cm).
+
+
+```r
+pinguins %&gt;% 
+  mutate(comprimento_bico = comprimento_bico/10)
+```
+
+```
+## # A tibble: 344 x 8
+##    especie             ilha  comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal sexo    ano
+##    &lt;chr&gt;               &lt;chr&gt;            &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1 "Pinguim-de-ad\u00~ Torg~             3.91              18.7                   181           3750 "mac~  2007
+##  2 "Pinguim-de-ad\u00~ Torg~             3.95              17.4                   186           3800 "f\u~  2007
+##  3 "Pinguim-de-ad\u00~ Torg~             4.03              18                     195           3250 "f\u~  2007
+##  4 "Pinguim-de-ad\u00~ Torg~            NA                 NA                      NA             NA  &lt;NA&gt;  2007
+##  5 "Pinguim-de-ad\u00~ Torg~             3.67              19.3                   193           3450 "f\u~  2007
+##  6 "Pinguim-de-ad\u00~ Torg~             3.93              20.6                   190           3650 "mac~  2007
+##  7 "Pinguim-de-ad\u00~ Torg~             3.89              17.8                   181           3625 "f\u~  2007
+##  8 "Pinguim-de-ad\u00~ Torg~             3.92              19.6                   195           4675 "mac~  2007
+##  9 "Pinguim-de-ad\u00~ Torg~             3.41              18.1                   193           3475  &lt;NA&gt;  2007
+## 10 "Pinguim-de-ad\u00~ Torg~             4.2               20.2                   190           4250  &lt;NA&gt;  2007
+## # i 334 more rows
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Criando novas colunas: &amp;nbsp; `mutate()`
+
+Também é possível ter criado a variável anterior em uma nova coluna, mantendo a variável original. A coluna `comprimento_bico_cm` é colocada no final da tabela.
+
+
+```r
+pinguins %&gt;% 
+  mutate(comprimento_bico_cm = comprimento_bico/10)
+```
+
+```
+## # A tibble: 344 x 9
+##    especie             ilha  comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal sexo    ano
+##    &lt;chr&gt;               &lt;chr&gt;            &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1 "Pinguim-de-ad\u00~ Torg~             39.1              18.7                   181           3750 "mac~  2007
+##  2 "Pinguim-de-ad\u00~ Torg~             39.5              17.4                   186           3800 "f\u~  2007
+##  3 "Pinguim-de-ad\u00~ Torg~             40.3              18                     195           3250 "f\u~  2007
+##  4 "Pinguim-de-ad\u00~ Torg~             NA                NA                      NA             NA  &lt;NA&gt;  2007
+##  5 "Pinguim-de-ad\u00~ Torg~             36.7              19.3                   193           3450 "f\u~  2007
+##  6 "Pinguim-de-ad\u00~ Torg~             39.3              20.6                   190           3650 "mac~  2007
+##  7 "Pinguim-de-ad\u00~ Torg~             38.9              17.8                   181           3625 "f\u~  2007
+##  8 "Pinguim-de-ad\u00~ Torg~             39.2              19.6                   195           4675 "mac~  2007
+##  9 "Pinguim-de-ad\u00~ Torg~             34.1              18.1                   193           3475  &lt;NA&gt;  2007
+## 10 "Pinguim-de-ad\u00~ Torg~             42                20.2                   190           4250  &lt;NA&gt;  2007
+## # i 334 more rows
+## # i 1 more variable: comprimento_bico_cm &lt;dbl&gt;
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Criando novas colunas: &amp;nbsp; `mutate()`
+
+Podemos realizar qualquer operação com uma ou mais colunas. A única regra é que o resultado da operação devolva um vetor com comprimento exatamente igual ao número de linhas da base (ou com comprimento 1 pra distribuir o mesmo valor em todas as linhas). Também é possível criar/modificar quantas colunas quiser dentro de um mesmo `mutate()`.
+
+
+```r
+pinguins %&gt;% 
+  mutate(
+    media_comprimento_bico = mean(comprimento_bico, na.rm = TRUE),
+    pais = "Antártida"
+  ) %&gt;% 
+  select(especie, media_comprimento_bico, pais)
+```
+
+```
+## # A tibble: 344 x 3
+##    especie                  media_comprimento_bico pais            
+##    &lt;chr&gt;                                     &lt;dbl&gt; &lt;chr&gt;           
+##  1 "Pinguim-de-ad\u00e9lia"                   43.9 Ant&lt;U+00E1&gt;rtida
+##  2 "Pinguim-de-ad\u00e9lia"                   43.9 Ant&lt;U+00E1&gt;rtida
+##  3 "Pinguim-de-ad\u00e9lia"                   43.9 Ant&lt;U+00E1&gt;rtida
+##  4 "Pinguim-de-ad\u00e9lia"                   43.9 Ant&lt;U+00E1&gt;rtida
+##  5 "Pinguim-de-ad\u00e9lia"                   43.9 Ant&lt;U+00E1&gt;rtida
+##  6 "Pinguim-de-ad\u00e9lia"                   43.9 Ant&lt;U+00E1&gt;rtida
+##  7 "Pinguim-de-ad\u00e9lia"                   43.9 Ant&lt;U+00E1&gt;rtida
+##  8 "Pinguim-de-ad\u00e9lia"                   43.9 Ant&lt;U+00E1&gt;rtida
+##  9 "Pinguim-de-ad\u00e9lia"                   43.9 Ant&lt;U+00E1&gt;rtida
+## 10 "Pinguim-de-ad\u00e9lia"                   43.9 Ant&lt;U+00E1&gt;rtida
+## # i 334 more rows
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Sumarizando colunas: &amp;nbsp; `summarise()`
+
+Sumarização é a técnica de se resumir um conjunto de dados utilizando alguma métrica de interesse. A média, a mediana, a variância, a frequência e a proporção, por exemplo, são tipos de sumarização que trazem diferentes informações sobre uma variável. O código abaixo resume a coluna massa corporal pela sua média.
+
+
+```r
+pinguins %&gt;% 
+  summarise(media_massa_corporal = mean(massa_corporal, na.rm = TRUE))
+```
+
+```
+## # A tibble: 1 x 1
+##   media_massa_corporal
+##                  &lt;dbl&gt;
+## 1                4202.
+```
+
+.footnote[Também pode ser usado a função `summarize()`]
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Sumarizando colunas: &amp;nbsp; `summarise()`
+
+Diversas sumarizações diferentes podem ser realizadas em um mesmo `summarise()`. Cada sumarização (resumo) será uma coluna da nova base.
+
+
+```r
+pinguins %&gt;% 
+  summarise(
+    media_comprimento_nadadeira = mean(comprimento_nadadeira, na.rm = TRUE),
+    mediana_comprimento_nadadeira = median(comprimento_nadadeira, na.rm = TRUE),
+    variancia_comprimento_nadadeira = var(comprimento_nadadeira, na.rm = TRUE)
+  )
+```
+
+```
+## # A tibble: 1 x 3
+##   media_comprimento_nadadeira mediana_comprimento_nadadeira variancia_comprimento_nadadeira
+##                         &lt;dbl&gt;                         &lt;dbl&gt;                           &lt;dbl&gt;
+## 1                        201.                           197                            198.
+```
+
+.footnote[Também pode ser usado a função `summarize()`]
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Sumarizando colunas: &amp;nbsp; `summarise()`
+
+Também é possível sumarizar (resumir) diversas colunas.
+
+
+```r
+pinguins %&gt;% 
+  summarise(
+    media_comprimento_nadadeira = mean(comprimento_nadadeira, na.rm = TRUE),
+    media_comprimento_bico = mean(comprimento_bico, na.rm = TRUE),
+    media_profundidade_bico = median(profundidade_bico, na.rm = TRUE)
+  )
+```
+
+```
+## # A tibble: 1 x 3
+##   media_comprimento_nadadeira media_comprimento_bico media_profundidade_bico
+##                         &lt;dbl&gt;                  &lt;dbl&gt;                   &lt;dbl&gt;
+## 1                        201.                   43.9                    17.3
+```
+
+.footnote[Também pode ser usado a função `summarize()`]
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Sumarizando colunas agrupadas
+
+Em muitas ocasiões, é preciso sumarizar uma coluna agrupada por categorias de uma segunda coluna. Para isso, além do `summarise()`, também é utilizado a função `group_by()`.
+
+O código abaixo calcula a média do Ideb para cada categoria da coluna "ensino".
+
+
+```r
+pinguins %&gt;% 
+  group_by(ilha) %&gt;% 
+  summarise(
+    media_massa_corporal = mean(massa_corporal, na.rm = TRUE)
+  ) %&gt;% 
+  arrange(desc(media_massa_corporal))
+```
+
+```
+## # A tibble: 3 x 2
+##   ilha      media_massa_corporal
+##   &lt;chr&gt;                    &lt;dbl&gt;
+## 1 Biscoe                   4716.
+## 2 Dream                    3713.
+## 3 Torgersen                3706.
+```
+
+.footnote[Também pode ser usado a função `summarize()`]
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Sumarizando colunas agrupadas: &amp;nbsp; `group_by()`
+
+A única alteração que a função `group_by()` faz na base é a marcação de que a base está agrupada.
+
+
+```r
+pinguins %&gt;% 
+  group_by(ilha)
+```
+
+```
+## # A tibble: 344 x 8
+## # Groups:   ilha [3]
+##    especie             ilha  comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal sexo    ano
+##    &lt;chr&gt;               &lt;chr&gt;            &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1 "Pinguim-de-ad\u00~ Torg~             39.1              18.7                   181           3750 "mac~  2007
+##  2 "Pinguim-de-ad\u00~ Torg~             39.5              17.4                   186           3800 "f\u~  2007
+##  3 "Pinguim-de-ad\u00~ Torg~             40.3              18                     195           3250 "f\u~  2007
+##  4 "Pinguim-de-ad\u00~ Torg~             NA                NA                      NA             NA  &lt;NA&gt;  2007
+##  5 "Pinguim-de-ad\u00~ Torg~             36.7              19.3                   193           3450 "f\u~  2007
+##  6 "Pinguim-de-ad\u00~ Torg~             39.3              20.6                   190           3650 "mac~  2007
+##  7 "Pinguim-de-ad\u00~ Torg~             38.9              17.8                   181           3625 "f\u~  2007
+##  8 "Pinguim-de-ad\u00~ Torg~             39.2              19.6                   195           4675 "mac~  2007
+##  9 "Pinguim-de-ad\u00~ Torg~             34.1              18.1                   193           3475  &lt;NA&gt;  2007
+## 10 "Pinguim-de-ad\u00~ Torg~             42                20.2                   190           4250  &lt;NA&gt;  2007
+## # i 334 more rows
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/04-manipulacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Ordenando colunas:  &amp;nbsp;  `relocate()`
+
+Reordena as colunas por nome ou posição. Nesse caso, a função `relocate()` alterou a posição das colunas sexo e ano para depois da coluna ilha.
+
+
+```r
+pinguins %&gt;% 
+  relocate(sexo, ano, .after = ilha)
+```
+
+```
+## # A tibble: 344 x 8
+##    especie             ilha  sexo    ano comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal
+##    &lt;chr&gt;               &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;            &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt;
+##  1 "Pinguim-de-ad\u00~ Torg~ "mac~  2007             39.1              18.7                   181           3750
+##  2 "Pinguim-de-ad\u00~ Torg~ "f\u~  2007             39.5              17.4                   186           3800
+##  3 "Pinguim-de-ad\u00~ Torg~ "f\u~  2007             40.3              18                     195           3250
+##  4 "Pinguim-de-ad\u00~ Torg~  &lt;NA&gt;  2007             NA                NA                      NA             NA
+##  5 "Pinguim-de-ad\u00~ Torg~ "f\u~  2007             36.7              19.3                   193           3450
+##  6 "Pinguim-de-ad\u00~ Torg~ "mac~  2007             39.3              20.6                   190           3650
+##  7 "Pinguim-de-ad\u00~ Torg~ "f\u~  2007             38.9              17.8                   181           3625
+##  8 "Pinguim-de-ad\u00~ Torg~ "mac~  2007             39.2              19.6                   195           4675
+##  9 "Pinguim-de-ad\u00~ Torg~  &lt;NA&gt;  2007             34.1              18.1                   193           3475
+## 10 "Pinguim-de-ad\u00~ Torg~  &lt;NA&gt;  2007             42                20.2                   190           4250
+## # i 334 more rows
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt; e &lt;a href="https://rpubs.com/williamsurles/293454"&gt;William Surles&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Renomeando colunas: &amp;nbsp; `rename()`
+
+Renomeia as colunas de uma tabela. O primeiro argumento da função `rename()` corresponde ao nome que se dejesa colocar na coluna, e o segundo argumento é o nome atual da coluna.
+
+
+```r
+pinguins %&gt;% 
+  rename(
+    comprimento_bico_mm = comprimento_bico,
+    profundidade_bico_mm = profundidade_bico,
+    comprimento_nadadeira_mm = comprimento_nadadeira,
+    massa_corporal_g = massa_corporal
+  )
+```
+
+```
+## # A tibble: 344 x 8
+##    especie    ilha  comprimento_bico_mm profundidade_bico_mm comprimento_nadadeir~1 massa_corporal_g sexo    ano
+##    &lt;chr&gt;      &lt;chr&gt;               &lt;dbl&gt;                &lt;dbl&gt;                  &lt;dbl&gt;            &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1 "Pinguim-~ Torg~                39.1                 18.7                    181             3750 "mac~  2007
+##  2 "Pinguim-~ Torg~                39.5                 17.4                    186             3800 "f\u~  2007
+##  3 "Pinguim-~ Torg~                40.3                 18                      195             3250 "f\u~  2007
+##  4 "Pinguim-~ Torg~                NA                   NA                       NA               NA  &lt;NA&gt;  2007
+##  5 "Pinguim-~ Torg~                36.7                 19.3                    193             3450 "f\u~  2007
+##  6 "Pinguim-~ Torg~                39.3                 20.6                    190             3650 "mac~  2007
+##  7 "Pinguim-~ Torg~                38.9                 17.8                    181             3625 "f\u~  2007
+##  8 "Pinguim-~ Torg~                39.2                 19.6                    195             4675 "mac~  2007
+##  9 "Pinguim-~ Torg~                34.1                 18.1                    193             3475  &lt;NA&gt;  2007
+## 10 "Pinguim-~ Torg~                42                   20.2                    190             4250  &lt;NA&gt;  2007
+## # i 334 more rows
+## # i abbreviated name: 1: comprimento_nadadeira_mm
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt; e &lt;a href="https://rpubs.com/williamsurles/293454"&gt;William Surles&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Selecione linhas: &amp;nbsp; `slice_head()`
+
+Seleciona as primeiras linhas da tabela. 
+
+
+```r
+pinguins %&gt;% 
+  slice_head(n = 5)
+```
+
+```
+## # A tibble: 5 x 8
+##   especie              ilha  comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal sexo    ano
+##   &lt;chr&gt;                &lt;chr&gt;            &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+## 1 "Pinguim-de-ad\u00e~ Torg~             39.1              18.7                   181           3750 "mac~  2007
+## 2 "Pinguim-de-ad\u00e~ Torg~             39.5              17.4                   186           3800 "f\u~  2007
+## 3 "Pinguim-de-ad\u00e~ Torg~             40.3              18                     195           3250 "f\u~  2007
+## 4 "Pinguim-de-ad\u00e~ Torg~             NA                NA                      NA             NA  &lt;NA&gt;  2007
+## 5 "Pinguim-de-ad\u00e~ Torg~             36.7              19.3                   193           3450 "f\u~  2007
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt; e &lt;a href="https://rpubs.com/williamsurles/293454"&gt;William Surles&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Selecione linhas: &amp;nbsp; `slice_max()`
+
+Seleciona linhas por valores de uma coluna.
+
+
+```r
+pinguins %&gt;% 
+  slice_max(massa_corporal, n = 5)
+```
+
+```
+## # A tibble: 6 x 8
+##   especie        ilha   comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal sexo    ano
+##   &lt;chr&gt;          &lt;chr&gt;             &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+## 1 Pinguim-gentoo Biscoe             49.2              15.2                   221           6300 macho  2007
+## 2 Pinguim-gentoo Biscoe             59.6              17                     230           6050 macho  2007
+## 3 Pinguim-gentoo Biscoe             51.1              16.3                   220           6000 macho  2008
+## 4 Pinguim-gentoo Biscoe             48.8              16.2                   222           6000 macho  2009
+## 5 Pinguim-gentoo Biscoe             45.2              16.4                   223           5950 macho  2008
+## 6 Pinguim-gentoo Biscoe             49.8              15.9                   229           5950 macho  2009
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt; e &lt;a href="https://rpubs.com/williamsurles/293454"&gt;William Surles&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Selecione linhas: &amp;nbsp; `slice_sample()`
+
+Seleciona as linhas aleatoriamente.
+
+
+```r
+pinguins %&gt;% 
+  slice_sample(n = 20)
+```
+
+```
+## # A tibble: 20 x 8
+##    especie             ilha  comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal sexo    ano
+##    &lt;chr&gt;               &lt;chr&gt;            &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1 "Pinguim-de-ad\u00~ Bisc~             35                17.9                   192           3725 "f\u~  2009
+##  2 "Pinguim-gentoo"    Bisc~             46.5              13.5                   210           4550 "f\u~  2007
+##  3 "Pinguim-de-ad\u00~ Dream             37.6              19.3                   181           3300 "f\u~  2007
+##  4 "Pinguim-de-ad\u00~ Bisc~             35.3              18.9                   187           3800 "f\u~  2007
+##  5 "Pinguim-de-ad\u00~ Dream             36.6              18.4                   184           3475 "f\u~  2009
+##  6 "Pinguim-de-barbic~ Dream             51.9              19.5                   206           3950 "mac~  2009
+##  7 "Pinguim-gentoo"    Bisc~             42                13.5                   210           4150 "f\u~  2007
+##  8 "Pinguim-gentoo"    Bisc~             42.8              14.2                   209           4700 "f\u~  2007
+##  9 "Pinguim-gentoo"    Bisc~             46.7              15.3                   219           5200 "mac~  2007
+## 10 "Pinguim-de-ad\u00~ Dream             40.2              17.1                   193           3400 "f\u~  2009
+## 11 "Pinguim-de-ad\u00~ Bisc~             42                19.5                   200           4050 "mac~  2008
+## 12 "Pinguim-gentoo"    Bisc~             52.1              17                     230           5550 "mac~  2009
+## 13 "Pinguim-gentoo"    Bisc~             54.3              15.7                   231           5650 "mac~  2008
+## 14 "Pinguim-de-ad\u00~ Bisc~             40.6              18.6                   183           3550 "mac~  2007
+## 15 "Pinguim-de-barbic~ Dream             51                18.8                   203           4100 "mac~  2008
+## 16 "Pinguim-de-ad\u00~ Dream             39.2              18.6                   190           4250 "mac~  2009
+## 17 "Pinguim-gentoo"    Bisc~             48.7              15.7                   208           5350 "mac~  2008
+## 18 "Pinguim-de-barbic~ Dream             50.7              19.7                   203           4050 "mac~  2009
+## 19 "Pinguim-de-ad\u00~ Torg~             39.7              18.4                   190           3900 "mac~  2008
+## 20 "Pinguim-gentoo"    Bisc~             49.1              14.8                   220           5150 "f\u~  2008
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt; e &lt;a href="https://rpubs.com/williamsurles/293454"&gt;William Surles&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Limpa a tabela: &amp;nbsp; `distinct()`
+
+Retira as linhas com valores duplicados com base nos valores das colunas, mas mantendo as colunas.
+
+
+```r
+pinguins %&gt;% 
+  distinct(massa_corporal, .keep_all = TRUE)
+```
+
+```
+## # A tibble: 95 x 8
+##    especie             ilha  comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal sexo    ano
+##    &lt;chr&gt;               &lt;chr&gt;            &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1 "Pinguim-de-ad\u00~ Torg~             39.1              18.7                   181           3750 "mac~  2007
+##  2 "Pinguim-de-ad\u00~ Torg~             39.5              17.4                   186           3800 "f\u~  2007
+##  3 "Pinguim-de-ad\u00~ Torg~             40.3              18                     195           3250 "f\u~  2007
+##  4 "Pinguim-de-ad\u00~ Torg~             NA                NA                      NA             NA  &lt;NA&gt;  2007
+##  5 "Pinguim-de-ad\u00~ Torg~             36.7              19.3                   193           3450 "f\u~  2007
+##  6 "Pinguim-de-ad\u00~ Torg~             39.3              20.6                   190           3650 "mac~  2007
+##  7 "Pinguim-de-ad\u00~ Torg~             38.9              17.8                   181           3625 "f\u~  2007
+##  8 "Pinguim-de-ad\u00~ Torg~             39.2              19.6                   195           4675 "mac~  2007
+##  9 "Pinguim-de-ad\u00~ Torg~             34.1              18.1                   193           3475  &lt;NA&gt;  2007
+## 10 "Pinguim-de-ad\u00~ Torg~             42                20.2                   190           4250  &lt;NA&gt;  2007
+## # i 85 more rows
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt; e &lt;a href="https://rpubs.com/williamsurles/293454"&gt;William Surles&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Contando valores: &amp;nbsp; `count()`
+
+Conta valores de uma tabela, geralmente para variáveis categóricas
+
+
+```r
+pinguins %&gt;% 
+  count(especie)
+```
+
+```
+## # A tibble: 3 x 2
+##   especie                      n
+##   &lt;chr&gt;                    &lt;int&gt;
+## 1 "Pinguim-de-ad\u00e9lia"   152
+## 2 "Pinguim-de-barbicha"       68
+## 3 "Pinguim-gentoo"           124
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt; e &lt;a href="https://rpubs.com/williamsurles/293454"&gt;William Surles&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Contando valores: &amp;nbsp; `count()`
+
+Conta valores de mais de uma coluna, geralmente para variáveis categóricas
+
+
+```r
+pinguins %&gt;% 
+  count(especie, ilha)
+```
+
+```
+## # A tibble: 5 x 3
+##   especie                  ilha          n
+##   &lt;chr&gt;                    &lt;chr&gt;     &lt;int&gt;
+## 1 "Pinguim-de-ad\u00e9lia" Biscoe       44
+## 2 "Pinguim-de-ad\u00e9lia" Dream        56
+## 3 "Pinguim-de-ad\u00e9lia" Torgersen    52
+## 4 "Pinguim-de-barbicha"    Dream        68
+## 5 "Pinguim-gentoo"         Biscoe      124
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt; e &lt;a href="https://rpubs.com/williamsurles/293454"&gt;William Surles&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Combinando dados: &amp;nbsp; `bind_rows()`
+
+Combina dados por linhas.
+
+
+```r
+# selecionar as linhas para dois tibbles
+pinguins_01 &lt;- slice(pinguins, 1:5) %&gt;% select(1:3)
+pinguins_02 &lt;- slice(pinguins, 51:55) %&gt;% select(4:6)
+
+# combinar as linhas
+bind_rows(pinguins_01, pinguins_02, .id = "id")
+```
+
+```
+## # A tibble: 10 x 7
+##    id    especie                  ilha   comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal
+##    &lt;chr&gt; &lt;chr&gt;                    &lt;chr&gt;             &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt;
+##  1 1     "Pinguim-de-ad\u00e9lia" Torge~             39.1              NA                      NA             NA
+##  2 1     "Pinguim-de-ad\u00e9lia" Torge~             39.5              NA                      NA             NA
+##  3 1     "Pinguim-de-ad\u00e9lia" Torge~             40.3              NA                      NA             NA
+##  4 1     "Pinguim-de-ad\u00e9lia" Torge~             NA                NA                      NA             NA
+##  5 1     "Pinguim-de-ad\u00e9lia" Torge~             36.7              NA                      NA             NA
+##  6 2      &lt;NA&gt;                    &lt;NA&gt;               NA                17.7                   186           3500
+##  7 2      &lt;NA&gt;                    &lt;NA&gt;               NA                18.9                   188           4300
+##  8 2      &lt;NA&gt;                    &lt;NA&gt;               NA                17.9                   190           3450
+##  9 2      &lt;NA&gt;                    &lt;NA&gt;               NA                19.5                   200           4050
+## 10 2      &lt;NA&gt;                    &lt;NA&gt;               NA                18.1                   187           2900
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt; e &lt;a href="https://rpubs.com/williamsurles/293454"&gt;William Surles&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Combinando dados: &amp;nbsp; `bind_cols()`
+
+Combina dados por colunas.
+
+
+```r
+# selecionar as linhas para dois tibbles
+pinguins_01 &lt;- slice(pinguins, 1:5)
+pinguins_02 &lt;- slice(pinguins, 51:55)
+
+## combinar as colunas
+bind_cols(pinguins_01, pinguins_02, .name_repair = "unique")
+```
+
+```
+## # A tibble: 5 x 16
+##   especie...1      ilha...2 comprimento_bico...3 profundidade_bico...4 comprimento_nadadeir~1 massa_corporal...6
+##   &lt;chr&gt;            &lt;chr&gt;                   &lt;dbl&gt;                 &lt;dbl&gt;                  &lt;dbl&gt;              &lt;dbl&gt;
+## 1 "Pinguim-de-ad\~ Torgers~                 39.1                  18.7                    181               3750
+## 2 "Pinguim-de-ad\~ Torgers~                 39.5                  17.4                    186               3800
+## 3 "Pinguim-de-ad\~ Torgers~                 40.3                  18                      195               3250
+## 4 "Pinguim-de-ad\~ Torgers~                 NA                    NA                       NA                 NA
+## 5 "Pinguim-de-ad\~ Torgers~                 36.7                  19.3                    193               3450
+## # i abbreviated name: 1: comprimento_nadadeira...5
+## # i 10 more variables: sexo...7 &lt;chr&gt;, ano...8 &lt;dbl&gt;, especie...9 &lt;chr&gt;, ilha...10 &lt;chr&gt;,
+## #   comprimento_bico...11 &lt;dbl&gt;, profundidade_bico...12 &lt;dbl&gt;, comprimento_nadadeira...13 &lt;dbl&gt;,
+## #   massa_corporal...14 &lt;dbl&gt;, sexo...15 &lt;chr&gt;, ano...16 &lt;dbl&gt;
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt; e &lt;a href="https://rpubs.com/williamsurles/293454"&gt;William Surles&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Unindo bases: &amp;nbsp; `*_join()`
+
+Combina pares de dados tabulares por uma ou mais chaves.
+
+.left-column[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="img/slides/42-joins.png" width="100%" /&gt;
+
+] 
+
+.right-column[
+
+&lt;b&gt;Junção de mutação&lt;/b&gt;
+
+- `left_join(x, y)`: mantém as observações em x
+- `right_join(x, y)`: mantém as observações em y
+- `inner_join(x, y)`: mantém apenas as observações em x e em y
+- `full_join(x, y)`: mantém todas as observações em x e em y
+
+&lt;b&gt;Junção de filtragem&lt;/b&gt;
+
+- `semi_join(x, y)`: mantém as observações em x que têm uma correspondência em y
+- `anti_join(x, y)`: elimina as observações em x que têm uma correspondência em y
+
+]
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt; e &lt;a href="https://rpubs.com/williamsurles/293454"&gt;William Surles&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Unindo bases: &amp;nbsp; `*_join()`
+
+.pull-left[
+
+&lt;img src="img/slides/38-left-join.gif" width="85%" /&gt;
+
+
+&lt;img src="img/slides/40-inner-join.gif" width="85%" /&gt;
+
+]
+
+.pull-right[
+
+&lt;img src="img/slides/39-right-join.gif" width="85%" /&gt;
+
+
+&lt;img src="img/slides/41-full-join.gif" width="85%" /&gt;
+
+
+]
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt; e &lt;a href="https://rpubs.com/williamsurles/293454"&gt;William Surles&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Unindo bases: &amp;nbsp; `*_join()`
+
+Cria uma tabela com a longitude e a latitude das ilhas da tabela `pinguins`.
+
+
+```r
+## coordenadas
+pinguins_ilhas &lt;- tibble(
+  ilha = c("Torgersen", "Biscoe", "Dream", "Alpha"),
+  longitude = c(-64.083333, -63.775636, -64.233333, -63),
+  latitude = c(-64.766667, -64.818569, -64.733333, -64.316667))
+
+pinguins_ilhas
+```
+
+```
+## # A tibble: 4 x 3
+##   ilha      longitude latitude
+##   &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Torgersen     -64.1    -64.8
+## 2 Biscoe        -63.8    -64.8
+## 3 Dream         -64.2    -64.7
+## 4 Alpha         -63      -64.3
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt; e &lt;a href="https://rpubs.com/williamsurles/293454"&gt;William Surles&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Unindo bases: &amp;nbsp; `left_join()`
+
+Agora, une as tabelas `pinguins` e `pinguins_ilhas`. A tabela final será a tabela original (`pinguins`), acrescida da tabela com os dados de latitude e longitude das ilhas (`pinguins_ilhas`).
+
+
+```r
+pinguins_left_join &lt;- left_join(pinguins, pinguins_ilhas, by = "ilha")
+
+glimpse(pinguins_left_join)
+```
+
+```
+## Rows: 344
+## Columns: 10
+## $ especie               &lt;chr&gt; "Pinguim-de-ad&lt;U+00E9&gt;lia", "Pinguim-de-ad&lt;U+00E9&gt;lia", "Pinguim-de-ad&lt;U+00E9&gt;lia", "Pinguim-de-ad&lt;U+00E9&gt;li~
+## $ ilha                  &lt;chr&gt; "Torgersen", "Torgersen", "Torgersen", "Torgersen", "Torgersen", "Torgersen", "T~
+## $ comprimento_bico      &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, 42.0, 37.8, 37.8, 41.1, 38.6~
+## $ profundidade_bico     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, 20.2, 17.1, 17.3, 17.6, 21.2~
+## $ comprimento_nadadeira &lt;dbl&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186, 180, 182, 191, 198, 185, 1~
+## $ massa_corporal        &lt;dbl&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, 4250, 3300, 3700, 3200, 3800~
+## $ sexo                  &lt;chr&gt; "macho", "f&lt;U+00EA&gt;mea", "f&lt;U+00EA&gt;mea", NA, "f&lt;U+00EA&gt;mea", "macho", "f&lt;U+00EA&gt;mea", "macho", NA, NA, NA, N~
+## $ ano                   &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 20~
+## $ longitude             &lt;dbl&gt; -64.08333, -64.08333, -64.08333, -64.08333, -64.08333, -64.08333, -64.08333, -64~
+## $ latitude              &lt;dbl&gt; -64.76667, -64.76667, -64.76667, -64.76667, -64.76667, -64.76667, -64.76667, -64~
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt; e &lt;a href="https://rpubs.com/williamsurles/293454"&gt;William Surles&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Operações de conjuntos e comparações de dados
+
+.pull-left[
+
+&lt;b&gt;&lt;font size = 5&gt;Operações para comparar dos dados:&lt;/font&gt;&lt;/b&gt;
+
+- `union(x, y)`: retorna todas as linhas que aparecem em x, y ou mais dos conjuntos de dados
+- `interesect(x, y)`: retorna apenas as linhas que aparecem em x e em y
+- `setdiff(x, y)`: retorna as linhas que aparecem x, mas não em y
+- `setequal(x, y)`: retorna se x e y são iguais e quais suas diferenças
+
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="img/slides/43-operacoes.png" width="85%" /&gt;
+
+]
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt; e &lt;a href="https://rpubs.com/williamsurles/293454"&gt;William Surles&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Pacote &amp;nbsp; `tidyr`
+
+**Tidy data:**
+
+&lt;img src="img/slides/23-tidy-data.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+Dados organizados são uma forma padrão de mapear o significado de um conjunto de dados em sua estrutura. Em dados organizados:
+
+- cada coluna é uma variável;
+
+- cada linha é uma observação;
+
+- cada célula é um único valor.
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://bookdown.org/bruno_lucian_costa/CursoIntermediarioR/"&gt;Análise de Dados em R - Nível Intermediário&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Pacote &amp;nbsp; `tidyr`
+
+**Bases bagunçadas:**
+
+O pacote `tidyr` tem a função de tornar um conjunto de dados tidy (organizados), sendo esses fáceis de manipular, modelar e visualizar.
+
+Um conjunto de dados está arrumado ou não, dependendo de como linhas, colunas e células são combinadas com observações, variáveis e valores.
+
+As principais funções do `tidyr` são:
+
+- `unite()`: junta dados de múltiplas colunas em uma
+- `separate()`: separa caracteres em múlplica colunas
+- `separate_rows()`: separa caracteres em múlplica colunas e linhas
+- `drop_na()`: retira linhas com NA
+- `replace_na()`: substitui NA
+- `pivot_wider()`: long para wide
+- `pivot_longer()`: wide para long
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### União de colunas: &amp;nbsp; `unite()`
+
+Une duas colunas em uma única coluna.
+
+
+```r
+especie_ilha &lt;- pinguins %&gt;% 
+  unite(
+    col = "especie_ilha", 
+    especie:ilha,
+    sep = " - "
+  ) 
+
+head(especie_ilha)
+```
+
+```
+## # A tibble: 6 x 7
+##   especie_ilha               comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal sexo    ano
+##   &lt;chr&gt;                                 &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+## 1 "Pinguim-de-ad\u00e9lia -~             39.1              18.7                   181           3750 "mac~  2007
+## 2 "Pinguim-de-ad\u00e9lia -~             39.5              17.4                   186           3800 "f\u~  2007
+## 3 "Pinguim-de-ad\u00e9lia -~             40.3              18                     195           3250 "f\u~  2007
+## 4 "Pinguim-de-ad\u00e9lia -~             NA                NA                      NA             NA  &lt;NA&gt;  2007
+## 5 "Pinguim-de-ad\u00e9lia -~             36.7              19.3                   193           3450 "f\u~  2007
+## 6 "Pinguim-de-ad\u00e9lia -~             39.3              20.6                   190           3650 "mac~  2007
+```
+
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Separação de colunas: &amp;nbsp; `separate()`
+
+Separa uma coluna em duas ou mais colunas.
+
+
+
+```r
+especie_ilha %&gt;% 
+  separate(
+    col = especie_ilha,
+    into = c("especie", "ilha"),
+    sep = " - ",
+  )
+```
+
+```
+## # A tibble: 344 x 8
+##    especie             ilha  comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal sexo    ano
+##    &lt;chr&gt;               &lt;chr&gt;            &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1 "Pinguim-de-ad\u00~ Torg~             39.1              18.7                   181           3750 "mac~  2007
+##  2 "Pinguim-de-ad\u00~ Torg~             39.5              17.4                   186           3800 "f\u~  2007
+##  3 "Pinguim-de-ad\u00~ Torg~             40.3              18                     195           3250 "f\u~  2007
+##  4 "Pinguim-de-ad\u00~ Torg~             NA                NA                      NA             NA  &lt;NA&gt;  2007
+##  5 "Pinguim-de-ad\u00~ Torg~             36.7              19.3                   193           3450 "f\u~  2007
+##  6 "Pinguim-de-ad\u00~ Torg~             39.3              20.6                   190           3650 "mac~  2007
+##  7 "Pinguim-de-ad\u00~ Torg~             38.9              17.8                   181           3625 "f\u~  2007
+##  8 "Pinguim-de-ad\u00~ Torg~             39.2              19.6                   195           4675 "mac~  2007
+##  9 "Pinguim-de-ad\u00~ Torg~             34.1              18.1                   193           3475  &lt;NA&gt;  2007
+## 10 "Pinguim-de-ad\u00~ Torg~             42                20.2                   190           4250  &lt;NA&gt;  2007
+## # i 334 more rows
+```
+
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Remove NAs: &amp;nbsp; `drop_na()`
+
+Remove as linhas que contém `NA` de todas as colunas.
+
+
+```r
+pinguins %&gt;% 
+  drop_na()
+```
+
+```
+## # A tibble: 333 x 8
+##    especie             ilha  comprimento_bico profundidade_bico comprimento_nadadeira massa_corporal sexo    ano
+##    &lt;chr&gt;               &lt;chr&gt;            &lt;dbl&gt;             &lt;dbl&gt;                 &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1 "Pinguim-de-ad\u00~ Torg~             39.1              18.7                   181           3750 "mac~  2007
+##  2 "Pinguim-de-ad\u00~ Torg~             39.5              17.4                   186           3800 "f\u~  2007
+##  3 "Pinguim-de-ad\u00~ Torg~             40.3              18                     195           3250 "f\u~  2007
+##  4 "Pinguim-de-ad\u00~ Torg~             36.7              19.3                   193           3450 "f\u~  2007
+##  5 "Pinguim-de-ad\u00~ Torg~             39.3              20.6                   190           3650 "mac~  2007
+##  6 "Pinguim-de-ad\u00~ Torg~             38.9              17.8                   181           3625 "f\u~  2007
+##  7 "Pinguim-de-ad\u00~ Torg~             39.2              19.6                   195           4675 "mac~  2007
+##  8 "Pinguim-de-ad\u00~ Torg~             41.1              17.6                   182           3200 "f\u~  2007
+##  9 "Pinguim-de-ad\u00~ Torg~             38.6              21.2                   191           3800 "mac~  2007
+## 10 "Pinguim-de-ad\u00~ Torg~             34.6              21.1                   198           4400 "mac~  2007
+## # i 323 more rows
+```
+
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Pivotar os dados
+
+.pull-left[
+
+`pivot_longer()` | `pivot_wider()`
+
+&lt;img src="img/slides/44-tidyr-spread-gather.gif" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+&lt;img src="img/slides/45-original-dfs-tidy.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Larga para longa: &amp;nbsp; `pivot_longer()`
+
+**Long para wide:**
+
+1. &lt;b&gt;names_from:&lt;/b&gt; variável categórica que definirá os nomes das colunas
+2. &lt;b&gt;values_from:&lt;/b&gt; variável numérica que preencherá os dados
+3. &lt;b&gt;values_fill:&lt;/b&gt; valor para preencher os NAs
+
+
+```r
+pivot_wider(data = pinguins_raw[, c(2, 3, 13)], 
+            names_from = Species, 
+            values_from = `Body Mass (g)`)
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Longa para larga: &amp;nbsp; `pivot_wider()`
+
+**Wide para long:**
+
+1. &lt;b&gt;names_to:&lt;/b&gt; nome da coluna que receberá os nomes
+2. &lt;b&gt;values_to:&lt;/b&gt; nome da coluna que receberá os valores
+
+
+```r
+pivot_longer(data = penguins_raw[, c(2, 3, 10:13)], 
+             cols = `Culmen Length (mm)`:`Body Mass (g)`,
+             names_to = "medidas", 
+             values_to = "valores")
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://mauriciovancine.github.io/course-geospatial-data-r/01_slides/04_slides_intro_geoespacial_r.html#1"&gt;Maurício H. Vancine&lt;/a&gt;&lt;/div&gt;
+
+---
+
+# Obrigada!
+
+.pull-left[
+
+&lt;img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjFlNDgyOTRhMTk5MGE4ZTNmNjg5ZWMzM2NlZDU3ODBmZDU0OGFiNiZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/M9NbzZjAcxq9jS9LZJ/giphy.gif" width="65%" style="display: block; margin: auto;" /&gt;
+
+.center[Agradecimento especial à [Curso-R](https://curso-r.com/) e ao [Maurício Vancine](https://mauriciovancine.github.io/) pelos materiais.]
+
+.center[Slides criados usando os pacotes em R:]
+.center[[**xaringan**](https://github.com/yihui/xaringan)]
+.center[[**xaringanthemer**](https://github.com/gadenbuie/xaringanthemer)]
+
+.center[O chakra vem da biblioteca JavaScript [remark.js](https://remarkjs.com), [**knitr**](http://yihui.name/knitr), and [R Markdown](https://rmarkdown.rstudio.com).]
+]
+
+.pull-right[
+
+&lt;img src="img/slides/19-luisa.jpg" width="55%" style="display: block; margin: auto;" /&gt;
+
+.center[&lt;i class="fas fa-home"&gt;&lt;/i&gt; [luisa.rbind.io](https://luisa.rbind.io/)]
+
+.center[&lt;i class="fab fa-twitter"&gt;&lt;/i&gt; [@lgiselebock](https://twitter.com/lgiselebock)]
+
+.center[&lt;i class="fab fa-github"&gt;&lt;/i&gt; [@lgiselebock](https://github.com/lgiselebock/)]
+
+.center[&lt;i class="far fa-envelope"&gt;&lt;/i&gt; [luisa.bock@acad.ufsm.br](mailto:luisa.bock@acad.ufsm.br)]
+]
+
+&lt;!-- inicio academic icons --&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css"&gt;
+&lt;!-- final academic icons --&gt;
+
+ 
+&lt;!-- inicio font awesome --&gt;
+&lt;script src="https://kit.fontawesome.com/1f72d6921a.js" crossorigin="anonymous"&gt;&lt;/script&gt;
+
+&lt;!-- final font awesome --&gt;
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

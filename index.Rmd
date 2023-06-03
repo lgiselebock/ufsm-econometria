@@ -1,7 +1,13 @@
 ---
-title: "UFSM | Monitoria Econometria I A"
+title: "Monitoria Econometria I A"
+author:
+  - name: Luísa Gisele Böck
+    url: https://luisa.rbind.io
+    affiliation: Universidade Federal de Santa Maria (UFSM)
+    affiliation_url: https://ufsm.br
+date: "06/01/2023"
 description: |
-  Welcome to the website. I hope you enjoy it!
+  Repositório com o material utilizado na monitoria de Econometria I A, além de materiais complementares.
 site: distill::distill_website
 ---
 
@@ -12,4 +18,32 @@ knitr::opts_chunk$set(echo = FALSE)
 # https://rstudio.github.io/distill/website.html
 
 ```
+
+
+### Slides
+
++ [01. Introdução](slides/01-introducao.html)
++ [02. Importação](slides/02-importacao.html)
++ [03. Manipulação](slides/03-manipulacao.html)
++ [04. Visualização](slides/04-visualizacao.html)
++ [05. Regressão]()
+
+
+### Scripts
+
++ [01. Introdução](scripts/01-introducao.R)
++ [02. Importação](scripts/02-importacao.R)
++ [03. Manipulação](scripts/03-manipulacao.R)
++ [04. Visualização](scripts/04-visualizacao.R)
++ [05. Regressão]()
+]
+
+### Dados   
+
+
++ [Pinguins](dados/pinguins/)
++ [Educacionais](dados/educacionais/)
+
+
+
 

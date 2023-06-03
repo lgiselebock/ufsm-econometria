@@ -1,0 +1,3080 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Análises Econométricas</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Luísa Gisele Böck" />
+    <script src="05-regressao-visualizacao_files/header-attrs/header-attrs.js"></script>
+    <script src="05-regressao-visualizacao_files/clipboard/clipboard.min.js"></script>
+    <link href="05-regressao-visualizacao_files/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="05-regressao-visualizacao_files/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <script src="05-regressao-visualizacao_files/xaringanExtra_fit-screen/fit-screen.js"></script>
+    <link href="05-regressao-visualizacao_files/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <link href="05-regressao-visualizacao_files/panelset/panelset.css" rel="stylesheet" />
+    <script src="05-regressao-visualizacao_files/panelset/panelset.js"></script>
+    <link href="05-regressao-visualizacao_files/shareon/shareon.min.css" rel="stylesheet" />
+    <script src="05-regressao-visualizacao_files/shareon/shareon.min.js"></script>
+    <link href="05-regressao-visualizacao_files/xaringanExtra-shareagain/shareagain.css" rel="stylesheet" />
+    <script src="05-regressao-visualizacao_files/xaringanExtra-shareagain/shareagain.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+    <link rel="stylesheet" href="footer-header.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+
+
+&lt;!-- inicio font awesome --&gt;
+&lt;script src="https://kit.fontawesome.com/1f72d6921a.js" crossorigin="anonymous"&gt;&lt;/script&gt;
+&lt;!-- final font awesome --&gt;
+
+&lt;!-- inicio github buttons  --&gt;
+&lt;script async defer src="https://buttons.github.io/buttons.js"&gt;&lt;/script&gt;
+&lt;!-- final github buttons  --&gt;
+
+
+.pull-left[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+## Análises Econométricas
+
+### Regressões Lineares
+
+**[Luísa Gisele Böck](https://luisa.rbind.io/)**&amp;nbsp;&amp;nbsp;    &lt;a href='mailto:luisa.bock@acad.ufsm.br'&gt;&lt;i class="far fa-envelope"&gt;&lt;/i&gt;&lt;/a&gt;    &lt;a href='https://twitter.com/lgiselebock'&gt;&lt;i class="fab fa-twitter"&gt;&lt;/i&gt;   &lt;a href='https://github.com/lgiselebock'&gt;&lt;i class="fab fa-github"&gt;&lt;/i&gt;&lt;/a&gt;
+
+__.can-edit[Junho de 2023]__
+
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="img/slides/46-intro-allison-horst-regressao-05.png" width="700px" /&gt;
+
+.center[Ilustração por [Allison Horst](https://twitter.com/allison_horst/)]
+]
+
+---
+
+class: inverse center middle
+
+# Dados Educacionais
+
+&lt;!-- .center[(Acompanhe no arquivo `04-visualizacao.R`)] --&gt;
+
+---
+
+### Importando as bases
+
+.tiny[
+
+```r
+library(tidyverse) # pacote necessário
+
+ideb_fundamental &lt;- 
+  read_csv("dados/educacionais/ideb_fundamental.csv", 
+  col_types = cols(id_municipio = col_character(), ano = col_integer()))
+
+ideb_medio &lt;- 
+  read_csv("dados/educacionais/ideb_medio.csv", 
+  col_types = cols(id_municipio = col_character(), ano = col_integer()))
+
+indicadores_fundamental &lt;- 
+  read_csv("dados/educacionais/indicadores_fundamental.csv",
+  col_types = cols(id_municipio = col_character(), ano = col_integer()))
+
+indicadores_medio &lt;- 
+  read_csv("dados/educacionais/indicadores_medio.csv",
+  col_types = cols(id_municipio = col_character(), ano = col_integer()))
+
+pib_pc &lt;- 
+  read_csv("dados/educacionais/pib_pc.csv",
+  col_types = cols(id_municipio = col_character(), ano = col_integer()))
+```
+]
+
+---
+
+&lt;div class="panelset"&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Ideb&lt;/div&gt;
+.tiny[
+
+```r
+head(ideb_fundamental, n = 5)
+```
+
+```
+## # A tibble: 5 × 5
+##   id_municipio   ano tx_aprov ensino       ideb
+##   &lt;chr&gt;        &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;
+## 1 1100015       2021     94.3 fundamental  4.75
+## 2 1100023       2021     94.2 fundamental  4.98
+## 3 1100049       2021     99.5 fundamental  5.32
+## 4 1100064       2021     99.3 fundamental  5.65
+## 5 1100072       2021     98.6 fundamental  5.32
+```
+
+```r
+head(ideb_medio, n = 5)
+```
+
+```
+## # A tibble: 5 × 5
+##   id_municipio   ano tx_aprov ensino  ideb
+##   &lt;chr&gt;        &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;
+## 1 1100304       2021     75.6 medio   3.55
+## 2 1200435       2021     90   medio   2.9 
+## 3 1300060       2021     89.4 medio   3   
+## 4 1300201       2021     72.7 medio   2.2 
+## 5 1300508       2021     87.1 medio   3.1
+```
+]
+&lt;/div&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Dicionário&lt;/div&gt;
+
+**BASES IDEB_FUNDAMENTAL E IDEB_MÉDIO**
+
+- **Fundamental:** Ensino Fundamental
+
+- **Médio:** Ensino Médio
+
+1. `id_municipio`: código do IBGE de identificação do município
+
+2. `tx_aprov`: taxa de aprovação média do município 
+
+3. `ideb`: índice de desenvolvimento da educação básica
+
+  - é calculado a partir dos dados de aprovação escolar (obtidos pelo Censo Escolar) e das médias de desempenho no Sistema de Avaliação da Educação Básica (Saeb)
+
+&lt;/div&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Indicadores&lt;/div&gt;
+.tiny[
+
+```r
+head(indicadores_fundamental, n = 5)
+```
+
+```
+## # A tibble: 5 × 5
+##     ano id_municipio tx_aband hrs_aula   tdi
+##   &lt;int&gt; &lt;chr&gt;           &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+## 1  2021 1100015         0.167     4    21.9 
+## 2  2021 1100023         1.63      4.41 13.6 
+## 3  2021 1100031         0.355     4    10.7 
+## 4  2021 1100049         0.493     4.49  9.31
+## 5  2021 1100056         0.22      4.06  7.52
+```
+
+```r
+head(indicadores_medio, n = 5)
+```
+
+```
+## # A tibble: 5 × 5
+##     ano id_municipio tx_aband hrs_aula   tdi
+##   &lt;int&gt; &lt;chr&gt;           &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+## 1  2021 1100015          1        4.77  44.5
+## 2  2021 1100023          5.13     6.47  25.7
+## 3  2021 1100031          3.8      4     19.3
+## 4  2021 1100049          4.32     6.86  28.2
+## 5  2021 1100056          9.51     6.89  24.3
+```
+]
+&lt;/div&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Dicionário&lt;/div&gt;
+
+**BASES INDICADORES_FUNDAMENTAL E INDICADORES_MÉDIO**
+
+- **Fundamental:** Ensino Fundamental
+
+- **Médio:** Ensino Médio
+
+1. `id_municipio`: código do IBGE de identificação do município
+
+2. `tx_aband`: taxa de abandono escolar média do município 
+
+3. `hrs_aula`: média das horas de aula por município
+
+4. `tdi`: taxa de distorção idade-série
+
+  - proproção de alunos com mais de 2 anos de atraso escolar
+
+&lt;/div&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;PIB&lt;/div&gt;
+.tiny[
+
+```r
+head(pib_pc, n = 5)
+```
+
+```
+## # A tibble: 5 × 4
+##   id_municipio   ano        pib populacao
+##   &lt;chr&gt;        &lt;int&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+## 1 1100015       2020  570272326     22728
+## 2 1100023       2020 2818048618    109523
+## 3 1100031       2020  167189811      5188
+## 4 1100049       2020 2519352677     85893
+## 5 1100056       2020  600670074     16204
+```
+]
+&lt;/div&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Dicionário&lt;/div&gt;
+
+**PIB**
+
+1. `id_municipio`: código do IBGE de identificação do município
+
+2. `pib`: pib dos municípios em 2020
+
+3. `populacao`: população dos municípios em 2020
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="my-footer"&gt;O Pib &lt;i&gt;per capita&lt;/i&gt; será calculado depois.&lt;/div&gt;
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/202303-visualizacao/materiais/slides/slides.html"&gt;ALTERAR A FONTE&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Padronizando as bases de dados
+
+&lt;div class="panelset"&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Ideb (F)&lt;/div&gt;
+.tiny[
+
+```r
+ideb_fundamental &lt;- ideb_fundamental %&gt;% 
+  select(id_municipio, tx_aprov, ideb)
+
+ideb_fundamental
+```
+
+```
+## # A tibble: 5,569 × 3
+##    id_municipio tx_aprov  ideb
+##    &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt;
+##  1 1100015          94.3  4.75
+##  2 1100023          94.2  4.98
+##  3 1100049          99.5  5.32
+##  4 1100064          99.3  5.65
+##  5 1100072          98.6  5.32
+##  6 1100080          94.3  4.78
+##  7 1100098          98.3  5.24
+##  8 1100106          96.7  4.76
+##  9 1100122          98.4  5.28
+## 10 1100148         100    5.74
+## # ℹ 5,559 more rows
+```
+]
+&lt;/div&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Ideb (M)&lt;/div&gt;
+
+
+```r
+ideb_medio &lt;- ideb_medio %&gt;% 
+  select(id_municipio, tx_aprov, ideb)
+
+ideb_medio
+```
+
+```
+## # A tibble: 5,557 × 3
+##    id_municipio tx_aprov  ideb
+##    &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt;
+##  1 1100304          75.6  3.55
+##  2 1200435          90    2.9 
+##  3 1300060          89.4  3   
+##  4 1300201          72.7  2.2 
+##  5 1300508          87.1  3.1 
+##  6 1300607          87.4  2.8 
+##  7 1300680          87.5  3.1 
+##  8 1300805          87.2  3.1 
+##  9 1300839          94.9  3.1 
+## 10 1301407          88.6  3.9 
+## # ℹ 5,547 more rows
+```
+
+&lt;/div&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Indicador (F)&lt;/div&gt;
+
+
+```r
+indicadores_fundamental &lt;- indicadores_fundamental %&gt;% 
+  select(id_municipio, tx_aband, hrs_aula, tdi)
+
+indicadores_fundamental
+```
+
+```
+## # A tibble: 5,570 × 4
+##    id_municipio tx_aband hrs_aula   tdi
+##    &lt;chr&gt;           &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+##  1 1100015         0.167     4    21.9 
+##  2 1100023         1.63      4.41 13.6 
+##  3 1100031         0.355     4    10.7 
+##  4 1100049         0.493     4.49  9.31
+##  5 1100056         0.22      4.06  7.52
+##  6 1100064         0         4.05  7.15
+##  7 1100072         0         4.04 13.0 
+##  8 1100080         2.87      4.2  23.2 
+##  9 1100098         1.97      4.24 14.8 
+## 10 1100106         2.28      4.14 27.2 
+## # ℹ 5,560 more rows
+```
+
+&lt;/div&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Indicador (M)&lt;/div&gt;
+
+
+```r
+indicadores_medio &lt;- indicadores_medio %&gt;% 
+  select(id_municipio, tx_aband, hrs_aula, tdi)
+
+indicadores_medio
+```
+
+```
+## # A tibble: 5,570 × 4
+##    id_municipio tx_aband hrs_aula   tdi
+##    &lt;chr&gt;           &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+##  1 1100015         1         4.77  44.5
+##  2 1100023         5.13      6.47  25.7
+##  3 1100031         3.8       4     19.3
+##  4 1100049         4.32      6.86  28.2
+##  5 1100056         9.51      6.89  24.3
+##  6 1100064         0.98      7.04  16.5
+##  7 1100072         0.8       4     21.9
+##  8 1100080         0.133     4.5   34.3
+##  9 1100098         0         5.66  31.3
+## 10 1100106         8.68      6.18  46.2
+## # ℹ 5,560 more rows
+```
+
+&lt;/div&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;PIB&lt;/div&gt;
+.tiny[
+
+```r
+pib_pc &lt;- pib_pc %&gt;% 
+  mutate(pib_pc = round(pib/populacao, 2)) %&gt;%  # cria a coluna pib_pc
+  select(id_municipio, pib_pc)  
+  
+pib_pc
+```
+
+```
+## # A tibble: 5,570 × 2
+##    id_municipio pib_pc
+##    &lt;chr&gt;         &lt;dbl&gt;
+##  1 1100015      25091.
+##  2 1100023      25730.
+##  3 1100031      32226.
+##  4 1100049      29331.
+##  5 1100056      37069.
+##  6 1100064      23606.
+##  7 1100072      37172.
+##  8 1100080      13936.
+##  9 1100098      20380.
+## 10 1100106      21148.
+## # ℹ 5,560 more rows
+```
+]
+&lt;/div&gt;
+&lt;/div&gt;
+
+---
+
+### Juntando as bases de dados: Fundamental
+
+&lt;div class="panelset"&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;left-join seguidos&lt;/div&gt;
+
+
+```r
+left_join(
+  ideb_fundamental, indicadores_fundamental, by = "id_municipio"
+) %&gt;% 
+  left_join(pib_pc, by = "id_municipio")
+```
+
+```
+## # A tibble: 5,569 × 7
+##    id_municipio tx_aprov  ideb tx_aband hrs_aula   tdi pib_pc
+##    &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 1100015          94.3  4.75    0.167     4    21.9  25091.
+##  2 1100023          94.2  4.98    1.63      4.41 13.6  25730.
+##  3 1100049          99.5  5.32    0.493     4.49  9.31 29331.
+##  4 1100064          99.3  5.65    0         4.05  7.15 23606.
+##  5 1100072          98.6  5.32    0         4.04 13.0  37172.
+##  6 1100080          94.3  4.78    2.87      4.2  23.2  13936.
+##  7 1100098          98.3  5.24    1.97      4.24 14.8  20380.
+##  8 1100106          96.7  4.76    2.28      4.14 27.2  21148.
+##  9 1100122          98.4  5.28    1.9       4.53 16.7  31210.
+## 10 1100148         100    5.74    0         4.27  6.42 19687.
+## # ℹ 5,559 more rows
+```
+
+&lt;/div&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;reduce&lt;/div&gt;
+
+
+```r
+# PROGRAMAÇÃO FUNCIONAL - MAIS INDICADO! 
+fund &lt;- list(ideb_fundamental, indicadores_fundamental, pib_pc) %&gt;% 
+  reduce(left_join)
+
+fund
+```
+
+```
+## # A tibble: 5,569 × 7
+##    id_municipio tx_aprov  ideb tx_aband hrs_aula   tdi pib_pc
+##    &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 1100015          94.3  4.75    0.167     4    21.9  25091.
+##  2 1100023          94.2  4.98    1.63      4.41 13.6  25730.
+##  3 1100049          99.5  5.32    0.493     4.49  9.31 29331.
+##  4 1100064          99.3  5.65    0         4.05  7.15 23606.
+##  5 1100072          98.6  5.32    0         4.04 13.0  37172.
+##  6 1100080          94.3  4.78    2.87      4.2  23.2  13936.
+##  7 1100098          98.3  5.24    1.97      4.24 14.8  20380.
+##  8 1100106          96.7  4.76    2.28      4.14 27.2  21148.
+##  9 1100122          98.4  5.28    1.9       4.53 16.7  31210.
+## 10 1100148         100    5.74    0         4.27  6.42 19687.
+## # ℹ 5,559 more rows
+```
+&lt;/div&gt;
+&lt;/div&gt;
+
+---
+
+### Análises Descritivas: Fundamental
+
+&lt;div class="panelset"&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;resumo&lt;/div&gt;
+
+
+```r
+summary(fund)
+```
+
+```
+##  id_municipio          tx_aprov           ideb          tx_aband      
+##  Length:5569        Min.   : 64.00   Min.   :2.600   Min.   : 0.0000  
+##  Class :character   1st Qu.: 95.16   1st Qu.:4.700   1st Qu.: 0.0750  
+##  Mode  :character   Median : 97.95   Median :5.280   Median : 0.4364  
+##                     Mean   : 96.44   Mean   :5.221   Mean   : 1.1324  
+##                     3rd Qu.: 99.43   3rd Qu.:5.717   3rd Qu.: 1.3833  
+##                     Max.   :100.00   Max.   :8.800   Max.   :20.8000  
+##                     NA's   :76       NA's   :240                      
+##     hrs_aula           tdi             pib_pc        
+##  Min.   : 3.400   Min.   : 0.000   Min.   :    13.6  
+##  1st Qu.: 4.185   1st Qu.: 7.275   1st Qu.:  9950.1  
+##  Median : 4.400   Median :12.046   Median : 17632.7  
+##  Mean   : 4.602   Mean   :13.680   Mean   : 25032.0  
+##  3rd Qu.: 4.755   3rd Qu.:19.064   3rd Qu.: 32072.8  
+##  Max.   :10.300   Max.   :53.300   Max.   :591101.1  
+## 
+```
+
+&lt;/div&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;histogram&lt;/div&gt;
+
+
+```r
+fund %&gt;% 
+  ggplot() +
+  aes(x = ideb) +
+  geom_histogram()
+```
+
+&lt;img src="05-regressao-visualizacao_files/figure-html/unnamed-chunk-14-1.png" width="100%" /&gt;
+&lt;/div&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;bloxplot&lt;/div&gt;
+
+
+```r
+fund %&gt;% 
+  ggplot() +
+  aes(x = ideb) +
+  geom_boxplot()
+```
+
+&lt;img src="05-regressao-visualizacao_files/figure-html/unnamed-chunk-15-1.png" width="100%" /&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+---
+
+### Regressão Linear: Fundamental
+
+**Será que a `tdi` e a `tx_aband` possuem relação positiva?**
+
+.tiny[
+
+```r
+fund %&gt;% 
+  ggplot(aes(x = tdi, y = tx_aband)) +
+  geom_point()
+```
+
+&lt;img src="05-regressao-visualizacao_files/figure-html/unnamed-chunk-16-1.png" width="100%" /&gt;
+]
+---
+
+**Será que a `tdi` e a `tx_aband` possuem relação positiva?**
+
+.tiny[
+
+```r
+modelo_1 &lt;- lm(tx_aband ~ tdi, data = fund)
+summary(modelo_1)
+```
+
+```
+## 
+## Call:
+## lm(formula = tx_aband ~ tdi, data = fund)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.3881 -0.7446 -0.1523  0.3974 18.3472 
+## 
+## Coefficients:
+##              Estimate Std. Error t value            Pr(&gt;|t|)    
+## (Intercept) -0.568396   0.039688  -14.32 &lt;0.0000000000000002 ***
+## tdi          0.124327   0.002501   49.71 &lt;0.0000000000000002 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.501 on 5567 degrees of freedom
+## Multiple R-squared:  0.3074,	Adjusted R-squared:  0.3073 
+## F-statistic:  2471 on 1 and 5567 DF,  p-value: &lt; 0.00000000000000022
+```
+]
+
+---
+
+**Será que a `tdi` e a `tx_aband` possuem relação positiva?**
+
+A relação entre `tdi` e `tx_aband` é positiva, mas não parece ser muito forte.
+
+&lt;br&gt;
+$$
+\text{tx_aband} = -0.568 + 0.124\text{tdi}   
+$$
+&lt;br&gt;
+
+**Interpretação:** O aumento de 1 p.p. na taxa de distorção idade-série (`tdi`) retorna um aumento de 0.12 p.p. na taxa de abandono escolar (`tx_aband`).
+
+Quanto maior a distorção idade-série (`dti`), maiores são as taxas de abandono escolar (`tx_aband`).
+
+---
+
+**Qual a relação entre `tdi`, `tx_aprov`, `hrs_aula` e a `tx_aband`?**
+
+.tiny[
+
+```r
+modelo_2 &lt;- lm(tx_aband ~ tdi + tx_aprov + hrs_aula, data = fund)
+summary(modelo_2)
+```
+
+```
+## 
+## Call:
+## lm(formula = tx_aband ~ tdi + tx_aprov + hrs_aula, data = fund)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.9012 -0.5380  0.0074  0.3868 13.5496 
+## 
+## Coefficients:
+##              Estimate Std. Error t value            Pr(&gt;|t|)    
+## (Intercept) 22.093790   0.459395  48.093 &lt;0.0000000000000002 ***
+## tdi          0.059155   0.002466  23.985 &lt;0.0000000000000002 ***
+## tx_aprov    -0.227616   0.004547 -50.054 &lt;0.0000000000000002 ***
+## hrs_aula     0.039772   0.024120   1.649              0.0992 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.247 on 5489 degrees of freedom
+##   (76 observations deleted due to missingness)
+## Multiple R-squared:  0.525,	Adjusted R-squared:  0.5248 
+## F-statistic:  2023 on 3 and 5489 DF,  p-value: &lt; 0.00000000000000022
+```
+]
+
+---
+
+**Qual a relação entre `tdi`, `tx_aprov`, `hrs_aula` e a `tx_aband`?**
+
+A taxa de distorção idade-série (`dti`) e as horas-aula (`hrs_aula`) possuem relação positiva em relação à taxa de abandono (`tx_aband`), sendo a primeira variável com significância estatística muito próxima de zero, ou seja, significativa estatisticamente, e a segunda variável significativa estatisticamente para 90%. A taxa de aprovação (`tx_aprov`) apresenta uma relação negativa com a taxa de abandono (`tx_aband`), sendo aquela estatisticamente significativa.
+
+
+$$
+\text{tx_aband} = 22.093 + 0.059 \text{tdi} - 0.228 \text{tx_aprov} + 0.04 \text{hrs_aula}
+$$
+**Interpretação:**
+
+Um aumento de 1 p.p. na taxa de distorção idade-série (`tdi`) gera um aumento de 0.059 p.p. na taxa de abandono escolar (`tx_aband`), *ceteris paribus*. 
+
+Um aumento de 1 p.p. na taxa de aprovação (`tx_aprov`) resulta em uma redução de 0.228 p.p. na taxa de abandono (`tx_aband`), *ceteris paribus*. 
+
+Um aumento de 1 hora-aula (`hrs_aula`) resulta em um aumento de 0.04 p.p. na taxa de abandono escolar (`tx_aband`). 
+
+---
+
+**Qual a relação entre `tdi`, `tx_aprov`, `pib_pc` e a `tx_aband`?**
+
+.tiny[
+
+```r
+modelo_3 &lt;- lm(tx_aband ~ tdi + tx_aprov + pib_pc, data = fund)
+summary(modelo_3)
+```
+
+```
+## 
+## Call:
+## lm(formula = tx_aband ~ tdi + tx_aprov + pib_pc, data = fund)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.9172 -0.5341  0.0029  0.3950 13.4971 
+## 
+## Coefficients:
+##                  Estimate    Std. Error t value             Pr(&gt;|t|)    
+## (Intercept) 22.4542701306  0.4542594357  49.430 &lt; 0.0000000000000002 ***
+## tdi          0.0558233892  0.0024906456  22.413 &lt; 0.0000000000000002 ***
+## tx_aprov    -0.2278378678  0.0045008297 -50.621 &lt; 0.0000000000000002 ***
+## pib_pc      -0.0000043906  0.0000006038  -7.272    0.000000000000404 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.241 on 5489 degrees of freedom
+##   (76 observations deleted due to missingness)
+## Multiple R-squared:  0.5293,	Adjusted R-squared:  0.5291 
+## F-statistic:  2058 on 3 and 5489 DF,  p-value: &lt; 0.00000000000000022
+```
+]
+---
+&lt;br&gt;
+&lt;br&gt;
+
+$$
+\text{tx_aband} = 22.438 + 0.056 \text{tdi} - 0.229 \text{tx_aprov} + 0.000004 \text{pib_pc}
+$$
+**Interpretação:**
+
+O pib *per capita* (`pib_pc`) possui uma relação negativa com a taxa de abandono escolar (`tx_aband`), isto é, quanto maior for o pib *per capita* do município, menor será a taxa de abandono escolar.
+
+O aumento de 1 Real no pib *per capita* gera uma queda de 0.000004 p.p. na taxa de abandono escolar. Convertendo o valor do `pib_pc` para 10 mil Reais, isso corresponde a um decréscimo de 0.04 p.p. na taxa de abandono escolar.
+
+Isso indica que municípios mais ricos possuem valores consideravelmente menores de abandono escolar quando comparados com municípios mais pobres, *ceteris paribus*.
+
+---
+
+### Juntando as bases de dados: Médio
+
+&lt;div class="panelset"&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;left-join seguidos&lt;/div&gt;
+
+
+```r
+left_join(
+  ideb_medio, indicadores_medio, by = "id_municipio"
+) %&gt;% 
+  left_join(pib_pc, by = "id_municipio")
+```
+
+```
+## # A tibble: 5,557 × 7
+##    id_municipio tx_aprov  ideb tx_aband hrs_aula   tdi pib_pc
+##    &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 1100304          75.6  3.55     2.94     4.56  31.3 30848.
+##  2 1200435          90    2.9      9.9      4.93  54.1 12526.
+##  3 1300060          89.4  3        4.87     4     46.3  8689.
+##  4 1300201          72.7  2.2     21.4      3.87  62.0  8469.
+##  5 1300508          87.1  3.1      5.83     4.8   47.8  9653.
+##  6 1300607          87.4  2.8      8        5.67  35.7  7951.
+##  7 1300680          87.5  3.1     11.8      3.87  47.2  8230.
+##  8 1300805          87.2  3.1      6.63     4.97  42.2  8659.
+##  9 1300839          94.9  3.1      2.23     3.83  44.6 12846.
+## 10 1301407          88.6  3.9      1.08     7.05  29.0  1409 
+## # ℹ 5,547 more rows
+```
+
+&lt;/div&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;reduce&lt;/div&gt;
+
+
+```r
+# PROGRAMAÇÃO FUNCIONAL - MAIS INDICADO! 
+medio &lt;- list(ideb_medio, indicadores_medio, pib_pc) %&gt;% 
+  reduce(left_join)
+
+medio
+```
+
+```
+## # A tibble: 5,557 × 7
+##    id_municipio tx_aprov  ideb tx_aband hrs_aula   tdi pib_pc
+##    &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1 1100304          75.6  3.55     2.94     4.56  31.3 30848.
+##  2 1200435          90    2.9      9.9      4.93  54.1 12526.
+##  3 1300060          89.4  3        4.87     4     46.3  8689.
+##  4 1300201          72.7  2.2     21.4      3.87  62.0  8469.
+##  5 1300508          87.1  3.1      5.83     4.8   47.8  9653.
+##  6 1300607          87.4  2.8      8        5.67  35.7  7951.
+##  7 1300680          87.5  3.1     11.8      3.87  47.2  8230.
+##  8 1300805          87.2  3.1      6.63     4.97  42.2  8659.
+##  9 1300839          94.9  3.1      2.23     3.83  44.6 12846.
+## 10 1301407          88.6  3.9      1.08     7.05  29.0  1409 
+## # ℹ 5,547 more rows
+```
+&lt;/div&gt;
+&lt;/div&gt;
+
+---
+
+### Análises Descritivas: Médio
+
+&lt;div class="panelset"&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;resumo&lt;/div&gt;
+
+
+```r
+summary(medio)
+```
+
+```
+##  id_municipio          tx_aprov           ideb          tx_aband      
+##  Length:5557        Min.   : 37.10   Min.   :2.000   Min.   : 0.0000  
+##  Class :character   1st Qu.: 86.70   1st Qu.:3.800   1st Qu.: 0.5333  
+##  Mode  :character   Median : 93.80   Median :4.200   Median : 2.7750  
+##                     Mean   : 90.89   Mean   :4.172   Mean   : 5.1947  
+##                     3rd Qu.: 97.90   3rd Qu.:4.600   3rd Qu.: 7.1400  
+##                     Max.   :100.00   Max.   :6.400   Max.   :50.1000  
+##                     NA's   :132      NA's   :2138                     
+##     hrs_aula           tdi            pib_pc        
+##  Min.   : 3.000   Min.   : 0.00   Min.   :    13.6  
+##  1st Qu.: 4.333   1st Qu.:15.40   1st Qu.:  9948.5  
+##  Median : 4.800   Median :23.30   Median : 17596.7  
+##  Mean   : 5.231   Mean   :25.74   Mean   : 25023.3  
+##  3rd Qu.: 5.725   3rd Qu.:34.20   3rd Qu.: 32063.3  
+##  Max.   :15.500   Max.   :74.90   Max.   :591101.1  
+## 
+```
+
+&lt;/div&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;histogram&lt;/div&gt;
+
+
+```r
+medio %&gt;% 
+  ggplot() +
+  aes(x = ideb) +
+  geom_histogram()
+```
+
+&lt;img src="05-regressao-visualizacao_files/figure-html/unnamed-chunk-23-1.png" width="100%" /&gt;
+&lt;/div&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;bloxplot&lt;/div&gt;
+
+
+```r
+# PROGRAMAÇÃO FUNCIONAL - MAIS INDICADO! 
+medio %&gt;% 
+  ggplot() +
+  aes(x = ideb) +
+  geom_boxplot()
+```
+
+&lt;img src="05-regressao-visualizacao_files/figure-html/unnamed-chunk-24-1.png" width="100%" /&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+
+---
+
+### Regressão Linear: Médio
+
+**Qual a relação entre o `ideb` e a `tx_aband`?**
+
+
+```r
+medio %&gt;% 
+  ggplot(aes(x = ideb, y = tx_aband)) +
+  geom_point() # +
+```
+
+&lt;img src="05-regressao-visualizacao_files/figure-html/unnamed-chunk-25-1.png" width="100%" /&gt;
+
+```r
+  # geom_smooth(method = "lm", se = FALSE)
+```
+
+
+Quanto maior o ideb, menor é a taxa de abandono. Relaçào forte com a queda na taxa de abandono.
+
+---
+
+**Qual a relação entre a `tx_aprov` e a `tx_aband`?**
+
+
+
+```r
+medio %&gt;% 
+  ggplot(aes(x = tx_aprov, y = tx_aband)) +
+  geom_point() # +
+```
+
+&lt;img src="05-regressao-visualizacao_files/figure-html/unnamed-chunk-26-1.png" width="100%" /&gt;
+
+```r
+  # geom_smooth(method = "lm", se = FALSE)
+```
+
+
+---
+
+**Qual a relação entre a `hrs_aula` e a `tx_aband`?**
+
+
+
+```r
+medio %&gt;% 
+  ggplot(aes(x = hrs_aula, y = tx_aband)) +
+  geom_point() # +
+```
+
+&lt;img src="05-regressao-visualizacao_files/figure-html/unnamed-chunk-27-1.png" width="100%" /&gt;
+
+```r
+  # geom_smooth(method = "lm", se = FALSE)
+```
+
+
+---
+
+
+```r
+modelo_4 &lt;- lm(tx_aband ~ tx_aprov + tdi + hrs_aula + pib_pc, data = medio)
+summary(modelo_4)
+```
+
+```
+## 
+## Call:
+## lm(formula = tx_aband ~ tx_aprov + tdi + hrs_aula + pib_pc, data = medio)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -31.677  -1.677   0.049   1.714  21.847 
+## 
+## Coefficients:
+##                 Estimate   Std. Error t value             Pr(&gt;|t|)    
+## (Intercept) 49.940031049  0.689761077  72.402 &lt; 0.0000000000000002 ***
+## tx_aprov    -0.503759396  0.006755950 -74.565 &lt; 0.0000000000000002 ***
+## tdi          0.082584688  0.004669374  17.686 &lt; 0.0000000000000002 ***
+## hrs_aula    -0.136272720  0.042974236  -3.171              0.00153 ** 
+## pib_pc      -0.000014282  0.000002034  -7.021     0.00000000000248 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 4.073 on 5420 degrees of freedom
+##   (132 observations deleted due to missingness)
+## Multiple R-squared:  0.6325,	Adjusted R-squared:  0.6322 
+## F-statistic:  2332 on 4 and 5420 DF,  p-value: &lt; 0.00000000000000022
+```
+
+---
+
+&lt;br&gt;
+
+$$
+\text{tx_aband} = 49.94 - 0.504 \text{tx_aprov} + 0.093 \text{tdi} - 0.136 \text{hrs_aula} - 0.00001\text{pibpc}
+$$
+**Interpretação:**
+
+O aumento de 1 p.p. na taxa de aprovação (`tx_aprov`) reduz em 0.50 p.p. a taxa de abandono escolar (`tx_aband`), *ceteris paribus*. 
+
+O aumento de 1 p.p. na taxa de distorção idade-série (`tdi`) aumenta em 0.082 p.p. a taxa de abandono escolar (`tx_aband`), *ceteris paribus*.
+
+O aumento de 1 hora-aula (`hrs_aula`) diminui em 0.136 p.p. a taxa de abandono escolar (`tx_aband`), *ceteris paribus*.
+
+O aumento de 1 Real no pib *per capita* gera uma queda de 0.00001 p.p. na taxa de abandono escolar, *ceteris paribus*. Convertendo o valor do `pib_pc` para 10 mil Reais, isso corresponde a uma redução de 0.1 p.p. na taxa de abandono escolar, *ceteris paribus*.
+
+Quanto mais tempo o adolescente passa na escola, menor é a queda na taxa de abandono escolar. As taxas de abandono no ensino médio são maiores quando comparado com o ensino fundamental. O pib *per capita* afeta mais os dados do ensino médio do que do ensino fundamental.
+
+---
+
+class: inverse center middle
+
+# Base dos Dados
+
+&lt;!-- .center[(Acompanhe no arquivo `04-visualizacao.R`)] --&gt;
+
+---
+
+
+
+```r
+# install.packages("basedosdados")
+
+library(basedosdados)
+
+# faz a ligação entre o R e a BigQuery do Google
+set_billing_id("luisagisele") 
+```
+
+
+
+
+```sql
+# sem filtro
+"SELECT coluna1, coluna2, coluna3,
+coluna4 AS apelido_da_coluna
+FROM `tabela`" 
+
+# com filtro
+"SELECT coluna1, coluna2, coluna3,
+coluna4 AS apelido_da_coluna
+FROM `tabela`
+WHERE coluna1 = valor AND coluna2 = valor"
+```
+
+
+---
+
+class: inverse center middle
+
+# Atlas do Desenvolvimento Humano
+
+&lt;!-- .center[(Acompanhe no arquivo `04-visualizacao.R`)] --&gt;
+
+---
+
+### Importando os dados 
+
+
+```r
+adh &lt;-
+  "SELECT id_municipio, ano, mortalidade_1, mortalidade_5, taxa_freq_liquida_pre, indice_gini,
+prop_pobreza_extrema_criancas, prop_pobreza_criancas, prop_vulner_pobreza_criancas, taxa_agua_esgoto_inadequados, taxa_criancas_fora_escola_4_5
+FROM `basedosdados.mundo_onu_adh.municipio`"
+```
+
+
+```r
+adh &lt;-
+  "SELECT id_municipio, ano, mortalidade_1, mortalidade_5, taxa_freq_liquida_pre, indice_gini,
+prop_pobreza_extrema_criancas, prop_pobreza_criancas, prop_vulner_pobreza_criancas, taxa_agua_esgoto_inadequados, taxa_criancas_fora_escola_4_5
+FROM `basedosdados.mundo_onu_adh.municipio`" %&gt;%
+  read_sql()
+```
+
+---
+
+
+```r
+glimpse(adh)
+```
+
+```
+## Rows: 16,695
+## Columns: 11
+## $ id_municipio                  &lt;chr&gt; "1100031", "1100056", "1100262", "110080…
+## $ ano                           &lt;int64&gt; 1991, 2000, 2000, 1991, 1991, 1991, 19…
+## $ mortalidade_1                 &lt;dbl&gt; 41.52, 27.50, 28.31, 54.65, 59.58, 41.14…
+## $ mortalidade_5                 &lt;dbl&gt; 52.94, 32.93, 33.90, 69.43, 75.59, 52.47…
+## $ taxa_freq_liquida_pre         &lt;dbl&gt; 0.00, 14.04, 17.15, 15.81, 2.24, 4.25, 2…
+## $ indice_gini                   &lt;dbl&gt; 0.70, 0.69, 0.75, 0.71, 0.70, 0.78, 0.71…
+## $ prop_pobreza_extrema_criancas &lt;dbl&gt; 67.41, 22.22, 59.89, 33.60, 59.61, 60.61…
+## $ prop_pobreza_criancas         &lt;dbl&gt; 82.74, 46.00, 100.00, 67.87, 82.29, 81.0…
+## $ prop_vulner_pobreza_criancas  &lt;dbl&gt; 91.22, 71.37, 100.00, 89.24, 93.75, 92.1…
+## $ taxa_agua_esgoto_inadequados  &lt;dbl&gt; 0.63, 24.82, 42.05, 9.60, 7.80, 5.09, 5.…
+## $ taxa_criancas_fora_escola_4_5 &lt;dbl&gt; NA, 76.09, 74.15, NA, NA, NA, NA, NA, NA…
+```
+
+---
+
+**Será que a mortalidade infantil de crianças até 1 ano se relaciona com a taxa de água e esgoto inadequados?**
+
+
+```r
+adh %&gt;% 
+  ggplot() +
+  aes(x = taxa_agua_esgoto_inadequados, y = mortalidade_1) +
+  geom_point()
+```
+
+&lt;img src="05-regressao-visualizacao_files/figure-html/unnamed-chunk-34-1.png" width="100%" /&gt;
+
+Parece ter relação, mas não muito forte. Os pontos parecem espalhados
+
+---
+
+**Comparação entre a proporção de extrema pobreza em crianças e a mortalidade infantil**
+
+
+```r
+adh %&gt;% 
+  ggplot() +
+  aes(x = prop_pobreza_extrema_criancas, y = mortalidade_5) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+&lt;img src="05-regressao-visualizacao_files/figure-html/unnamed-chunk-35-1.png" width="100%" /&gt;
+
+Visualmente, parece ter uma relação positiva.
+
+---
+
+**Em relação ao slide anterior, será que há um padrão regional?**
+
+Primeiro é preciso baixar os dados referentes as regiões do Brasil:
+
+
+```r
+regiao &lt;- 
+  "SELECT id_municipio, nome_regiao 
+FROM `basedosdados.br_bd_diretorios_brasil.municipio`" %&gt;% 
+  read_sql()
+```
+
+Depois, faz um `left_join()` com a base `adh`:
+
+
+```r
+dados &lt;- left_join(adh, regiao, by = "id_municipio")
+```
+
+---
+
+Agora, a base `dados` tem os dados de `adh` + os dados de `regiao``
+
+
+```r
+glimpse(dados)
+```
+
+```
+## Rows: 16,695
+## Columns: 12
+## $ id_municipio                  &lt;chr&gt; "1100031", "1100056", "1100262", "110080…
+## $ ano                           &lt;int64&gt; 1991, 2000, 2000, 1991, 1991, 1991, 19…
+## $ mortalidade_1                 &lt;dbl&gt; 41.52, 27.50, 28.31, 54.65, 59.58, 41.14…
+## $ mortalidade_5                 &lt;dbl&gt; 52.94, 32.93, 33.90, 69.43, 75.59, 52.47…
+## $ taxa_freq_liquida_pre         &lt;dbl&gt; 0.00, 14.04, 17.15, 15.81, 2.24, 4.25, 2…
+## $ indice_gini                   &lt;dbl&gt; 0.70, 0.69, 0.75, 0.71, 0.70, 0.78, 0.71…
+## $ prop_pobreza_extrema_criancas &lt;dbl&gt; 67.41, 22.22, 59.89, 33.60, 59.61, 60.61…
+## $ prop_pobreza_criancas         &lt;dbl&gt; 82.74, 46.00, 100.00, 67.87, 82.29, 81.0…
+## $ prop_vulner_pobreza_criancas  &lt;dbl&gt; 91.22, 71.37, 100.00, 89.24, 93.75, 92.1…
+## $ taxa_agua_esgoto_inadequados  &lt;dbl&gt; 0.63, 24.82, 42.05, 9.60, 7.80, 5.09, 5.…
+## $ taxa_criancas_fora_escola_4_5 &lt;dbl&gt; NA, 76.09, 74.15, NA, NA, NA, NA, NA, NA…
+## $ nome_regiao                   &lt;chr&gt; "Norte", "Norte", "Norte", "Norte", "Nor…
+```
+
+---
+
+**Em relação ao slide anterior, será que há um padrão regional?**
+
+
+```r
+dados %&gt;% 
+  ggplot() +
+  aes(x = prop_pobreza_extrema_criancas, y = mortalidade_5, color = nome_regiao) +
+  geom_point() +
+  scale_color_brewer(palette = "Set2")
+```
+
+&lt;img src="05-regressao-visualizacao_files/figure-html/unnamed-chunk-39-1.png" width="100%" /&gt;
+
+Municípios do Norte e Nordeste possuem altos índices de mortalidade infantil até 5 anos e com altos índices de pobreza extrema entre crianças.
+
+---
+
+## Paleta de Cores
+
+
+```r
+RColorBrewer::display.brewer.all()
+```
+
+&lt;img src="05-regressao-visualizacao_files/figure-html/unnamed-chunk-40-1.png" width="100%" /&gt;
+
+---
+
+**Relação entre crianças fora da escola (4 e 5 anos) e a proporção de crianças na extrema pobreza**
+
+
+```r
+dados %&gt;% 
+  ggplot() +
+  aes(x = prop_pobreza_extrema_criancas, y = taxa_criancas_fora_escola_4_5, color = nome_regiao) +
+  geom_point() +
+  scale_color_brewer(palette = "Set2") +
+  # faz regressão para da regiao
+  geom_smooth(method = "lm")
+```
+
+&lt;img src="05-regressao-visualizacao_files/figure-html/unnamed-chunk-41-1.png" width="100%" /&gt;
+
+É possível ver que algumas regiões têm uma relação mais inclinada que outras.
+Por exemplo, um aumento na taxa de pobreza extrema das crianças gera aumentos muito mais fortes na taxa de crianças fora da escola na região sul do que no nordeste.
+
+---
+
+
+```r
+dados %&gt;% 
+  group_by(ano, nome_regiao) %&gt;% 
+  summarise(media = mean(mortalidade_1, na.rm = TRUE)) %&gt;% 
+  ggplot() +
+  aes(x = media, y = nome_regiao, color = as.factor(ano)) +
+  geom_point(size = 4)
+```
+
+&lt;img src="05-regressao-visualizacao_files/figure-html/unnamed-chunk-42-1.png" width="100%" /&gt;
+
+
+```r
+dados %&gt;% 
+  group_by(ano, nome_regiao) %&gt;% 
+  summarise(media = mean(mortalidade_1, na.rm = TRUE)) %&gt;% 
+  ggplot() +
+  aes(x = nome_regiao, y = media, fill = as.factor(ano)) +
+  # indica como as barras devem ser posicionadas
+  geom_bar(stat = "identity", position = "dodge")
+```
+
+&lt;img src="05-regressao-visualizacao_files/figure-html/unnamed-chunk-43-1.png" width="100%" /&gt;
+
+---
+
+### MAPAS
+
+
+```r
+library(geobr)
+muni &lt;- read_municipality(year = 2010)
+```
+
+```
+## 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |===                                                                   |   4%
+  |                                                                            
+  |=====                                                                 |   7%
+  |                                                                            
+  |========                                                              |  11%
+  |                                                                            
+  |==========                                                            |  15%
+  |                                                                            
+  |=============                                                         |  19%
+  |                                                                            
+  |================                                                      |  22%
+  |                                                                            
+  |==================                                                    |  26%
+  |                                                                            
+  |=====================                                                 |  30%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |==========================                                            |  37%
+  |                                                                            
+  |=============================                                         |  41%
+  |                                                                            
+  |===============================                                       |  44%
+  |                                                                            
+  |==================================                                    |  48%
+  |                                                                            
+  |====================================                                  |  52%
+  |                                                                            
+  |=======================================                               |  56%
+  |                                                                            
+  |=========================================                             |  59%
+  |                                                                            
+  |============================================                          |  63%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |=================================================                     |  70%
+  |                                                                            
+  |====================================================                  |  74%
+  |                                                                            
+  |======================================================                |  78%
+  |                                                                            
+  |=========================================================             |  81%
+  |                                                                            
+  |============================================================          |  85%
+  |                                                                            
+  |==============================================================        |  89%
+  |                                                                            
+  |=================================================================     |  93%
+  |                                                                            
+  |===================================================================   |  96%
+  |                                                                            
+  |======================================================================| 100%
+```
+
+```r
+muni &lt;- muni %&gt;% 
+  mutate(code_muni = as.character(code_muni))
+
+dados_final &lt;- left_join(muni, dados, by = c("code_muni" = "id_municipio"))
+
+glimpse(dados_final)
+```
+
+```
+## Rows: 16,697
+## Columns: 16
+## $ code_muni                     &lt;chr&gt; "1100015", "1100015", "1100015", "110002…
+## $ name_muni                     &lt;chr&gt; "Alta Floresta D'oeste", "Alta Floresta …
+## $ code_state                    &lt;chr&gt; "11", "11", "11", "11", "11", "11", "11"…
+## $ abbrev_state                  &lt;chr&gt; "RO", "RO", "RO", "RO", "RO", "RO", "RO"…
+## $ ano                           &lt;int64&gt; 1991, 2000, 2010, 1991, 2000, 2010, 19…
+## $ mortalidade_1                 &lt;dbl&gt; 45.58, 28.36, 23.80, 32.39, 21.68, 19.20…
+## $ mortalidade_5                 &lt;dbl&gt; 58.05, 33.96, 25.49, 41.41, 25.99, 20.53…
+## $ taxa_freq_liquida_pre         &lt;dbl&gt; 8.69, 9.63, 34.15, 17.94, 18.93, 40.96, …
+## $ indice_gini                   &lt;dbl&gt; 0.63, 0.58, 0.58, 0.57, 0.59, 0.53, 0.70…
+## $ prop_pobreza_extrema_criancas &lt;dbl&gt; 47.11, 23.67, 19.01, 25.47, 11.46, 6.65,…
+## $ prop_pobreza_criancas         &lt;dbl&gt; 71.89, 47.74, 37.33, 52.24, 30.03, 18.76…
+## $ prop_vulner_pobreza_criancas  &lt;dbl&gt; 87.03, 69.78, 62.99, 74.41, 59.38, 43.11…
+## $ taxa_agua_esgoto_inadequados  &lt;dbl&gt; 7.45, 27.52, 9.31, 2.55, 21.14, 11.40, 0…
+## $ taxa_criancas_fora_escola_4_5 &lt;dbl&gt; NA, 83.86, 60.82, NA, 76.96, 44.66, NA, …
+## $ nome_regiao                   &lt;chr&gt; "Norte", "Norte", "Norte", "Norte", "Nor…
+## $ geom                          &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((-62.2462 -1…
+```
+
+---
+
+
+```r
+dados_final %&gt;% 
+  filter(ano == 2010) %&gt;% 
+  ggplot() +
+  geom_sf(aes(geometry = geom, fill = mortalidade_1), color = NA) 
+```
+
+&lt;img src="05-regressao-visualizacao_files/figure-html/unnamed-chunk-45-1.png" width="100%" /&gt;
+
+---
+
+### Pacote `{wooldridge}`
+
+
+```r
+wage &lt;- wooldridge::wage1
+
+wage
+```
+
+```
+##      wage educ exper tenure nonwhite female married numdep smsa northcen south
+## 1    3.10   11     2      0        0      1       0      2    1        0     0
+## 2    3.24   12    22      2        0      1       1      3    1        0     0
+## 3    3.00   11     2      0        0      0       0      2    0        0     0
+## 4    6.00    8    44     28        0      0       1      0    1        0     0
+## 5    5.30   12     7      2        0      0       1      1    0        0     0
+## 6    8.75   16     9      8        0      0       1      0    1        0     0
+## 7   11.25   18    15      7        0      0       0      0    1        0     0
+## 8    5.00   12     5      3        0      1       0      0    1        0     0
+## 9    3.60   12    26      4        0      1       0      2    1        0     0
+## 10  18.18   17    22     21        0      0       1      0    1        0     0
+## 11   6.25   16     8      2        0      1       0      0    1        0     0
+## 12   8.13   13     3      0        0      1       0      0    1        0     0
+## 13   8.77   12    15      0        0      0       1      2    1        0     0
+## 14   5.50   12    18      3        0      0       0      0    1        0     0
+## 15  22.20   12    31     15        0      0       1      1    1        0     0
+## 16  17.33   16    14      0        0      0       1      1    1        0     0
+## 17   7.50   12    10      0        0      1       1      0    1        0     0
+## 18  10.63   13    16     10        0      1       0      0    1        0     0
+## 19   3.60   12    13      0        0      1       1      3    1        0     0
+## 20   4.50   12    36      6        0      1       1      0    1        0     0
+## 21   6.88   12    11      4        0      1       0      0    1        0     0
+## 22   8.48   12    29     13        0      0       1      3    1        0     0
+## 23   6.33   16     9      9        0      1       0      0    1        0     0
+## 24   0.53   12     3      1        0      1       0      0    1        0     0
+## 25   6.00   11    37      8        1      1       0      0    1        0     0
+## 26   9.56   16     3      3        1      0       1      1    1        0     0
+## 27   7.78   16    11     10        0      0       1      1    1        0     0
+## 28  12.50   16    31      0        0      0       1      0    1        0     0
+## 29  12.50   15    30      0        0      0       1      2    1        0     0
+## 30   3.25    8     9      1        0      1       1      2    1        0     0
+## 31  13.00   14    23      5        0      0       1      2    1        0     0
+## 32   4.50   14     2      5        0      1       0      2    1        0     0
+## 33   9.68   13    16     16        0      1       0      0    1        0     0
+## 34   5.00   12     7      3        0      1       0      0    1        0     0
+## 35   4.68   12     3      0        0      1       0      0    1        0     0
+## 36   4.27   16    22      4        1      1       1      1    1        0     0
+## 37   6.15   12    15      6        1      1       1      1    1        0     0
+## 38   3.51    4    39     15        0      0       1      5    1        0     0
+## 39   3.00   14     3      3        0      1       1      0    1        0     0
+## 40   6.25   12    11      0        0      1       0      0    1        0     0
+## 41   7.81   12     3      0        0      1       1      0    1        0     0
+## 42  10.00   12    20      5        1      1       1      4    1        0     0
+## 43   4.50   14    16      0        0      1       1      1    1        0     0
+## 44   4.00   11    45     12        0      1       1      0    1        0     0
+## 45   6.38   13    11      4        0      1       0      0    1        0     0
+## 46  13.70   15    20     13        0      0       1      2    1        0     0
+## 47   1.67   10     1      0        0      0       0      1    1        0     0
+## 48   2.93   12    36      2        0      1       1      1    1        0     0
+## 49   3.65   14     9      2        0      0       0      0    1        0     0
+## 50   2.90   12    15      1        0      1       1      2    1        0     0
+## 51   1.63   12    18      0        0      1       0      2    0        0     0
+## 52   8.60   16     3      2        0      1       0      0    1        0     0
+## 53   5.00   12    15      5        0      0       1      1    1        0     0
+## 54   6.00   12     7      7        0      0       1      0    1        0     0
+## 55   2.50   12     2      0        0      0       0      2    0        0     0
+## 56   3.25   15     3      0        0      0       0      1    0        0     0
+## 57   3.40   16     1      1        0      1       0      1    0        0     0
+## 58  10.00    8    13      0        1      0       0      0    1        0     0
+## 59  21.63   18     8      8        0      1       0      0    1        0     0
+## 60   4.38   16     7      0        0      0       0      0    1        0     0
+## 61  11.71   13    40     20        0      1       0      0    1        0     0
+## 62  12.39   14    42      5        0      0       0      0    1        0     0
+## 63   6.25   10    36      8        0      0       0      0    1        0     0
+## 64   3.71   10    13      0        1      1       0      4    1        0     0
+## 65   7.78   14     9      3        0      0       0      0    1        0     0
+## 66  19.98   14    26     23        0      0       1      2    1        0     0
+## 67   6.25   16     7      4        1      1       1      3    1        0     0
+## 68  10.00   12    25      3        0      0       1      3    1        0     0
+## 69   5.71   16    10      5        0      0       1      1    1        0     0
+## 70   2.00   12     3      2        0      1       0      4    1        0     0
+## 71   5.71   16     3      0        0      1       0      0    1        0     0
+## 72  13.08   17    17      2        1      0       1      3    1        0     0
+## 73   4.91   12    17      8        0      0       1      2    1        0     0
+## 74   2.91   12    20     34        0      1       1      2    1        0     0
+## 75   3.75   12     7      0        0      1       1      0    1        0     0
+## 76  11.90   13    24     19        0      0       1      2    1        0     0
+## 77   4.00   12    28      0        0      1       1      1    1        0     0
+## 78   3.10   12     2      1        0      1       0      1    1        0     0
+## 79   8.45   12    19     13        0      0       1      4    1        0     0
+## 80   7.14   18    13      0        0      0       1      2    1        0     0
+## 81   4.50    9    22      5        0      0       1      4    1        0     0
+## 82   4.65   16     3      1        0      0       0      0    1        0     0
+## 83   2.90   10     4      0        0      1       0      1    1        0     0
+## 84   6.67   12     7      5        0      0       0      0    1        0     0
+## 85   3.50   12     6      2        1      1       0      1    1        0     0
+## 86   3.26   12    13      3        0      1       1      1    1        0     0
+## 87   3.25   12    14      0        0      1       1      1    1        0     0
+## 88   8.00   12    14      4        0      1       0      1    1        0     0
+## 89   9.85    8    40     24        1      0       1      2    1        0     0
+## 90   7.50   12    11      7        0      0       1      1    1        0     0
+## 91   5.91   12    14      6        0      0       1      2    0        0     0
+## 92  11.76   14    40     39        0      0       1      0    1        0     0
+## 93   3.00   12     1      0        0      1       0      2    1        0     0
+## 94   4.81   12     2      0        0      1       0      0    1        0     0
+## 95   6.50   12     4      1        0      1       0      0    1        0     0
+## 96   4.00    9    19      1        0      1       1      1    1        0     0
+## 97   3.50   13     1      0        0      0       0      1    1        0     0
+## 98  13.16   12    34     22        0      0       1      0    1        0     0
+## 99   4.25   14     5      2        0      0       1      2    1        0     0
+## 100  3.50   12     3      0        0      0       0      0    1        0     0
+## 101  5.13   15     6      6        0      1       0      0    1        0     0
+## 102  3.75   12    14      0        0      1       1      3    1        0     0
+## 103  4.50   12    35     12        0      1       1      0    1        0     0
+## 104  7.63   12     8      4        0      1       0      0    1        0     0
+## 105 15.00   14     7      7        1      0       1      1    1        0     0
+## 106  6.85   15    11      3        0      1       1      2    1        0     0
+## 107 13.33   12    14     11        0      0       1      2    1        0     0
+## 108  6.67   12    35     10        0      0       0      0    1        0     0
+## 109  2.53   12    46      0        0      1       0      0    1        0     0
+## 110  9.80   17     7      0        0      0       1      0    1        0     0
+## 111  3.37   11    45     12        0      0       1      0    1        0     0
+## 112 24.98   18    29     25        0      0       1      0    1        0     0
+## 113  5.40   12     6      3        0      0       1      0    1        0     0
+## 114  6.11   14    15      0        0      0       1      2    1        0     0
+## 115  4.20   14    33     16        0      1       1      0    1        0     0
+## 116  3.75   10    15      0        0      0       0      0    1        0     0
+## 117  3.50   14     5      0        0      1       1      0    0        0     1
+## 118  3.64   12     7      2        0      0       0      0    1        0     1
+## 119  3.80   15     6      1        0      0       1      1    1        0     1
+## 120  3.00    8    33     12        0      1       1      3    0        0     1
+## 121  5.00   16     2      1        0      1       1      0    0        0     1
+## 122  4.63   14     4      0        0      1       1      2    1        0     1
+## 123  3.00   15     1      0        0      0       0      0    1        0     1
+## 124  3.20   12    29      0        0      1       0      1    1        0     1
+## 125  3.91   18    17      3        0      0       1      2    0        0     1
+## 126  6.43   16    17      3        0      1       1      2    0        0     1
+## 127  5.48   10    36      3        0      1       1      0    1        0     1
+## 128  1.50    8    31     30        0      0       0      0    0        0     1
+## 129  2.90   10    23      2        0      1       0      2    0        0     1
+## 130  5.00   11    13      1        0      0       1      0    0        0     1
+## 131  8.92   18     3      3        0      0       1      0    1        0     1
+## 132  5.00   15    15      0        0      0       0      0    1        0     1
+## 133  3.52   12    48      1        0      0       1      0    0        0     1
+## 134  2.90   11     6      0        0      1       0      1    0        0     1
+## 135  4.50   12    12      0        0      0       1      3    1        0     1
+## 136  2.25   12     5      0        0      1       0      2    1        0     1
+## 137  5.00   14    19      5        0      0       1      4    1        0     1
+## 138 10.00   16     9      3        1      0       1      2    1        0     1
+## 139  3.75    2    39     13        0      0       1      0    1        0     1
+## 140 10.00   14    28     11        0      1       1      0    1        0     1
+## 141 10.95   16    23     20        0      0       1      4    1        0     1
+## 142  7.90   12     2      0        0      0       0      0    1        0     1
+## 143  4.72   12    15      1        0      1       0      0    1        0     1
+## 144  5.84   13     5      0        0      1       1      1    1        0     1
+## 145  3.83   12    18      2        0      1       0      3    1        0     1
+## 146  3.20   15     2      2        0      1       0      2    1        0     1
+## 147  2.00   10     3      0        1      1       0      5    1        0     1
+## 148  4.50   12    31      4        0      1       1      3    1        0     1
+## 149 11.55   16    20      5        0      1       1      3    1        0     1
+## 150  2.14   13    34     15        1      1       1      0    1        0     1
+## 151  2.38    9     5      0        1      0       0      5    1        0     1
+## 152  3.75   12    11      0        0      0       0      1    1        0     1
+## 153  5.52   13    31      3        0      0       0      0    1        0     1
+## 154  6.50   12     8      5        0      1       1      0    1        0     1
+## 155  3.10   12     2      2        0      1       0      1    1        0     1
+## 156 10.00   14    18      5        0      0       1      2    1        0     1
+## 157  6.63   16     3      0        0      0       1      0    1        0     1
+## 158 10.00   16     3      2        0      0       1      0    1        0     1
+## 159  2.31    9     4      1        0      1       0      5    0        1     0
+## 160  6.88   18     4      4        0      0       0      0    1        1     0
+## 161  2.83   10     1      0        0      0       0      4    1        1     0
+## 162  3.13   10     1      0        0      1       0      1    1        1     0
+## 163  8.00   13    28      5        0      0       1      1    1        1     0
+## 164  4.50   12    47      4        0      1       1      0    1        1     0
+## 165  8.65   18    13      1        0      1       0      0    1        1     0
+## 166  2.00   13     2      6        0      1       0      0    1        1     0
+## 167  4.75   12    48      2        0      1       1      0    1        1     0
+## 168  6.25   13     6      5        0      1       1      1    1        1     0
+## 169  6.00   13     8      0        0      0       1      2    1        1     0
+## 170 15.38   13    25     21        0      0       1      2    1        1     0
+## 171 14.58   18    13      7        0      1       0      0    1        1     0
+## 172 12.50   12     8      1        0      0       0      0    1        1     0
+## 173  5.25   12    19     10        0      1       1      2    1        1     0
+## 174  2.17   13     1      4        0      1       0      1    1        1     0
+## 175  7.14   12    43      5        0      1       0      0    1        1     0
+## 176  6.22   12    19      9        0      1       1      1    1        1     0
+## 177  9.00   12    11      5        0      1       1      0    1        1     0
+## 178 10.00   14    43      4        0      0       1      0    1        1     0
+## 179  5.77   10    44      3        0      0       1      0    1        1     0
+## 180  4.00   12    22     11        0      1       1      2    1        1     0
+## 181  8.75   16     3      2        0      0       1      1    1        1     0
+## 182  6.53   16     3      2        0      1       0      0    1        1     0
+## 183  7.60   12    41     11        0      1       0      0    1        1     0
+## 184  5.00   14     5      0        0      0       0      0    1        1     0
+## 185  5.00   12    14     11        0      1       0      0    1        1     0
+## 186 21.86   12    24     16        0      0       1      3    1        1     0
+## 187  8.64   12    28      8        0      0       1      0    1        1     0
+## 188  3.30   12    25      8        0      0       1      1    1        1     0
+## 189  4.44   12     3      0        0      0       0      0    1        1     0
+## 190  4.55   12    11      0        0      0       1      0    0        1     0
+## 191  3.50   12     7      6        1      1       1      0    0        1     0
+## 192  6.25   16     9      2        0      0       1      1    0        1     0
+## 193  3.85   16     5      0        0      0       1      0    1        1     0
+## 194  6.18   14     9      3        0      1       1      0    1        1     0
+## 195  2.91   11     1      0        0      1       0      3    1        1     0
+## 196  6.25   16     2      1        1      1       0      0    1        1     0
+## 197  6.25   12    13      0        0      1       1      0    1        1     0
+## 198  9.05   12    10      2        0      0       1      3    1        1     0
+## 199 10.00   17     5      3        0      0       1      0    1        1     0
+## 200 11.11   12    30      8        0      0       1      0    1        1     0
+## 201  6.88   12    31     19        0      0       1      3    1        1     0
+## 202  8.75   16     1      2        1      0       0      0    1        1     0
+## 203 10.00    8     9      0        0      0       1      0    1        1     0
+## 204  3.05   12    10      0        0      1       1      2    1        1     0
+## 205  3.00   12    38      0        0      1       1      0    0        1     0
+## 206  5.80   12    19      6        0      1       1      2    0        1     0
+## 207  4.10   16     5      0        0      1       1      0    1        1     0
+## 208  8.00   12    26      2        0      0       1      1    1        1     0
+## 209  6.15   12    35     12        0      1       0      0    1        1     0
+## 210  2.70    9     2      0        0      1       0      1    1        1     0
+## 211  2.75   13     1      2        0      1       0      1    1        1     0
+## 212  3.00   16    19     10        0      1       1      0    1        1     0
+## 213  3.00   14     3      2        0      1       0      0    1        1     0
+## 214  7.36    8    36     24        0      0       1      3    1        1     0
+## 215  7.50   14    29     24        0      0       1      1    1        1     0
+## 216  3.50   13     1      2        0      0       0      3    1        1     0
+## 217  8.10   12    38      3        0      1       1      1    1        1     0
+## 218  3.75   18     1      2        0      0       0      1    1        1     0
+## 219  3.25    9    29      0        1      0       1      1    1        1     0
+## 220  5.83    8    36     15        0      1       1      0    0        0     0
+## 221  3.50    8     4      0        0      0       0      3    1        0     0
+## 222  3.33   12    45      4        0      1       1      0    0        0     0
+## 223  4.00   14    22      3        0      1       0      0    1        0     0
+## 224  3.50   12    20      4        0      1       1      2    0        0     0
+## 225  6.25   16     5      0        0      0       1      0    1        0     0
+## 226  2.95    8    15      2        1      1       1      1    1        0     0
+## 227  5.71   13    10      2        0      1       1      0    1        0     0
+## 228  3.00    9     3      0        0      1       0      0    1        0     0
+## 229 22.86   16    16      7        0      0       1      2    1        0     0
+## 230  9.00   12    38      1        0      0       1      0    1        0     0
+## 231  8.33   15    33     26        0      0       1      1    1        0     0
+## 232  3.00   11     2      0        0      0       0      0    1        0     0
+## 233  5.75   14     6      5        0      0       1      0    1        0     0
+## 234  6.76   12    19      3        1      0       1      2    1        0     0
+## 235 10.00   12    29      0        0      0       1      2    1        0     0
+## 236  3.00   12     2      0        0      0       0      0    1        0     0
+## 237  3.50   18     3      1        0      1       0      0    1        0     0
+## 238  3.25   12     4      0        0      0       0      0    1        0     0
+## 239  4.00   12    10      1        1      1       0      0    1        0     0
+## 240  2.92   12     4      0        0      1       0      1    0        0     1
+## 241  3.06   12    14     10        1      1       0      3    0        0     1
+## 242  3.20   12    15      5        0      1       1      1    0        0     1
+## 243  4.75   12    19      0        0      0       1      3    0        0     1
+## 244  3.00   14    17      0        0      1       1      4    1        0     1
+## 245 18.16   16    29      7        0      0       1      1    1        0     1
+## 246  3.50   12     2      0        0      1       0      2    1        0     1
+## 247  4.11   14     5      0        0      0       0      0    0        0     1
+## 248  1.96   11    38      3        1      1       0      0    0        0     1
+## 249  4.29   12     3      0        0      1       0      0    0        0     1
+## 250  3.00   10    47      0        0      0       0      0    0        0     1
+## 251  6.45   12     7      6        0      0       1      0    0        0     1
+## 252  5.20    6    47     13        1      0       1      0    1        0     1
+## 253  4.50   13    23      2        1      1       0      0    1        0     1
+## 254  3.88   12    12      3        0      0       1      3    1        0     1
+## 255  3.45   10    11      0        0      1       0      2    1        0     1
+## 256 10.91   12    25     23        0      0       0      0    1        0     1
+## 257  4.10   14     6      0        0      1       1      0    1        0     1
+## 258  3.00   13     3      1        0      0       0      0    1        0     1
+## 259  5.90   12    14      7        1      0       1      2    1        0     1
+## 260 18.00   18    13      0        0      1       0      0    1        0     1
+## 261  4.00   12     9      0        0      0       0      0    1        0     1
+## 262  3.00   12     1      0        1      0       0      0    1        0     1
+## 263  3.55   12     6      0        0      1       1      1    0        0     0
+## 264  3.00   12    11      1        0      1       1      2    0        0     0
+## 265  8.75   12    47     44        0      0       1      0    0        0     0
+## 266  2.90    8    49      6        0      1       0      1    0        0     0
+## 267  6.26   13    37     17        0      1       1      0    1        0     0
+## 268  3.50   13     2      0        0      1       0      0    1        0     0
+## 269  4.60   14     7      0        0      1       1      0    1        0     0
+## 270  6.00   12    22      8        0      0       0      2    1        0     0
+## 271  2.89   10     8      0        0      1       0      1    1        0     0
+## 272  5.58   16     1      1        0      0       1      0    1        0     0
+## 273  4.00   12    43      6        0      1       1      0    0        0     0
+## 274  6.00   16     2      2        0      0       0      0    1        0     0
+## 275  4.50   12     2      1        0      1       0      2    1        0     0
+## 276  2.92   14     1      3        0      0       0      0    1        0     0
+## 277  4.33   18     1      0        0      0       0      0    1        0     0
+## 278 18.89   17    26     20        0      0       1      2    1        0     0
+## 279  4.28   13     1      1        0      1       0      2    1        0     0
+## 280  4.57   14    37      7        0      1       1      0    1        0     0
+## 281  6.25   15    12      4        0      1       1      2    1        0     0
+## 282  2.95   14    41     23        1      0       1      0    0        1     0
+## 283  8.75   12    24      1        0      0       0      0    1        1     0
+## 284  8.50    8    38     26        0      0       0      0    1        1     0
+## 285  3.75   12    18      0        0      1       1      4    1        1     0
+## 286  3.15   12    26      1        0      0       1      0    1        1     0
+## 287  5.00    8    45      2        0      0       0      0    0        1     0
+## 288  6.46   12    27      0        0      0       1      3    0        1     0
+## 289  2.00    9     2      0        0      0       0      3    0        1     0
+## 290  4.79   12    41      8        0      0       1      0    1        1     0
+## 291  5.78   16    11      4        0      0       1      2    1        1     0
+## 292  3.18   12     5      0        0      1       1      0    1        1     0
+## 293  4.68   16     3      1        0      1       0      0    1        1     0
+## 294  4.10   12     3      2        0      1       0      0    1        1     0
+## 295  2.91   12     4      0        0      0       1      0    1        0     1
+## 296  6.00   13    21     13        0      0       1      4    0        0     1
+## 297  3.60   10    34     26        0      1       1      0    0        0     1
+## 298  3.95    6    49      6        0      0       1      6    0        0     1
+## 299  7.00   12     6      5        1      0       1      1    0        0     1
+## 300  3.00   12    26      9        0      1       1      0    0        0     1
+## 301  6.08   16     9      0        0      0       0      0    0        0     1
+## 302  8.63   12    23      9        0      0       1      1    0        0     1
+## 303  3.00    8    33      2        0      0       1      0    0        0     1
+## 304  3.75   12     5      2        0      1       1      1    0        0     1
+## 305  2.90    6    49      7        0      0       1      0    0        0     1
+## 306  3.00    4    48      0        1      0       1      0    0        0     1
+## 307  6.25   11    35     31        0      0       1      0    1        0     1
+## 308  3.50   11    23      2        1      1       0      2    0        0     1
+## 309  3.00    7    26      1        0      1       0      3    0        0     1
+## 310  3.24   12    16      0        0      1       1      2    1        0     1
+## 311  8.02   18    23      3        0      1       1      1    1        0     1
+## 312  3.33   12    36      8        0      1       1      1    1        0     1
+## 313  5.25   16     4      0        0      0       0      0    1        0     1
+## 314  6.25   12    10      0        0      0       1      3    1        0     1
+## 315  3.50   14    18      2        0      0       1      1    0        1     0
+## 316  2.95   12     3      1        0      0       0      1    0        1     0
+## 317  3.00   10     7      0        0      1       1      2    0        1     0
+## 318  4.69   10     7      7        0      0       0      0    0        1     0
+## 319  3.73    9    33      2        0      1       0      1    0        1     0
+## 320  4.00   10    34     12        0      0       1      0    0        1     0
+## 321  4.00   12     8      0        0      1       1      2    0        1     0
+## 322  2.90   12    17      1        0      1       1      2    0        1     0
+## 323  3.05   12     2      0        0      1       0      1    0        1     0
+## 324  5.05   10     5      0        0      1       0      0    1        1     0
+## 325 13.95   16    41     16        0      0       1      0    1        1     0
+## 326 18.16   16    35     28        0      0       1      1    1        1     0
+## 327  6.25   16    11      4        0      0       0      0    1        1     0
+## 328  5.25   12     4      0        1      0       0      0    1        1     0
+## 329  4.79   12    12      3        0      1       1      3    1        1     0
+## 330  3.35    7    35      0        0      1       0      1    1        0     1
+## 331  3.00    8    33      0        0      0       1      1    1        0     1
+## 332  8.43   16     8      6        0      0       1      0    1        0     1
+## 333  5.70   16     2      0        0      0       0      0    1        0     1
+## 334 11.98   18     8     10        0      0       1      2    1        0     1
+## 335  3.50   13    29      1        0      1       1      0    0        0     1
+## 336  4.24   10    14      5        1      0       1      1    0        0     1
+## 337  7.00   16    26      3        0      1       1      1    1        0     1
+## 338  6.00   14    11      3        0      1       1      2    1        0     1
+## 339 12.22   16    10      2        0      0       0      0    1        0     1
+## 340  4.50   12    13      0        0      0       1      0    1        0     1
+## 341  3.00    9    23     20        0      1       1      2    0        0     1
+## 342  2.90   11     1      2        1      0       0      2    0        0     1
+## 343 15.00   11    35     31        0      0       1      0    0        0     1
+## 344  4.00   12     5      2        0      0       1      0    0        0     1
+## 345  5.25   11    13     11        0      0       1      2    0        0     1
+## 346  4.00   12    22      3        0      0       1      3    0        0     1
+## 347  3.30   12    21      9        0      1       1      2    0        0     1
+## 348  5.05   12    19      0        0      1       1      3    0        0     1
+## 349  3.58   12    13      0        0      0       0      0    1        0     1
+## 350  5.00   14    15      5        0      0       1      2    0        0     1
+## 351  4.57   14     3      0        0      0       1      0    0        0     1
+## 352 12.50   18     6      2        0      0       0      0    1        0     1
+## 353  3.45   12     6      5        0      1       1      0    1        0     1
+## 354  4.63   12    16      1        0      1       0      0    1        0     1
+## 355 10.00   12    31      2        0      0       1      0    1        0     1
+## 356  2.92   11     1      0        0      1       0      1    0        1     0
+## 357  4.51   12     5      2        0      0       0      0    1        1     0
+## 358  6.50   17     3      0        0      0       1      0    1        1     0
+## 359  7.50   16    11      0        0      0       1      0    1        1     0
+## 360  3.54   13     6      7        0      1       1      0    0        1     0
+## 361  4.20   13    11      3        0      1       1      2    1        1     0
+## 362  3.51   12     7      2        0      1       1      0    1        1     0
+## 363  4.50   14     5      0        0      0       1      0    1        1     0
+## 364  3.35   14     5      4        0      1       1      0    1        1     0
+## 365  2.91   11     2      2        0      0       0      2    1        1     0
+## 366  5.25   10    44      7        0      0       1      1    1        1     0
+## 367  4.05    8    44     25        0      0       1      0    1        1     0
+## 368  3.75   14    13      0        0      1       1      3    1        1     0
+## 369  3.40   12    26     15        0      1       1      1    1        1     0
+## 370  3.00   10     2      1        0      1       0      1    1        0     1
+## 371  6.29   17    10      3        0      0       1      1    1        0     1
+## 372  2.54    9     2      0        0      1       0      1    1        0     1
+## 373  4.50   12    35      0        0      1       1      1    1        0     1
+## 374  3.13   12     6      5        0      1       1      1    1        0     1
+## 375  6.36   14     8      1        0      0       1      0    1        0     1
+## 376  4.68   16     1      0        0      0       0      0    1        0     1
+## 377  6.80   12    14     10        0      0       1      2    0        0     1
+## 378  8.53   10    14      6        0      0       1      0    0        0     1
+## 379  4.17    0    22     10        0      1       0      0    0        0     1
+## 380  3.75   14     8      4        0      1       1      0    0        0     1
+## 381 11.10   15     1      4        0      1       0      2    0        0     1
+## 382  3.26   16    15      5        1      1       1      2    1        0     1
+## 383  9.13   12    14     12        0      0       1      3    1        0     1
+## 384  4.50   11    37     10        0      0       1      2    1        0     1
+## 385  3.00   11     1      1        0      1       0      1    1        0     1
+## 386  8.75   12     4      4        0      0       1      0    1        0     1
+## 387  4.14   13    29      0        0      1       1      0    1        0     1
+## 388  2.87   12    45      8        0      1       1      0    0        1     0
+## 389  3.35   13    22      0        0      1       0      2    0        1     0
+## 390  6.08   16    42     10        0      0       0      0    0        1     0
+## 391  3.00   15     9      0        1      0       0      0    0        1     0
+## 392  4.20   16     8      0        0      1       1      1    1        1     0
+## 393  5.60   15    31     15        0      1       0      2    1        1     0
+## 394 10.00   12    24     24        0      0       1      0    1        1     0
+## 395 12.50   18    16      5        0      0       1      1    1        1     0
+## 396  3.76    6     6      0        0      0       0      4    0        0     1
+## 397  3.10    6    14      0        1      1       0      5    1        0     1
+## 398  4.29   12    47     25        0      1       1      2    1        0     1
+## 399 10.92   12    34      5        0      0       1      0    0        0     1
+## 400  7.50   16     6      2        0      1       1      1    1        0     1
+## 401  4.05    9     7      4        0      1       1      1    1        0     1
+## 402  4.65   12    27      2        0      0       1      3    1        0     1
+## 403  5.00   11    24      5        0      0       1      0    1        0     1
+## 404  2.90   10    18      0        0      1       1      2    0        0     1
+## 405  8.00   12    12      3        1      1       0      1    0        0     1
+## 406  8.43    8    27      3        0      0       1      3    1        0     1
+## 407  2.92    9    49      0        0      1       0      0    1        0     1
+## 408  6.25   17     4      0        0      1       0      0    1        0     0
+## 409  6.25   16    24      2        0      1       1      2    1        0     0
+## 410  5.11   11     3      0        0      0       0      0    1        0     0
+## 411  4.00   10     2      0        0      1       0      1    1        0     0
+## 412  4.44    8    29     11        0      0       1      3    0        0     1
+## 413  6.88   13    34     21        0      0       1      0    0        0     1
+## 414  5.43   14    10      3        1      0       1      1    1        0     1
+## 415  3.00   13     5      0        0      1       0      1    1        0     1
+## 416  2.90   11     2      0        0      1       0      2    1        0     1
+## 417  6.25    7    39     21        1      0       1      0    1        0     1
+## 418  4.34   16     5      2        1      1       0      0    1        0     1
+## 419  3.25   12    14      2        0      1       1      2    0        0     1
+## 420  7.26   13     8      2        0      0       0      0    1        0     1
+## 421  6.35   14    10      1        0      1       1      2    1        0     1
+## 422  5.63   16     2      2        0      0       1      0    1        0     0
+## 423  8.75   14     9      3        0      0       1      1    1        0     0
+## 424  3.20   11     1      0        0      0       0      0    0        0     0
+## 425  3.00    8    45      1        0      1       1      0    0        0     0
+## 426  3.00   14    33      3        0      1       1      0    1        0     0
+## 427 12.50   17    21     18        0      0       1      3    1        0     0
+## 428  2.88   10     2      0        0      1       0      3    1        0     0
+## 429  3.35   12     9      1        0      0       1      0    1        1     0
+## 430  6.50   12    33      2        0      0       1      0    0        1     0
+## 431 10.38   18    16      2        1      0       1      1    1        1     0
+## 432  4.50   14    10      0        0      0       1      0    1        1     0
+## 433 10.00   18     9      8        0      0       0      0    0        1     0
+## 434  3.81   12     8      1        0      1       1      2    0        1     0
+## 435  8.80   16     9      1        0      0       1      0    0        0     1
+## 436  9.42   14    23      0        0      1       1      2    0        0     1
+## 437  6.33   12    23      8        0      0       1      2    0        0     1
+## 438  4.00    9    22     18        1      0       0      0    0        0     1
+## 439  2.90   12    37      0        0      1       1      0    0        0     1
+## 440 20.00   12    22      4        0      0       1      1    0        0     1
+## 441 11.25   17    28     25        0      0       1      1    1        0     1
+## 442  3.50   12    14      0        1      1       0      2    1        0     1
+## 443  6.00   15    19      4        0      1       1      2    1        0     1
+## 444 14.38   17    10      9        1      0       1      1    0        0     1
+## 445  6.36   16    25      0        0      0       1      1    1        0     1
+## 446  3.55   12    21      0        0      1       1      1    0        0     1
+## 447  3.00   15    32      0        0      0       1      0    1        0     1
+## 448  4.50   16    21     10        0      0       1      1    1        0     1
+## 449  6.63   12    36      0        0      1       0      0    1        0     1
+## 450  9.30   15     2      2        0      0       1      0    1        0     1
+## 451  3.00   12    11      0        0      1       1      2    1        0     1
+## 452  3.25   12    40      2        0      1       0      0    0        1     0
+## 453  1.50   12    11      1        0      1       1      2    0        1     0
+## 454  5.90   12     9      7        0      1       1      1    1        1     0
+## 455  8.00   16    23      4        0      0       0      0    1        1     0
+## 456  2.90   11     1      0        0      1       0      1    1        1     0
+## 457  3.29   14    30     13        0      0       0      0    1        1     0
+## 458  6.50   14    41     33        0      0       1      0    1        1     0
+## 459  4.00   13     6      0        0      1       0      1    1        1     0
+## 460  6.00   14    11      0        0      0       1      0    0        1     0
+## 461  4.08   12    43     17        0      1       1      0    1        1     0
+## 462  3.75   12    39      2        0      1       1      0    1        1     0
+## 463  3.05    8    50     24        0      1       0      0    0        0     1
+## 464  3.50   12    26     20        0      1       1      0    0        0     1
+## 465  2.92    3    51     30        1      0       0      0    1        0     1
+## 466  4.50   11     3      9        0      0       0      0    1        0     1
+## 467  3.35   15     3      1        0      1       1      2    1        0     1
+## 468  5.95   11    15      9        1      0       1      1    0        0     1
+## 469  8.00   12    17      6        0      0       1      2    0        0     1
+## 470  3.00    4    36      0        0      0       1      1    0        0     1
+## 471  5.00    9    31      9        1      0       1      6    0        0     1
+## 472  5.50   12     9      4        0      0       1      1    0        0     1
+## 473  2.65   12    42     10        0      1       1      0    1        0     0
+## 474  3.00   11     3      0        0      1       0      2    1        0     0
+## 475  4.50   12    37     14        0      1       1      0    0        0     0
+## 476 17.50   16    23     22        0      0       1      3    1        0     0
+## 477  8.18   13    21      5        0      0       0      0    1        0     0
+## 478  9.09   15    11     12        0      0       1      1    1        0     0
+## 479 11.82   16    35     13        0      0       1      0    1        0     0
+## 480  3.25   12    42      0        0      1       1      0    1        0     0
+## 481  4.50   12     3      0        0      0       0      0    1        0     0
+## 482  4.50   12    13      0        0      0       1      0    1        0     0
+## 483  3.71    9    14      7        0      0       1      2    0        0     1
+## 484  6.50   10    14     11        0      0       1      3    0        0     1
+## 485  2.90   12    39      1        0      1       1      0    0        0     1
+## 486  5.60   11    11      8        0      0       1      2    0        0     1
+## 487  2.23    8    28      3        0      0       1      4    0        0     1
+## 488  5.00    6    18      0        0      1       1      3    1        0     0
+## 489  8.33   16     6      2        0      0       1      0    1        0     0
+## 490  2.90   12    26      1        0      1       0      4    1        0     1
+## 491  6.25   12    21      6        0      0       1      3    1        0     1
+## 492  4.55   16    34      2        0      0       1      0    0        0     1
+## 493  3.28   12    17      2        0      1       0      0    0        0     1
+## 494  2.30   10     2      0        0      1       0      4    1        1     0
+## 495  3.30   13     5      0        0      1       0      0    1        1     0
+## 496  3.15   13     1      0        0      1       0      4    1        1     0
+## 497 12.50   14    40     30        0      0       1      0    1        1     0
+## 498  5.15   16    39     21        0      1       0      0    1        0     0
+## 499  3.13   10     1      1        0      0       0      2    1        0     0
+## 500  7.25   12    14      5        0      0       1      3    1        0     0
+## 501  2.90   12     2      2        0      1       0      0    1        0     0
+## 502  1.75   11     2      1        0      0       0      2    1        0     0
+## 503  2.89    0    42      0        0      1       1      2    0        0     0
+## 504  2.90    5    34      0        0      1       1      5    0        0     0
+## 505 17.71   16    10      3        0      0       1      1    1        0     0
+## 506  6.25   16     4      3        0      0       1      0    0        0     0
+## 507  2.60    9     4      0        0      0       0      1    0        0     0
+## 508  6.63   15    21      3        0      1       1      2    0        0     0
+## 509  3.50   12    31      3        1      1       0      1    1        0     0
+## 510  6.50   12    20     14        0      0       1      3    1        0     0
+## 511  3.00   12    36      1        1      1       0      0    1        0     0
+## 512  4.38   13     7      0        1      0       1      1    1        0     0
+## 513 10.00   12    15      0        0      0       0      1    0        0     0
+## 514  4.95    7    25     17        0      0       1      5    0        0     0
+## 515  9.00   17     7      0        0      1       1      2    0        0     0
+## 516  1.43   12    17      0        0      1       1      2    0        0     0
+## 517  3.08   12     3      1        0      0       0      0    0        0     0
+## 518  9.33   14    12     11        0      0       1      3    0        0     0
+## 519  7.50   12    18      5        0      0       1      2    0        0     0
+## 520  4.75   13    47      1        0      0       1      0    0        0     0
+## 521  5.65   12     2      0        0      0       0      0    0        0     0
+## 522 15.00   16    14      2        0      1       1      2    0        0     0
+## 523  2.27   10     2      0        0      1       0      3    0        0     0
+## 524  4.67   15    13     18        0      0       1      3    0        0     0
+## 525 11.56   16     5      1        0      0       1      0    0        0     0
+## 526  3.50   14     5      4        1      1       0      2    0        0     0
+##     west construc ndurman trcommpu trade services profserv profocc clerocc
+## 1      1        0       0        0     0        0        0       0       0
+## 2      1        0       0        0     0        1        0       0       0
+## 3      1        0       0        0     1        0        0       0       0
+## 4      1        0       0        0     0        0        0       0       1
+## 5      1        0       0        0     0        0        0       0       0
+## 6      1        0       0        0     0        0        1       1       0
+## 7      1        0       0        0     1        0        0       1       0
+## 8      1        0       0        0     0        0        0       1       0
+## 9      1        0       0        0     1        0        0       1       0
+## 10     1        0       0        0     0        0        0       1       0
+## 11     1        0       0        0     1        0        0       1       0
+## 12     1        0       0        0     0        0        1       0       1
+## 13     1        0       0        0     0        0        0       0       0
+## 14     1        0       0        0     0        0        0       0       0
+## 15     1        0       0        0     0        0        0       1       0
+## 16     1        0       0        0     0        0        1       1       0
+## 17     1        0       0        0     0        0        0       0       1
+## 18     1        0       0        0     0        0        1       1       0
+## 19     1        0       0        0     0        0        0       0       0
+## 20     1        0       0        0     0        0        1       0       0
+## 21     1        0       0        0     0        0        1       1       0
+## 22     1        0       0        0     0        0        0       0       0
+## 23     1        0       0        0     0        0        0       1       0
+## 24     1        0       0        0     0        1        0       0       0
+## 25     1        0       0        0     0        1        0       0       0
+## 26     1        0       1        0     0        0        0       1       0
+## 27     1        0       0        1     0        0        0       0       0
+## 28     1        0       0        0     0        0        0       1       0
+## 29     1        0       0        0     0        0        0       1       0
+## 30     1        0       0        0     0        0        0       0       0
+## 31     1        0       0        0     0        0        1       1       0
+## 32     1        0       0        0     1        0        0       0       0
+## 33     1        0       0        0     0        0        0       1       0
+## 34     1        0       0        0     0        0        0       0       1
+## 35     1        0       0        0     0        1        0       0       1
+## 36     1        0       0        0     1        0        0       1       0
+## 37     1        0       0        0     0        1        0       0       0
+## 38     1        0       0        0     1        0        0       0       0
+## 39     1        0       0        0     0        0        1       0       1
+## 40     1        0       0        0     0        0        1       0       1
+## 41     1        0       0        0     0        1        0       0       0
+## 42     1        0       0        0     0        0        1       0       1
+## 43     1        0       0        0     0        0        1       0       1
+## 44     1        0       0        0     0        0        1       0       0
+## 45     1        0       0        0     0        0        0       0       0
+## 46     1        0       0        0     0        0        1       1       0
+## 47     1        0       0        0     0        1        0       0       0
+## 48     1        0       0        0     1        0        0       1       0
+## 49     1        0       0        0     1        0        0       1       0
+## 50     1        0       0        0     0        1        0       0       0
+## 51     0        0       0        0     0        1        0       0       0
+## 52     0        0       0        0     0        0        1       1       0
+## 53     0        0       0        0     1        0        0       0       1
+## 54     0        0       0        0     0        0        0       0       0
+## 55     0        0       0        0     0        0        0       0       0
+## 56     0        0       0        0     1        0        0       0       0
+## 57     0        0       0        0     1        0        0       0       0
+## 58     0        0       0        0     1        0        0       0       0
+## 59     0        0       0        0     0        0        1       1       0
+## 60     0        0       0        0     1        0        0       0       0
+## 61     0        0       1        0     0        0        0       1       0
+## 62     0        0       0        0     0        0        1       1       0
+## 63     0        0       0        0     1        0        0       0       0
+## 64     0        0       0        0     0        0        1       0       1
+## 65     0        0       0        0     0        0        1       1       0
+## 66     0        0       0        0     0        0        0       1       0
+## 67     0        0       0        0     0        0        1       1       0
+## 68     0        0       0        0     0        0        1       1       0
+## 69     0        0       0        0     0        0        1       1       0
+## 70     0        0       0        0     0        1        0       0       0
+## 71     0        0       0        0     1        0        0       0       1
+## 72     0        0       0        0     0        0        1       1       0
+## 73     0        0       0        0     0        0        0       0       0
+## 74     0        0       0        0     0        1        0       0       1
+## 75     0        1       0        0     0        0        0       0       1
+## 76     0        0       0        0     0        0        1       1       0
+## 77     0        0       0        0     0        0        1       0       1
+## 78     0        0       0        0     1        0        0       0       1
+## 79     0        0       0        0     0        0        0       0       0
+## 80     0        0       0        0     0        0        1       1       0
+## 81     0        0       0        0     0        0        0       0       0
+## 82     0        0       1        0     0        0        0       0       0
+## 83     0        0       0        0     0        0        1       0       0
+## 84     0        0       0        0     0        0        0       1       0
+## 85     0        0       0        0     0        0        1       0       0
+## 86     0        0       0        0     1        0        0       1       0
+## 87     0        0       0        0     0        0        1       0       1
+## 88     0        0       0        0     0        0        1       1       0
+## 89     0        0       0        0     0        0        0       0       0
+## 90     0        0       0        0     0        0        0       0       0
+## 91     0        0       0        1     0        0        0       0       0
+## 92     0        0       0        1     0        0        0       1       0
+## 93     0        0       0        0     1        0        0       1       0
+## 94     0        0       0        0     0        0        1       0       0
+## 95     0        0       0        0     0        0        1       1       0
+## 96     0        0       0        0     0        1        0       0       0
+## 97     0        0       1        0     0        0        0       1       0
+## 98     0        0       0        0     1        0        0       1       0
+## 99     0        0       0        0     1        0        0       0       0
+## 100    0        0       0        0     1        0        0       0       0
+## 101    0        0       1        0     0        0        0       1       0
+## 102    0        0       0        0     0        1        0       0       0
+## 103    0        0       0        0     0        0        1       0       1
+## 104    0        0       0        1     0        0        0       0       1
+## 105    0        0       0        0     0        0        0       0       0
+## 106    0        0       0        0     0        0        1       1       0
+## 107    0        0       0        0     1        0        0       1       0
+## 108    0        0       0        0     0        0        0       0       0
+## 109    0        0       0        0     1        0        0       1       0
+## 110    0        0       0        0     0        1        0       1       0
+## 111    0        0       0        0     1        0        0       1       0
+## 112    0        0       0        0     0        0        0       1       0
+## 113    0        0       0        0     0        1        0       0       0
+## 114    0        0       0        0     1        0        0       1       0
+## 115    0        0       0        0     0        0        1       1       0
+## 116    0        0       0        0     1        0        0       0       0
+## 117    0        0       0        0     0        0        1       0       1
+## 118    0        0       0        0     0        0        1       0       0
+## 119    0        0       0        0     1        0        0       0       0
+## 120    0        0       1        0     0        0        0       0       0
+## 121    0        0       0        0     1        0        0       1       0
+## 122    0        0       0        0     0        0        1       0       0
+## 123    0        0       0        0     1        0        0       1       0
+## 124    0        0       0        0     0        0        0       0       1
+## 125    0        0       0        0     0        0        1       1       0
+## 126    0        0       0        0     0        0        1       1       0
+## 127    0        0       0        0     0        0        0       0       0
+## 128    0        0       0        0     1        0        0       0       0
+## 129    0        0       0        0     0        0        1       0       0
+## 130    0        0       0        0     1        0        0       0       0
+## 131    0        0       0        0     1        0        0       1       0
+## 132    0        0       0        0     1        0        0       1       0
+## 133    0        0       0        0     0        0        1       0       0
+## 134    0        0       1        0     0        0        0       0       0
+## 135    0        0       0        0     1        0        0       0       0
+## 136    0        0       0        0     1        0        0       0       0
+## 137    0        0       0        0     1        0        0       0       0
+## 138    0        0       0        0     0        0        0       1       0
+## 139    0        0       0        0     0        0        1       0       0
+## 140    0        0       1        0     0        0        0       1       0
+## 141    0        0       1        0     0        0        0       1       0
+## 142    0        1       0        0     0        0        0       0       0
+## 143    0        0       0        0     0        0        0       0       0
+## 144    0        0       0        0     0        0        1       0       1
+## 145    0        0       0        0     0        0        0       0       1
+## 146    0        0       0        1     0        0        0       0       0
+## 147    0        0       0        0     1        0        0       0       0
+## 148    0        0       0        0     0        0        1       0       1
+## 149    0        1       0        0     0        0        0       0       1
+## 150    0        0       0        0     0        1        0       0       0
+## 151    0        0       0        0     0        0        0       0       0
+## 152    0        0       0        0     0        0        0       0       0
+## 153    0        0       0        0     1        0        0       0       0
+## 154    0        0       0        1     0        0        0       0       1
+## 155    0        0       1        0     0        0        0       0       0
+## 156    0        0       0        0     0        0        0       1       0
+## 157    0        0       0        0     0        0        1       1       0
+## 158    0        0       0        1     0        0        0       1       0
+## 159    0        0       0        0     1        0        0       0       0
+## 160    0        0       0        0     0        0        1       1       0
+## 161    0        0       0        0     1        0        0       0       0
+## 162    0        0       0        0     1        0        0       1       0
+## 163    0        0       0        0     0        1        0       1       0
+## 164    0        0       0        0     1        0        0       0       1
+## 165    0        0       1        0     0        0        0       1       0
+## 166    0        0       0        0     0        1        0       0       0
+## 167    0        0       0        0     0        0        1       0       0
+## 168    0        0       0        0     0        0        1       1       0
+## 169    0        0       0        0     0        0        1       0       0
+## 170    0        0       0        0     0        0        1       1       0
+## 171    0        0       0        0     0        0        1       1       0
+## 172    0        0       0        0     0        0        0       0       0
+## 173    0        0       0        1     0        0        0       0       1
+## 174    0        0       1        0     0        0        0       0       0
+## 175    0        0       0        0     0        0        0       0       0
+## 176    0        0       0        0     0        0        1       0       1
+## 177    0        0       0        0     0        0        1       1       0
+## 178    0        0       0        0     0        0        1       1       0
+## 179    0        0       0        0     0        0        1       1       0
+## 180    0        0       1        0     0        0        0       0       0
+## 181    0        0       1        0     0        0        0       1       0
+## 182    0        0       0        0     0        0        1       1       0
+## 183    0        0       0        0     0        0        1       1       0
+## 184    0        0       0        0     1        0        0       0       0
+## 185    0        0       0        0     0        0        1       0       0
+## 186    0        0       0        0     1        0        0       1       0
+## 187    0        0       1        0     0        0        0       1       0
+## 188    0        0       0        0     1        0        0       0       0
+## 189    0        0       0        0     1        0        0       1       0
+## 190    0        0       0        0     0        0        0       0       0
+## 191    0        0       0        0     0        0        0       0       0
+## 192    0        0       0        0     0        0        1       1       0
+## 193    0        0       0        0     1        0        0       0       0
+## 194    0        0       0        0     0        0        1       1       0
+## 195    0        0       0        0     0        1        0       1       0
+## 196    0        0       0        0     1        0        0       1       0
+## 197    0        0       0        0     0        0        1       0       1
+## 198    0        1       0        0     0        0        0       1       0
+## 199    0        0       0        0     0        0        0       1       0
+## 200    0        0       0        0     1        0        0       1       0
+## 201    0        0       0        0     0        0        1       0       0
+## 202    0        0       0        0     0        0        0       1       0
+## 203    0        1       0        0     0        0        0       0       0
+## 204    0        0       0        0     1        0        0       0       0
+## 205    0        0       0        0     0        1        0       0       1
+## 206    0        0       1        0     0        0        0       0       0
+## 207    0        0       0        0     0        0        1       1       0
+## 208    0        0       0        0     0        0        0       0       0
+## 209    0        0       0        0     1        0        0       0       0
+## 210    0        0       0        0     1        0        0       0       1
+## 211    0        0       0        0     0        0        1       0       0
+## 212    0        0       0        0     1        0        0       0       1
+## 213    0        0       0        0     0        0        1       0       0
+## 214    0        0       0        0     0        0        0       0       0
+## 215    0        0       0        0     0        0        0       1       0
+## 216    0        0       0        0     1        0        0       0       0
+## 217    0        0       0        0     0        0        1       1       0
+## 218    0        0       0        0     0        0        1       1       0
+## 219    0        0       0        0     0        0        0       0       0
+## 220    0        0       0        0     0        0        1       0       1
+## 221    0        0       0        0     1        0        0       0       0
+## 222    0        0       0        0     1        0        0       0       0
+## 223    0        1       0        0     0        0        0       0       1
+## 224    0        0       0        0     0        0        1       0       1
+## 225    0        0       1        0     0        0        0       1       0
+## 226    0        0       1        0     0        0        0       0       0
+## 227    0        0       0        0     1        0        0       1       0
+## 228    0        0       0        0     0        1        0       0       0
+## 229    0        0       0        0     0        0        0       1       0
+## 230    0        0       0        0     0        0        1       1       0
+## 231    0        0       0        0     0        0        1       1       0
+## 232    0        0       0        0     1        0        0       0       0
+## 233    0        0       0        0     1        0        0       1       0
+## 234    0        0       1        0     0        0        0       0       0
+## 235    0        0       0        0     0        0        1       0       1
+## 236    0        1       0        0     0        0        0       0       0
+## 237    0        0       0        1     0        0        0       1       0
+## 238    0        0       0        0     0        1        0       0       0
+## 239    0        0       0        0     0        0        1       0       1
+## 240    0        0       0        0     1        0        0       1       0
+## 241    0        0       0        0     1        0        0       0       0
+## 242    0        0       0        0     0        0        1       1       0
+## 243    0        0       0        0     0        0        0       0       0
+## 244    0        0       0        0     0        1        0       0       1
+## 245    0        0       1        0     0        0        0       1       0
+## 246    0        0       0        1     0        0        0       0       1
+## 247    0        0       0        0     0        0        1       1       0
+## 248    0        0       0        0     0        1        0       0       0
+## 249    0        0       0        0     1        0        0       0       0
+## 250    0        0       0        0     0        1        0       0       0
+## 251    0        0       0        0     1        0        0       0       0
+## 252    0        1       0        0     0        0        0       0       0
+## 253    0        0       0        0     1        0        0       1       0
+## 254    0        0       0        0     1        0        0       0       1
+## 255    0        0       0        0     1        0        0       0       0
+## 256    0        0       0        1     0        0        0       0       0
+## 257    0        0       0        0     0        1        0       0       0
+## 258    0        0       0        0     1        0        0       0       0
+## 259    0        0       0        0     0        1        0       0       0
+## 260    0        0       0        0     0        0        1       1       0
+## 261    0        0       0        0     0        0        1       1       0
+## 262    0        0       0        0     0        1        0       0       0
+## 263    0        0       0        0     0        0        0       0       0
+## 264    0        0       0        0     0        1        0       0       0
+## 265    0        0       0        0     0        0        0       0       0
+## 266    0        0       1        0     0        0        0       0       0
+## 267    0        0       0        0     0        0        1       1       0
+## 268    0        0       0        0     1        0        0       1       0
+## 269    0        0       0        0     1        0        0       0       1
+## 270    0        0       0        0     1        0        0       1       0
+## 271    0        0       0        0     0        0        0       0       0
+## 272    0        0       0        0     0        0        1       0       1
+## 273    0        0       0        1     0        0        0       0       0
+## 274    0        0       1        0     0        0        0       0       0
+## 275    0        1       0        0     0        0        0       0       0
+## 276    0        0       0        0     0        0        1       0       1
+## 277    0        0       0        0     1        0        0       1       0
+## 278    0        0       0        0     0        0        1       1       0
+## 279    0        0       0        0     1        0        0       1       0
+## 280    0        0       0        0     0        1        0       0       0
+## 281    0        0       0        0     0        0        1       1       0
+## 282    0        0       0        0     0        0        1       1       0
+## 283    0        0       1        0     0        0        0       1       0
+## 284    0        0       0        0     0        0        0       0       0
+## 285    0        0       0        0     0        0        1       0       1
+## 286    0        0       0        0     1        0        0       1       0
+## 287    0        0       1        0     0        0        0       0       0
+## 288    0        0       0        0     0        0        0       0       0
+## 289    0        0       0        0     1        0        0       0       0
+## 290    0        0       0        0     1        0        0       1       0
+## 291    0        0       1        0     0        0        0       1       0
+## 292    0        0       0        0     0        0        1       0       0
+## 293    0        0       0        0     0        0        1       1       0
+## 294    0        0       0        0     0        0        1       0       0
+## 295    0        0       0        0     1        0        0       0       0
+## 296    0        0       1        0     0        0        0       0       0
+## 297    0        0       1        0     0        0        0       0       0
+## 298    0        0       0        0     0        0        0       0       0
+## 299    0        1       0        0     0        0        0       0       0
+## 300    0        0       0        0     0        1        0       0       0
+## 301    0        0       0        0     0        1        0       1       0
+## 302    0        0       1        0     0        0        0       0       0
+## 303    0        0       1        0     0        0        0       0       0
+## 304    0        0       0        0     0        0        1       0       1
+## 305    0        0       0        0     0        0        0       0       0
+## 306    0        0       1        0     0        0        0       0       0
+## 307    0        0       0        0     1        0        0       0       0
+## 308    0        0       1        0     0        0        0       0       0
+## 309    0        0       0        0     1        0        0       0       0
+## 310    0        0       0        0     1        0        0       0       1
+## 311    0        0       0        0     0        0        1       1       0
+## 312    0        0       0        0     0        0        1       0       1
+## 313    0        0       1        0     0        0        0       1       0
+## 314    0        1       0        0     0        0        0       0       0
+## 315    0        0       0        0     1        0        0       1       0
+## 316    0        0       0        0     1        0        0       0       0
+## 317    0        0       0        0     0        0        1       0       0
+## 318    0        0       0        0     0        0        0       0       0
+## 319    0        0       0        0     0        0        0       0       0
+## 320    0        0       0        0     0        0        0       0       0
+## 321    0        0       0        0     1        0        0       1       0
+## 322    0        0       1        0     0        0        0       0       0
+## 323    0        0       0        0     0        0        1       0       0
+## 324    0        0       0        0     0        0        1       0       1
+## 325    0        0       1        0     0        0        0       1       0
+## 326    0        0       1        0     0        0        0       1       0
+## 327    0        0       0        0     0        1        0       1       0
+## 328    0        0       1        0     0        0        0       0       1
+## 329    0        0       0        0     0        0        1       1       0
+## 330    0        0       0        0     0        0        0       0       0
+## 331    0        0       0        1     0        0        0       0       0
+## 332    0        0       1        0     0        0        0       1       0
+## 333    0        0       0        0     1        0        0       1       0
+## 334    0        0       0        1     0        0        0       1       0
+## 335    0        0       0        0     0        0        1       0       1
+## 336    0        0       0        0     1        0        0       0       0
+## 337    0        0       0        0     0        0        1       1       0
+## 338    0        0       0        0     0        0        1       0       1
+## 339    0        0       0        0     0        0        1       1       0
+## 340    0        0       0        0     1        0        0       0       0
+## 341    0        0       1        0     0        0        0       0       0
+## 342    0        0       0        0     1        0        0       0       0
+## 343    0        0       1        0     0        0        0       0       0
+## 344    0        1       0        0     0        0        0       0       0
+## 345    0        0       1        0     0        0        0       0       0
+## 346    0        0       1        0     0        0        0       0       0
+## 347    0        0       0        0     1        0        0       1       0
+## 348    0        0       0        0     0        0        1       0       1
+## 349    0        0       0        0     0        1        0       0       0
+## 350    0        0       0        0     1        0        0       1       0
+## 351    0        0       0        0     0        0        1       1       0
+## 352    0        0       0        0     0        1        0       0       1
+## 353    0        0       0        0     1        0        0       0       1
+## 354    0        0       0        0     0        0        1       0       1
+## 355    0        0       0        0     1        0        0       1       0
+## 356    0        0       0        0     1        0        0       0       0
+## 357    0        0       0        0     1        0        0       0       0
+## 358    0        0       0        0     0        0        1       1       0
+## 359    0        0       0        0     0        1        0       1       0
+## 360    0        0       0        0     0        0        1       0       1
+## 361    0        0       0        0     1        0        0       0       1
+## 362    0        0       0        0     1        0        0       0       1
+## 363    0        1       0        0     0        0        0       1       0
+## 364    0        0       0        0     1        0        0       1       0
+## 365    0        0       0        0     1        0        0       0       0
+## 366    0        0       0        0     0        0        0       0       0
+## 367    0        0       1        0     0        0        0       0       0
+## 368    0        0       0        0     1        0        0       0       1
+## 369    0        1       0        0     0        0        0       0       1
+## 370    0        0       0        0     1        0        0       0       1
+## 371    0        0       0        0     0        1        0       1       0
+## 372    0        0       0        0     1        0        0       0       0
+## 373    0        0       0        0     1        0        0       0       1
+## 374    0        0       0        0     0        0        1       0       1
+## 375    0        0       0        0     1        0        0       1       0
+## 376    0        0       1        0     0        0        0       1       0
+## 377    0        0       1        0     0        0        0       0       0
+## 378    0        0       0        0     0        0        0       0       0
+## 379    0        0       0        0     0        1        0       0       0
+## 380    0        0       0        1     0        0        0       1       0
+## 381    0        0       0        0     0        0        1       0       1
+## 382    0        0       0        0     1        0        0       1       0
+## 383    0        0       1        0     0        0        0       1       0
+## 384    0        0       1        0     0        0        0       0       0
+## 385    0        0       0        0     0        0        1       0       0
+## 386    0        0       0        0     0        0        1       0       1
+## 387    0        0       0        0     1        0        0       0       1
+## 388    0        0       0        0     1        0        0       1       0
+## 389    0        0       0        0     1        0        0       0       1
+## 390    0        0       0        0     1        0        0       1       0
+## 391    0        0       0        0     0        1        0       0       0
+## 392    0        0       0        0     0        0        1       0       1
+## 393    0        0       0        0     0        0        1       0       0
+## 394    0        0       1        0     0        0        0       0       0
+## 395    0        0       0        0     0        0        1       1       0
+## 396    0        0       0        0     0        0        0       0       0
+## 397    0        0       0        0     1        0        0       0       1
+## 398    0        0       1        0     0        0        0       0       1
+## 399    0        0       0        0     0        0        1       1       0
+## 400    0        0       0        0     0        0        1       1       0
+## 401    0        0       0        0     0        0        0       0       0
+## 402    0        0       0        0     0        0        0       0       0
+## 403    0        0       0        0     1        0        0       0       0
+## 404    0        0       0        0     1        0        0       0       1
+## 405    0        0       0        0     0        0        0       0       0
+## 406    0        0       1        0     0        0        0       0       0
+## 407    0        0       0        0     0        1        0       0       0
+## 408    1        0       0        0     1        0        0       1       0
+## 409    1        0       0        0     0        0        1       1       0
+## 410    1        1       0        0     0        0        0       0       0
+## 411    1        0       0        0     0        1        0       0       0
+## 412    0        0       0        0     1        0        0       1       0
+## 413    0        0       0        0     0        1        0       1       0
+## 414    0        0       0        0     1        0        0       1       0
+## 415    0        0       0        0     0        0        1       0       0
+## 416    0        0       0        0     1        0        0       1       0
+## 417    0        0       0        0     1        0        0       0       0
+## 418    0        0       0        0     0        0        1       0       1
+## 419    0        0       0        1     0        0        0       0       1
+## 420    0        0       0        0     1        0        0       1       0
+## 421    0        0       0        0     0        0        0       0       0
+## 422    0        0       0        0     1        0        0       0       0
+## 423    0        0       1        0     0        0        0       1       0
+## 424    0        0       0        0     1        0        0       0       0
+## 425    0        0       0        0     0        0        0       0       0
+## 426    0        0       0        0     0        0        1       0       0
+## 427    0        0       0        0     0        0        0       1       0
+## 428    0        0       0        0     1        0        0       0       1
+## 429    0        0       0        0     1        0        0       0       0
+## 430    0        0       0        0     0        0        0       0       0
+## 431    0        0       0        0     0        0        1       1       0
+## 432    0        0       0        0     0        0        1       0       0
+## 433    0        0       0        1     0        0        0       1       0
+## 434    0        0       0        0     0        1        0       0       0
+## 435    0        0       0        0     0        0        1       1       0
+## 436    0        0       0        0     0        1        0       0       0
+## 437    0        0       0        0     0        0        0       1       0
+## 438    0        0       0        0     0        0        0       0       0
+## 439    0        0       0        0     1        0        0       1       0
+## 440    0        0       0        0     1        0        0       1       0
+## 441    0        0       1        0     0        0        0       0       0
+## 442    0        1       0        0     0        0        0       0       0
+## 443    0        0       0        0     0        0        1       0       0
+## 444    0        0       1        0     0        0        0       1       0
+## 445    0        0       1        0     0        0        0       1       0
+## 446    0        0       1        0     0        0        0       0       0
+## 447    0        0       0        0     0        1        0       0       0
+## 448    0        0       0        0     1        0        0       1       0
+## 449    0        0       0        0     1        0        0       0       1
+## 450    0        0       0        0     1        0        0       0       0
+## 451    0        0       0        0     1        0        0       1       0
+## 452    0        0       0        0     1        0        0       0       0
+## 453    0        0       0        0     0        0        1       0       0
+## 454    0        0       0        0     0        0        0       0       0
+## 455    0        0       0        0     1        0        0       1       0
+## 456    0        0       0        0     1        0        0       1       0
+## 457    0        0       0        0     1        0        0       1       0
+## 458    0        0       0        0     1        0        0       1       0
+## 459    0        1       0        0     0        0        0       0       1
+## 460    0        0       0        0     1        0        0       0       0
+## 461    0        0       0        0     0        0        1       0       1
+## 462    0        0       0        0     0        1        0       1       0
+## 463    0        0       1        0     0        0        0       0       0
+## 464    0        0       1        0     0        0        0       0       0
+## 465    0        0       0        0     0        1        0       0       0
+## 466    0        1       0        0     0        0        0       0       0
+## 467    0        0       0        0     0        1        0       0       1
+## 468    0        1       0        0     0        0        0       0       0
+## 469    0        0       0        0     1        0        0       1       0
+## 470    0        1       0        0     0        0        0       0       0
+## 471    0        0       0        0     0        0        0       0       0
+## 472    0        0       0        0     1        0        0       0       0
+## 473    1        0       0        0     0        1        0       0       1
+## 474    1        0       0        0     1        0        0       0       0
+## 475    1        0       0        0     0        0        1       0       1
+## 476    1        0       0        0     1        0        0       1       0
+## 477    1        0       0        0     1        0        0       1       0
+## 478    1        0       0        1     0        0        0       1       0
+## 479    1        0       0        1     0        0        0       1       0
+## 480    1        0       0        0     1        0        0       1       0
+## 481    1        0       0        0     0        0        0       0       0
+## 482    1        0       0        0     0        0        0       0       0
+## 483    0        0       1        0     0        0        0       0       0
+## 484    0        0       0        0     1        0        0       0       0
+## 485    0        0       0        0     0        0        1       0       0
+## 486    0        0       0        0     0        0        0       0       1
+## 487    0        0       0        0     0        0        1       1       0
+## 488    1        0       0        0     1        0        0       0       0
+## 489    1        0       0        1     0        0        0       0       1
+## 490    0        0       0        0     1        0        0       0       1
+## 491    0        0       0        0     1        0        0       1       0
+## 492    0        0       0        0     0        0        1       1       0
+## 493    0        0       0        0     0        0        1       0       0
+## 494    0        0       0        0     1        0        0       0       0
+## 495    0        0       0        0     0        0        1       1       0
+## 496    0        0       0        1     0        0        0       0       1
+## 497    0        0       0        0     0        0        0       1       0
+## 498    1        0       0        0     0        0        1       0       1
+## 499    1        0       0        0     1        0        0       0       0
+## 500    1        0       0        1     0        0        0       0       0
+## 501    1        0       0        0     0        0        1       0       1
+## 502    1        0       0        0     1        0        0       0       0
+## 503    1        0       0        0     0        1        0       0       0
+## 504    1        0       1        0     0        0        0       0       0
+## 505    1        1       0        0     0        0        0       1       0
+## 506    1        0       0        1     0        0        0       0       0
+## 507    1        0       0        0     1        0        0       0       0
+## 508    1        0       0        0     0        0        1       1       0
+## 509    1        0       0        0     0        1        0       0       0
+## 510    1        0       0        0     1        0        0       0       0
+## 511    1        0       0        0     0        1        0       0       0
+## 512    1        0       1        0     0        0        0       0       0
+## 513    0        0       0        0     0        1        0       1       0
+## 514    0        1       0        0     0        0        0       0       0
+## 515    0        0       0        0     0        0        1       1       0
+## 516    0        0       0        0     1        0        0       0       0
+## 517    0        0       0        0     0        0        1       1       0
+## 518    0        0       0        0     0        0        1       1       0
+## 519    1        0       0        0     1        0        0       0       0
+## 520    1        0       0        0     1        0        0       0       0
+## 521    1        1       0        0     0        0        0       0       0
+## 522    1        0       0        0     0        0        1       1       0
+## 523    1        0       0        0     1        0        0       1       0
+## 524    1        1       0        0     0        0        0       1       0
+## 525    1        0       1        0     0        0        0       0       0
+## 526    1        0       0        0     0        0        1       0       1
+##     servocc      lwage expersq tenursq
+## 1         0  1.1314021       4       0
+## 2         1  1.1755733     484       4
+## 3         0  1.0986123       4       0
+## 4         0  1.7917595    1936     784
+## 5         0  1.6677068      49       4
+## 6         0  2.1690538      81      64
+## 7         0  2.4203682     225      49
+## 8         0  1.6094379      25       9
+## 9         0  1.2809339     676      16
+## 10        0  2.9003222     484     441
+## 11        0  1.8325815      64       4
+## 12        0  2.0955610       9       0
+## 13        0  2.1713369     225       0
+## 14        0  1.7047480     324       9
+## 15        0  3.1000924     961     225
+## 16        0  2.8524392     196       0
+## 17        0  2.0149031     100       0
+## 18        0  2.3636801     256     100
+## 19        0  1.2809339     169       0
+## 20        1  1.5040774    1296      36
+## 21        0  1.9286187     121      16
+## 22        0  2.1377103     841     169
+## 23        0  1.8453002      81      81
+## 24        1 -0.6348783       9       1
+## 25        0  1.7917595    1369      64
+## 26        0  2.2575877       9       9
+## 27        0  2.0515563     121     100
+## 28        0  2.5257287     961       0
+## 29        0  2.5257287     900       0
+## 30        0  1.1786550      81       1
+## 31        0  2.5649493     529      25
+## 32        0  1.5040774       4      25
+## 33        0  2.2700620     256     256
+## 34        0  1.6094379      49       9
+## 35        0  1.5432981       9       0
+## 36        0  1.4516138     484      16
+## 37        1  1.8164521     225      36
+## 38        0  1.2556161    1521     225
+## 39        0  1.0986123       9       9
+## 40        0  1.8325815     121       0
+## 41        1  2.0554049       9       0
+## 42        0  2.3025851     400      25
+## 43        0  1.5040774     256       0
+## 44        1  1.3862944    2025     144
+## 45        0  1.8531681     121      16
+## 46        0  2.6173959     400     169
+## 47        0  0.5128236       1       0
+## 48        0  1.0750024    1296       4
+## 49        0  1.2947272      81       4
+## 50        1  1.0647107     225       1
+## 51        1  0.4885800     324       0
+## 52        0  2.1517622       9       4
+## 53        0  1.6094379     225      25
+## 54        0  1.7917595      49      49
+## 55        0  0.9162908       4       0
+## 56        1  1.1786550       9       0
+## 57        1  1.2237755       1       1
+## 58        0  2.3025851     169       0
+## 59        0  3.0740812      64      64
+## 60        1  1.4770488      49       0
+## 61        0  2.4604433    1600     400
+## 62        0  2.5168898    1764      25
+## 63        1  1.8325815    1296      64
+## 64        0  1.3110319     169       0
+## 65        0  2.0515563      81       9
+## 66        0  2.9947317     676     529
+## 67        0  1.8325815      49      16
+## 68        0  2.3025851     625       9
+## 69        0  1.7422190     100      25
+## 70        0  0.6931472       9       4
+## 71        0  1.7422190       9       0
+## 72        0  2.5710843     289       4
+## 73        0  1.5912739     289      64
+## 74        0  1.0681531     400    1156
+## 75        0  1.3217559      49       0
+## 76        0  2.4765384     576     361
+## 77        0  1.3862944     784       0
+## 78        0  1.1314021       4       1
+## 79        0  2.1341665     361     169
+## 80        0  1.9657128     169       0
+## 81        0  1.5040774     484      25
+## 82        0  1.5368673       9       1
+## 83        1  1.0647107      16       0
+## 84        0  1.8976198      49      25
+## 85        1  1.2527629      36       4
+## 86        0  1.1817272     169       9
+## 87        0  1.1786550     196       0
+## 88        0  2.0794415     196      16
+## 89        0  2.2874715    1600     576
+## 90        0  2.0149031     121      49
+## 91        0  1.7766458     196      36
+## 92        0  2.4647040    1600    1521
+## 93        0  1.0986123       1       0
+## 94        1  1.5706971       4       0
+## 95        0  1.8718022      16       1
+## 96        1  1.3862944     361       1
+## 97        0  1.2527629       1       0
+## 98        0  2.5771818    1156     484
+## 99        0  1.4469190      25       4
+## 100       1  1.2527629       9       0
+## 101       0  1.6351057      36      36
+## 102       1  1.3217559     196       0
+## 103       0  1.5040774    1225     144
+## 104       0  2.0320878      64      16
+## 105       0  2.7080503      49      49
+## 106       0  1.9242487     121       9
+## 107       0  2.5900171     196     121
+## 108       0  1.8976198    1225     100
+## 109       0  0.9282193    2116       0
+## 110       0  2.2823825      49       0
+## 111       0  1.2149127    2025     144
+## 112       0  3.2180755     841     625
+## 113       0  1.6863990      36       9
+## 114       0  1.8099267     225       0
+## 115       0  1.4350845    1089     256
+## 116       0  1.3217559     225       0
+## 117       0  1.2527629      25       0
+## 118       1  1.2919837      49       4
+## 119       0  1.3350011      36       1
+## 120       0  1.0986123    1089     144
+## 121       0  1.6094379       4       1
+## 122       1  1.5325569      16       0
+## 123       0  1.0986123       1       0
+## 124       0  1.1631508     841       0
+## 125       0  1.3635374     289       9
+## 126       0  1.8609746     289       9
+## 127       0  1.7011051    1296       9
+## 128       0  0.4054651     961     900
+## 129       1  1.0647107     529       4
+## 130       0  1.6094379     169       1
+## 131       0  2.1882958       9       9
+## 132       0  1.6094379     225       0
+## 133       0  1.2584610    2304       1
+## 134       0  1.0647107      36       0
+## 135       0  1.5040774     144       0
+## 136       1  0.8109302      25       0
+## 137       0  1.6094379     361      25
+## 138       0  2.3025851      81       9
+## 139       1  1.3217559    1521     169
+## 140       0  2.3025851     784     121
+## 141       0  2.3933394     529     400
+## 142       0  2.0668628       4       0
+## 143       0  1.5518087     225       1
+## 144       0  1.7647308      25       0
+## 145       0  1.3428648     324       4
+## 146       0  1.1631508       4       4
+## 147       1  0.6931472       9       0
+## 148       0  1.5040774     961      16
+## 149       0  2.4466856     400      25
+## 150       0  0.7608059    1156     225
+## 151       1  0.8671005      25       0
+## 152       0  1.3217559     121       0
+## 153       0  1.7083778     961       9
+## 154       0  1.8718022      64      25
+## 155       0  1.1314021       4       4
+## 156       0  2.3025851     324      25
+## 157       0  1.8916048       9       0
+## 158       0  2.3025851       9       4
+## 159       1  0.8372475      16       1
+## 160       0  1.9286187      16      16
+## 161       0  1.0402766       1       0
+## 162       0  1.1410331       1       0
+## 163       0  2.0794415     784      25
+## 164       0  1.5040774    2209      16
+## 165       0  2.1575594     169       1
+## 166       1  0.6931472       4      36
+## 167       1  1.5581446    2304       4
+## 168       0  1.8325815      36      25
+## 169       1  1.7917595      64       0
+## 170       0  2.7330680     625     441
+## 171       0  2.6796508     169      49
+## 172       0  2.5257287      64       1
+## 173       0  1.6582280     361     100
+## 174       1  0.7747272       1      16
+## 175       0  1.9657128    1849      25
+## 176       0  1.8277699     361      81
+## 177       0  2.1972246     121      25
+## 178       0  2.3025851    1849      16
+## 179       0  1.7526721    1936       9
+## 180       0  1.3862944     484     121
+## 181       0  2.1690538       9       4
+## 182       0  1.8764070       9       4
+## 183       0  2.0281482    1681     121
+## 184       0  1.6094379      25       0
+## 185       1  1.6094379     196     121
+## 186       0  3.0846586     576     256
+## 187       0  2.1564026     784      64
+## 188       0  1.1939224     625      64
+## 189       0  1.4906543       9       0
+## 190       0  1.5151273     121       0
+## 191       0  1.2527629      49      36
+## 192       0  1.8325815      81       4
+## 193       0  1.3480731      25       0
+## 194       0  1.8213183      81       9
+## 195       0  1.0681531       1       0
+## 196       0  1.8325815       4       1
+## 197       0  1.8325815     169       0
+## 198       0  2.2027647     100       4
+## 199       0  2.3025851      25       9
+## 200       0  2.4078455     900      64
+## 201       1  1.9286187     961     361
+## 202       0  2.1690538       1       4
+## 203       0  2.3025851      81       0
+## 204       0  1.1151416     100       0
+## 205       0  1.0986123    1444       0
+## 206       0  1.7578579     361      36
+## 207       0  1.4109869      25       0
+## 208       0  2.0794415     676       4
+## 209       0  1.8164521    1225     144
+## 210       0  0.9932518       4       0
+## 211       1  1.0116010       1       4
+## 212       0  1.0986123     361     100
+## 213       1  1.0986123       9       4
+## 214       0  1.9960599    1296     576
+## 215       0  2.0149031     841     576
+## 216       0  1.2527629       1       4
+## 217       0  2.0918641    1444       9
+## 218       0  1.3217559       1       4
+## 219       0  1.1786550     841       0
+## 220       0  1.7630169    1296     225
+## 221       1  1.2527629      16       0
+## 222       0  1.2029723    2025      16
+## 223       0  1.3862944     484       9
+## 224       0  1.2527629     400      16
+## 225       0  1.8325815      25       0
+## 226       0  1.0818052     225       4
+## 227       0  1.7422190     100       4
+## 228       0  1.0986123       9       0
+## 229       0  3.1293886     256      49
+## 230       0  2.1972246    1444       1
+## 231       0  2.1198635    1089     676
+## 232       0  1.0986123       4       0
+## 233       0  1.7491999      36      25
+## 234       0  1.9110229     361       9
+## 235       0  2.3025851     841       0
+## 236       0  1.0986123       4       0
+## 237       0  1.2527629       9       1
+## 238       0  1.1786550      16       0
+## 239       0  1.3862944     100       1
+## 240       0  1.0715836      16       0
+## 241       0  1.1184149     196     100
+## 242       0  1.1631508     225      25
+## 243       0  1.5581446     361       0
+## 244       0  1.0986123     289       0
+## 245       0  2.8992214     841      49
+## 246       0  1.2527629       4       0
+## 247       0  1.4134231      25       0
+## 248       0  0.6729445    1444       9
+## 249       1  1.4562867       9       0
+## 250       1  1.0986123    2209       0
+## 251       0  1.8640801      49      36
+## 252       0  1.6486586    2209     169
+## 253       0  1.5040774     529       4
+## 254       0  1.3558352     144       9
+## 255       1  1.2383742     121       0
+## 256       0  2.3896797     625     529
+## 257       1  1.4109869      36       0
+## 258       0  1.0986123       9       1
+## 259       0  1.7749524     196      49
+## 260       0  2.8903718     169       0
+## 261       0  1.3862944      81       0
+## 262       0  1.0986123       1       0
+## 263       0  1.2669476      36       0
+## 264       1  1.0986123     121       1
+## 265       0  2.1690538    2209    1936
+## 266       0  1.0647107    2401      36
+## 267       0  1.8341802    1369     289
+## 268       0  1.2527629       4       0
+## 269       0  1.5260563      49       0
+## 270       0  1.7917595     484      64
+## 271       0  1.0612565      64       0
+## 272       0  1.7191888       1       1
+## 273       0  1.3862944    1849      36
+## 274       0  1.7917595       4       4
+## 275       0  1.5040774       4       1
+## 276       0  1.0715836       1       9
+## 277       0  1.4655675       1       0
+## 278       0  2.9386327     676     400
+## 279       0  1.4539530       1       1
+## 280       1  1.5195132    1369      49
+## 281       0  1.8325815     144      16
+## 282       0  1.0818052    1681     529
+## 283       0  2.1690538     576       1
+## 284       0  2.1400661    1444     676
+## 285       0  1.3217559     324       0
+## 286       0  1.1474025     676       1
+## 287       0  1.6094379    2025       4
+## 288       0  1.8656293     729       0
+## 289       1  0.6931472       4       0
+## 290       0  1.5665303    1681      64
+## 291       0  1.7544037     121      16
+## 292       1  1.1568812      25       0
+## 293       0  1.5432981       9       1
+## 294       1  1.4109869       9       4
+## 295       0  1.0681531      16       0
+## 296       0  1.7917595     441     169
+## 297       0  1.2809339    1156     676
+## 298       0  1.3737156    2401      36
+## 299       0  1.9459101      36      25
+## 300       1  1.0986123     676      81
+## 301       0  1.8050047      81       0
+## 302       0  2.1552446     529      81
+## 303       0  1.0986123    1089       4
+## 304       0  1.3217559      25       4
+## 305       1  1.0647107    2401      49
+## 306       0  1.0986123    2304       0
+## 307       0  1.8325815    1225     961
+## 308       0  1.2527629     529       4
+## 309       1  1.0986123     676       1
+## 310       0  1.1755733     256       0
+## 311       0  2.0819385     529       9
+## 312       0  1.2029723    1296      64
+## 313       0  1.6582280      16       0
+## 314       0  1.8325815     100       0
+## 315       0  1.2527629     324       4
+## 316       0  1.0818052       9       1
+## 317       1  1.0986123      49       0
+## 318       0  1.5454326      49      49
+## 319       0  1.3164083    1089       4
+## 320       0  1.3862944    1156     144
+## 321       0  1.3862944      64       0
+## 322       0  1.0647107     289       1
+## 323       1  1.1151416       4       0
+## 324       0  1.6193882      25       0
+## 325       0  2.6354795    1681     256
+## 326       0  2.8992214    1225     784
+## 327       0  1.8325815     121      16
+## 328       0  1.6582280      16       0
+## 329       0  1.5665303     144       9
+## 330       0  1.2089603    1225       0
+## 331       0  1.0986123    1089       0
+## 332       0  2.1317968      64      36
+## 333       0  1.7404661       4       0
+## 334       0  2.4832385      64     100
+## 335       0  1.2527629     841       1
+## 336       0  1.4445633     196      25
+## 337       0  1.9459101     676       9
+## 338       0  1.7917595     121       9
+## 339       0  2.5030739     100       4
+## 340       0  1.5040774     169       0
+## 341       0  1.0986123     529     400
+## 342       1  1.0647107       1       4
+## 343       0  2.7080503    1225     961
+## 344       0  1.3862944      25       4
+## 345       0  1.6582280     169     121
+## 346       0  1.3862944     484       9
+## 347       0  1.1939224     441      81
+## 348       0  1.6193882     361       0
+## 349       0  1.2753627     169       0
+## 350       0  1.6094379     225      25
+## 351       0  1.5195132       9       0
+## 352       0  2.5257287      36       4
+## 353       0  1.2383742      36      25
+## 354       0  1.5325569     256       1
+## 355       0  2.3025851     961       4
+## 356       1  1.0715836       1       0
+## 357       0  1.5062972      25       4
+## 358       0  1.8718022       9       0
+## 359       0  2.0149031     121       0
+## 360       0  1.2641267      36      49
+## 361       0  1.4350845     121       9
+## 362       0  1.2556161      49       4
+## 363       0  1.5040774      25       0
+## 364       0  1.2089603      25      16
+## 365       1  1.0681531       4       4
+## 366       0  1.6582280    1936      49
+## 367       1  1.3987169    1936     625
+## 368       0  1.3217559     169       0
+## 369       0  1.2237755     676     225
+## 370       0  1.0986123       4       1
+## 371       0  1.8389610     100       9
+## 372       1  0.9321641       4       0
+## 373       0  1.5040774    1225       0
+## 374       0  1.1410331      36      25
+## 375       0  1.8500284      64       1
+## 376       0  1.5432981       1       0
+## 377       0  1.9169227     196     100
+## 378       0  2.1435893     196      36
+## 379       0  1.4279160     484     100
+## 380       0  1.3217559      64      16
+## 381       0  2.4069452       1      16
+## 382       0  1.1817272     225      25
+## 383       0  2.2115657     196     144
+## 384       0  1.5040774    1369     100
+## 385       1  1.0986123       1       1
+## 386       0  2.1690538      16      16
+## 387       0  1.4206958     841       0
+## 388       0  1.0543120    2025      64
+## 389       0  1.2089603     484       0
+## 390       0  1.8050047    1764     100
+## 391       0  1.0986123      81       0
+## 392       0  1.4350845      64       0
+## 393       1  1.7227666     961     225
+## 394       0  2.3025851     576     576
+## 395       0  2.5257287     256      25
+## 396       0  1.3244189      36       0
+## 397       0  1.1314021     196       0
+## 398       0  1.4562867    2209     625
+## 399       0  2.3905959    1156      25
+## 400       0  2.0149031      36       4
+## 401       0  1.3987169      49      16
+## 402       1  1.5368673     729       4
+## 403       0  1.6094379     576      25
+## 404       0  1.0647107     324       0
+## 405       0  2.0794415     144       9
+## 406       0  2.1317968     729       9
+## 407       0  1.0715836    2401       0
+## 408       0  1.8325815      16       0
+## 409       0  1.8325815     576       4
+## 410       0  1.6311995       9       0
+## 411       0  1.3862944       4       0
+## 412       0  1.4906543     841     121
+## 413       0  1.9286187    1156     441
+## 414       0  1.6919391     100       9
+## 415       1  1.0986123      25       0
+## 416       0  1.0647107       4       0
+## 417       0  1.8325815    1521     441
+## 418       0  1.4678744      25       4
+## 419       0  1.1786550     196       4
+## 420       0  1.9823799      64       4
+## 421       0  1.8484548     100       1
+## 422       1  1.7281095       4       4
+## 423       0  2.1690538      81       9
+## 424       1  1.1631508       1       0
+## 425       0  1.0986123    2025       1
+## 426       1  1.0986123    1089       9
+## 427       0  2.5257287     441     324
+## 428       0  1.0577903       4       0
+## 429       0  1.2089603      81       1
+## 430       0  1.8718022    1089       4
+## 431       0  2.3398809     256       4
+## 432       0  1.5040774     100       0
+## 433       0  2.3025851      81      64
+## 434       1  1.3376292      64       1
+## 435       0  2.1747518      81       1
+## 436       0  2.2428350     529       0
+## 437       0  1.8453002     529      64
+## 438       0  1.3862944     484     324
+## 439       0  1.0647107    1369       0
+## 440       0  2.9957323     484      16
+## 441       0  2.4203682     784     625
+## 442       0  1.2527629     196       0
+## 443       1  1.7917595     361      16
+## 444       0  2.6658382     100      81
+## 445       0  1.8500284     625       0
+## 446       0  1.2669476     441       0
+## 447       1  1.0986123    1024       0
+## 448       0  1.5040774     441     100
+## 449       0  1.8916048    1296       0
+## 450       0  2.2300143       4       4
+## 451       0  1.0986123     121       0
+## 452       1  1.1786550    1600       4
+## 453       1  0.4054651     121       1
+## 454       0  1.7749524      81      49
+## 455       0  2.0794415     529      16
+## 456       0  1.0647107       1       0
+## 457       0  1.1908876     900     169
+## 458       0  1.8718022    1681    1089
+## 459       0  1.3862944      36       0
+## 460       0  1.7917595     121       0
+## 461       0  1.4060969    1849     289
+## 462       0  1.3217559    1521       4
+## 463       0  1.1151416    2500     576
+## 464       0  1.2527629     676     400
+## 465       1  1.0715836    2601     900
+## 466       0  1.5040774       9      81
+## 467       0  1.2089603       9       1
+## 468       0  1.7833912     225      81
+## 469       0  2.0794415     289      36
+## 470       0  1.0986123    1296       0
+## 471       0  1.6094379     961      81
+## 472       0  1.7047480      81      16
+## 473       0  0.9745597    1764     100
+## 474       0  1.0986123       9       0
+## 475       0  1.5040774    1369     196
+## 476       0  2.8622010     529     484
+## 477       0  2.1016922     441      25
+## 478       0  2.2071750     121     144
+## 479       0  2.4697931    1225     169
+## 480       0  1.1786550    1764       0
+## 481       0  1.5040774       9       0
+## 482       0  1.5040774     169       0
+## 483       0  1.3110319     196      49
+## 484       0  1.8718022     196     121
+## 485       1  1.0647107    1521       1
+## 486       0  1.7227666     121      64
+## 487       0  0.8020016     784       9
+## 488       1  1.6094379     324       0
+## 489       0  2.1198635      36       4
+## 490       0  1.0647107     676       1
+## 491       0  1.8325815     441      36
+## 492       0  1.5151273    1156       4
+## 493       1  1.1878434     289       4
+## 494       1  0.8329091       4       0
+## 495       0  1.1939224      25       0
+## 496       0  1.1474025       1       0
+## 497       0  2.5257287    1600     900
+## 498       0  1.6389967    1521     441
+## 499       1  1.1410331       1       1
+## 500       0  1.9810015     196      25
+## 501       0  1.0647107       4       4
+## 502       1  0.5596158       4       1
+## 503       0  1.0612565    1764       0
+## 504       0  1.0647107    1156       0
+## 505       0  2.8741293     100       9
+## 506       1  1.8325815      16       9
+## 507       0  0.9555114      16       0
+## 508       0  1.8916048     441       9
+## 509       0  1.2527629     961       9
+## 510       0  1.8718022     400     196
+## 511       0  1.0986123    1296       1
+## 512       0  1.4770488      49       0
+## 513       0  2.3025851     225       0
+## 514       0  1.5993875     625     289
+## 515       0  2.1972246      49       0
+## 516       0  0.3576744     289       0
+## 517       0  1.1249295       9       1
+## 518       0  2.2332351     144     121
+## 519       0  2.0149031     324      25
+## 520       0  1.5581446    2209       1
+## 521       0  1.7316556       4       0
+## 522       0  2.7080503     196       4
+## 523       0  0.8197798       4       0
+## 524       0  1.5411590     169     324
+## 525       0  2.4475510      25       1
+## 526       0  1.2527629      25      16
+```
+
+---
+
+
+
+
+---
+
+# Obrigada!
+
+.pull-left[
+
+&lt;img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjFlNDgyOTRhMTk5MGE4ZTNmNjg5ZWMzM2NlZDU3ODBmZDU0OGFiNiZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/M9NbzZjAcxq9jS9LZJ/giphy.gif" width="65%" style="display: block; margin: auto;" /&gt;
+
+.center[Agradecimento especial a [Curso-R](https://curso-r.com/) pelos materiais.]
+
+.center[Slides criados usando os pacotes em R:]
+.center[[**xaringan**](https://github.com/yihui/xaringan)]
+.center[[**xaringanthemer**](https://github.com/gadenbuie/xaringanthemer)]
+
+.center[O chakra vem da biblioteca JavaScript [remark.js](https://remarkjs.com), [**knitr**](http://yihui.name/knitr), and [R Markdown](https://rmarkdown.rstudio.com).]
+]
+
+.pull-right[
+
+&lt;img src="img/slides/19-luisa.jpg" width="55%" style="display: block; margin: auto;" /&gt;
+
+.center[&lt;i class="fas fa-home"&gt;&lt;/i&gt; [luisa.rbind.io](https://luisa.rbind.io/)]
+
+.center[&lt;i class="fab fa-twitter"&gt;&lt;/i&gt; [@lgiselebock](https://twitter.com/lgiselebock)]
+
+.center[&lt;i class="fab fa-github"&gt;&lt;/i&gt; [@lgiselebock](https://github.com/lgiselebock/)]
+
+.center[&lt;i class="far fa-envelope"&gt;&lt;/i&gt; [luisa.bock@acad.ufsm.br](mailto:luisa.bock@acad.ufsm.br)]
+]
+
+&lt;!-- inicio academic icons --&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css"&gt;
+&lt;!-- final academic icons --&gt;
+
+ 
+&lt;!-- inicio font awesome --&gt;
+&lt;script src="https://kit.fontawesome.com/1f72d6921a.js" crossorigin="anonymous"&gt;&lt;/script&gt;
+
+&lt;!-- final font awesome --&gt;
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+
+div.my-header {
+    background-color: #ffffff;
+    position: absolute;
+    top: 5px;
+    left: -10px;
+    height: 30px;
+    width: 100%;
+    font-size: 0.7em;
+    text-align: right;
+}
+
+div.my-footer {
+    background-color: #ffffff;
+    position: absolute;
+    bottom: 20px;
+    left: 15px;
+    height: 10px;
+    width: 100%;
+    font-size: 0.7em;
+}
+div.my-footer span {
+    font-size: 10pt;
+    color: #F7F8FA;
+    position: absolute;
+    left: 15px;
+    bottom: 2px;
+}

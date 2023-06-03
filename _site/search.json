@@ -6,15 +6,21 @@
       "description": "Some additional details about the website",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2023-06-02T15:51:44-03:00"
+      "last_modified": "2023-06-03T01:24:28-03:00"
     },
     {
       "path": "index.html",
-      "title": "UFSM | Monitoria Econometria I A",
-      "description": "Welcome to the website. I hope you enjoy it!\n",
-      "author": [],
-      "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2023-06-02T15:51:46-03:00"
+      "title": "Monitoria Econometria I A",
+      "description": "Repositório com o material utilizado na monitoria de Econometria I A, além de materiais complementares.\n",
+      "author": [
+        {
+          "name": "Luísa Gisele Böck",
+          "url": "https://luisa.rbind.io"
+        }
+      ],
+      "date": "06/01/2023",
+      "contents": "\r\nSlides\r\n01. Introdução\r\n02. Importação\r\n03. Manipulação\r\n04. Visualização\r\n05. Regressão\r\nScripts\r\n01. Introdução\r\n02. Importação\r\n03. Manipulação\r\n04. Visualização\r\n05. Regressão\r\n]\r\nDados\r\nPinguins\r\nEducacionais\r\n\r\n\r\n\r\n",
+      "last_modified": "2023-06-03T01:24:31-03:00"
     }
   ],
   "collections": []

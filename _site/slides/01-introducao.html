@@ -1,0 +1,2555 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Análises Econométricas</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Luísa Gisele Böck" />
+    <script src="01-introducao_files/header-attrs/header-attrs.js"></script>
+    <script src="01-introducao_files/clipboard/clipboard.min.js"></script>
+    <link href="01-introducao_files/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="01-introducao_files/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <script src="01-introducao_files/xaringanExtra_fit-screen/fit-screen.js"></script>
+    <link href="01-introducao_files/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <link href="01-introducao_files/shareon/shareon.min.css" rel="stylesheet" />
+    <script src="01-introducao_files/shareon/shareon.min.js"></script>
+    <link href="01-introducao_files/xaringanExtra-shareagain/shareagain.css" rel="stylesheet" />
+    <script src="01-introducao_files/xaringanExtra-shareagain/shareagain.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+    <link rel="stylesheet" href="footer-header.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+
+
+&lt;!-- inicio font awesome --&gt;
+&lt;script src="https://kit.fontawesome.com/1f72d6921a.js" crossorigin="anonymous"&gt;&lt;/script&gt;
+&lt;!-- final font awesome --&gt;
+
+&lt;!-- inicio github buttons  --&gt;
+&lt;script async defer src="https://buttons.github.io/buttons.js"&gt;&lt;/script&gt;
+&lt;!-- final github buttons  --&gt;
+
+
+.pull-left[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+## Análises Econométricas
+
+### Introdução a&amp;nbsp;&amp;nbsp;&amp;nbsp; Linguagem R
+
+**[Luísa Gisele Böck](https://luisa.rbind.io/)**&amp;nbsp;&amp;nbsp;    &lt;a href='mailto:luisa.bock@acad.ufsm.br'&gt;&lt;i class="far fa-envelope"&gt;&lt;/i&gt;&lt;/a&gt;    &lt;a href='https://twitter.com/lgiselebock'&gt;&lt;i class="fab fa-twitter"&gt;&lt;/i&gt;   &lt;a href='https://github.com/lgiselebock'&gt;&lt;i class="fab fa-github"&gt;&lt;/i&gt;&lt;/a&gt;
+
+__.can-edit[Junho de 2023]__
+
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="img/slides/00-intro-allison-horst.png" width="400px" /&gt;
+
+.center[Ilustração por [Allison Horst](https://twitter.com/allison_horst/)]
+]
+
+---
+
+## Instalação do R
+
+.pull-left[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+- [Download](https://cran.r-project.org/)
+- Use a versão mais recente 😉 
+]
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="img/slides/13-r-logo.svg" width="70%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Instalação do R
+
+&lt;img src="img/slides/14-r-install.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Instalação do RStudio
+
+.pull-left[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+- [Download](https://posit.co/download/rstudio-desktop/)
+- Use a versão mais recente 😉 
+]
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="img/slides/15-rstudio.png" width="70%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Instalação do R
+
+&lt;img src="img/slides/16-rstudio-install.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: inverse center middle
+
+# R e RStudio
+
+---
+
+### O que é o R?
+
+&gt; "R é um ambiente de software livre para computação estatística e gráficos". (https://www.r-project.org/)
+
+
+  - **Por que usar o R?**
+
+    - É uma linguagem de programação que possui muitas ferramentas para a análise de dados;
+
+    - É em código aberto (*open source*);
+  
+    - Possui uma comunidade ativa de pessoas desenvolvedoras;
+  
+    - É flexível, permite desenvolver funções e pacotes para facilitar o trabalho;
+  
+    - Está disponível, gratuitamente, em diferentes plataformas: Windows, Linux e Mac;
+  
+    - Mantido pela [R Development Core Team](https://cran.r-project.org/).
+
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### RStudio 
+
+**RStudio** é uma IDE (*Integrated Development Environment*) da Linguagem R, isto é, um ambiente de desenvolvimento que utilizamos para editar e executar os códigos em R. Ela é mantida pela [Posit](https://posit.co/).
+
+&lt;img src="img/slides/01-rstudio.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### RStudio
+
+**Editor/Scripts:** onde os códigos são escritos. O `RStudio` destaca algumas palavras e símbolos para facilitar a leitura do código.
+
+&lt;img src="img/slides/02-rstudio-haydee.jpg" width="600px" style="display: block; margin: auto;" /&gt;
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt; e &lt;a href="https://www.slideshare.net/haydeesvab/anlise-crtica-de-dados-primeiros-passos-com-r"&gt;Haydee Svab&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### RStudio
+
+**Console**: é onde rodamos o código e recebemos as saídas. **O R vive aqui!**
+
+&lt;img src="img/slides/03-rstudio-haydee.jpg" width="650px" style="display: block; margin: auto;" /&gt;
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt; e &lt;a href="https://www.slideshare.net/haydeesvab/anlise-crtica-de-dados-primeiros-passos-com-r"&gt;Haydee Svab&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### RStudio
+
+**Environment:** painel com todos os objetos criados na sessão.
+
+&lt;img src="img/slides/04-rstudio-haydee.jpg" width="650px" style="display: block; margin: auto;" /&gt;
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt; e &lt;a href="https://www.slideshare.net/haydeesvab/anlise-crtica-de-dados-primeiros-passos-com-r"&gt;Haydee Svab&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### RStudio
+
+**History**: painel com um histórico dos comandos rodados.
+
+&lt;img src="img/slides/05-rstudio-haydee.jpg" width="650px" style="display: block; margin: auto;" /&gt;
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt; e &lt;a href="https://www.slideshare.net/haydeesvab/anlise-crtica-de-dados-primeiros-passos-com-r"&gt;Haydee Svab&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### RStudio
+
+**Files**: mostra os arquivos no diretório de trabalho. É possível navegar entre diretórios.
+
+&lt;img src="img/slides/06-rstudio-haydee.jpg" width="600px" style="display: block; margin: auto;" /&gt;
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt; e &lt;a href="https://www.slideshare.net/haydeesvab/anlise-crtica-de-dados-primeiros-passos-com-r"&gt;Haydee Svab&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### RStudio
+
+**Plots**: painel onde os gráficos serão apresentados.
+
+&lt;img src="img/slides/07-rstudio-haydee.jpg" width="650px" style="display: block; margin: auto;" /&gt;
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt; e &lt;a href="https://www.slideshare.net/haydeesvab/anlise-crtica-de-dados-primeiros-passos-com-r"&gt;Haydee Svab&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### RStudio
+
+**Packages**: apresenta todos os pacotes instalados e carregados.
+
+&lt;img src="img/slides/08-rstudio-haydee.jpg" width="650px" style="display: block; margin: auto;" /&gt;
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt; e &lt;a href="https://www.slideshare.net/haydeesvab/anlise-crtica-de-dados-primeiros-passos-com-r"&gt;Haydee Svab&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### RStudio
+
+**Help**: janela onde a documentação das funções serão apresentadas.
+
+&lt;img src="img/slides/09-rstudio-haydee.jpg" width="650px" style="display: block; margin: auto;" /&gt;
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt; e &lt;a href="https://www.slideshare.net/haydeesvab/anlise-crtica-de-dados-primeiros-passos-com-r"&gt;Haydee Svab&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Atalhos
+
+Conhecer os atalhos do teclado ajuda bastante durante a programação no `RStudio`
+
+- **CTRL + ENTER:** avalia/roda a linha selecionada no script;
+
+- **ALT + -:** cria no script um sinal de atribuição (`&lt;-`);
+
+- **CTRL + SHIFT + M:** adiciona o operador pipe (`%&gt;%` ou `|&gt;`);
+
+- **CTRL + 1:** altera cursor para o script;
+
+- **CTRL + 2:** altera cursor para o console.
+
+- **ALT + SHIFT + K:** janela com todos os atalhos disponíveis.
+
+&lt;br&gt; 
+
+No MacOS, substitua `CTRL` por `Command` e `ALT` por `Option`.
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Help! 
+
+Ficou com dúvida sobre determinado pacote ou função?
+
+  - Peça ajuda: **help**(nome_da_funcao) ou **?**nome_da_funcao
+
+
+```r
+help(sum)
+?sum
+```
+
+  - Se a dúvida persistir, procure no Google ou no [Stack OverFlow](https://stackoverflow.com/)
+  
+  - E se ainda estiver com dúvidas, pergunte para a comunidade:
+    
+    - há diversos grupos no Telegram, no Twitter e em outras redes sociais.
+   
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+    
+---
+
+### O Ciclo da Ciência de Dados
+
+&lt;img src="img/slides/10-ciclo-ciencia-de-dados.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/cebrap-lab-intro-R-5-2022/slides/introducao-ao-curso.html#/"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### O Ciclo da Ciência de Dados no R
+
+&lt;img src="img/slides/11-ciclo-ciencia-de-dados-no-r.png" width="700px" style="display: block; margin: auto;" /&gt;
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/cebrap-lab-intro-R-5-2022/slides/introducao-ao-curso.html#/"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+class: inverse center middle
+
+# Introdução
+
+.center[(Acompanhe no arquivo `01-introducao.R`)]
+
+---
+
+### R como calculadora
+
+O **R** permite realizar muitas operações matemáticas!
+
+
+```r
+2 + 5 # adição
+```
+
+```
+## [1] 7
+```
+
+```r
+9 - 4 # subtração
+```
+
+```
+## [1] 5
+```
+
+```r
+5 * 2 # multiplicação
+```
+
+```
+## [1] 10
+```
+
+```r
+7/5 # divisão
+```
+
+```
+## [1] 1.4
+```
+
+- `CTRL + ENTER`: executa a linha selecionada no script
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### R como calculadora
+
+
+```r
+9 %% 4 # resto da divisão de 9 por 4
+```
+
+```
+## [1] 1
+```
+
+```r
+7 %/% 4 # parte inteira da divisão de 7 por 4
+```
+
+```
+## [1] 1
+```
+
+```r
+8 ^ 2 # potenciação
+```
+
+```
+## [1] 64
+```
+
+```r
+sqrt(1024) # radiciação
+```
+
+```
+## [1] 32
+```
+
+A ordem matemática das operações também vale no R.
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Funções matemáticas
+
+
+```r
+sin(1) # funções trigonométricas
+```
+
+```
+## [1] 0.841471
+```
+
+```r
+log(1) # logaritmo natural (base e)
+```
+
+```
+## [1] 0
+```
+
+```r
+log10(10) # logaritmo na base 10
+```
+
+```
+## [1] 1
+```
+
+```r
+exp(0.5) # exponencial e^(1/2)
+```
+
+```
+## [1] 1.648721
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Objetos
+
+O **R** te permite salvar valores dentro de um objeto. 
+
+Um **objeto** é um nome que guarda um valor, uma função ou uma base de dados.
+
+- Para atribuir um valor a um objeto no R, utilizamos o operador:
+.center[**`&lt;-`**]
+
+.center[`nome_do_objeto &lt;- valor`]
+
+- Atalho: `ALT` + `-`: cria o `&lt;-` sinal de atribuição.
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="hhttps://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt; e &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+#### Exemplo:
+
+
+```r
+nome &lt;- "Camilo Sobreira de Santana"
+nome
+```
+
+```
+## [1] "Camilo Sobreira de Santana"
+```
+
+```r
+idade &lt;- 54
+idade
+```
+
+```
+## [1] 54
+```
+
+```r
+cargo_ou_funcao &lt;- "Ministro da Educação"
+cargo_ou_funcao
+```
+
+```
+## [1] "Ministro da Educação"
+```
+
+```r
+salario &lt;- 39293.32
+salario
+```
+
+```
+## [1] 39293.32
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://portaldatransparencia.gov.br/"&gt;Portal da Transparência&lt;/a&gt; e &lt;a href="https://pt.wikipedia.org/wiki/Camilo_Santana"&gt;Wikipedia&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Nomes dos Objetos
+
+Existem algumas regras para dar nomes aos objetos:
+
+  - os nomes devem começar com uma letra. E podem conter letras, números, `_` e `.`. Não usar acentuações e espaços. O autor do livro [R for Data Science](https://r4ds.had.co.nz/) recomenda **usar_snake_case**, ou seja, palavras escritas em minúsculo separadas pelo underscore (`_`).
+  
+  - o `R` é `case sensitive`, isto é, faz a diferenciação entre as letras minúsculas e maiúsculas. Portanto, um objeto chamado `teste` é diferente de uma outro objeto chamado `Teste`.
+  
+
+
+```r
+a &lt;- 2
+a
+```
+
+```
+## [1] 2
+```
+
+```r
+A &lt;- 4
+A
+```
+
+```
+## [1] 4
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="hhttps://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt; e &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Operadores Relacionais
+
+- Igual a: **==**
+
+- Diferente de: **!=**
+
+- Maior que: **&gt;**
+
+- Maior ou igual a: **&gt;=**
+
+- Menor que: **&lt;**
+
+- Menor ou igual a: **&lt;=**
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Operadores Relacionais
+
+- Igual a: **==**
+
+
+```r
+TRUE == TRUE
+```
+
+```
+## [1] TRUE
+```
+
+```r
+TRUE == FALSE
+```
+
+```
+## [1] FALSE
+```
+
+- Diferente de: **!=**
+
+
+```r
+TRUE != TRUE
+```
+
+```
+## [1] FALSE
+```
+
+```r
+TRUE != FALSE
+```
+
+```
+## [1] TRUE
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Operadores Relacionais
+
+- Maior que: **&gt;**
+
+
+```r
+15 &gt; 10
+```
+
+```
+## [1] TRUE
+```
+
+```r
+10 &gt; 10
+```
+
+```
+## [1] FALSE
+```
+
+- Menor que: **&lt;**
+
+
+```r
+3 &lt; 5
+```
+
+```
+## [1] TRUE
+```
+
+```r
+10 &lt; 5
+```
+
+```
+## [1] FALSE
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Operadores Relacionais
+
+- Maior ou igual a: **&gt;=**
+
+
+```r
+15 &gt;= 10
+```
+
+```
+## [1] TRUE
+```
+
+```r
+15 &gt;= 15
+```
+
+```
+## [1] TRUE
+```
+
+- Menor ou igual a: **&lt;=**
+
+
+```r
+10 &lt;= 10
+```
+
+```
+## [1] TRUE
+```
+
+```r
+10 &lt;= 8
+```
+
+```
+## [1] FALSE
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Operadores Lógicos
+
+- AND - E: **&amp;**
+
+Será verdadeiro (`TRUE`) se as duas condições forem verdadeiras
+
+
+```r
+x &lt;- 15
+
+  x &gt;= 10 &amp; x &lt;= 20
+```
+
+```
+## [1] TRUE
+```
+
+```r
+y &lt;- 7
+
+  y &gt;= 10 &amp; y &lt;= 15
+```
+
+```
+## [1] FALSE
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Operadores Lógicos
+
+- OR - OU: **|**
+
+Será verdadeiro (`TRUE`) se uma das duas condições for verdadeira
+
+
+```r
+x &lt;- 5
+
+  x &gt;= 10 | x &lt;= 15
+```
+
+```
+## [1] TRUE
+```
+
+```r
+y &lt;- 2
+
+  y &gt;= 5 | y == 0
+```
+
+```
+## [1] FALSE
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Operadores Lógicos
+
+- NOT - NEGAÇÃO: **!**
+
+
+```r
+!TRUE
+```
+
+```
+## [1] FALSE
+```
+
+```r
+!FALSE
+```
+
+```
+## [1] TRUE
+```
+
+```r
+x &lt;- 8
+
+  (!x &lt; 5)
+```
+
+```
+## [1] TRUE
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Pertence
+
+É possível verificar se um valor está inserido dentro de um conjunto de valores (vetor). 
+
+É representado pelo símbolo `%in%`.
+
+
+```r
+3 %in% c(1, 2, 3)
+```
+
+```
+## [1] TRUE
+```
+
+```r
+"a" %in% c("b", "c")
+```
+
+```
+## [1] FALSE
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Tipos Básicos de dados
+
+São os tipos de dados que podem ser representados na linguagem R. É neles que são guardadas as informações.
+
+- **Integer**: números inteiros 
+
+- **Double/Numeric**: números racionais 
+
+- **Logical**: tipos lógicos, `TRUE` ou `FALSE` 
+
+- **Character**: texto (sempre entre aspas)
+
+- **Factor**: dados categóricos
+
+- A função `class()` retorna o tipo do dado.
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Números
+
+Um número inteiro seguido de `L` será considera do tipo `integer`:
+
+
+```r
+class(5L)
+```
+
+```
+## [1] "integer"
+```
+
+Números racionais serão considerados como `double/numeric`:
+
+
+```r
+class(5)
+```
+
+```
+## [1] "numeric"
+```
+
+```r
+class(5.1)
+```
+
+```
+## [1] "numeric"
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Lógicos
+
+Verdadeiro (`TRUE`) OU Falso (`FALSE`)
+
+
+```r
+class(TRUE)
+```
+
+```
+## [1] "logical"
+```
+
+```r
+class(FALSE)
+```
+
+```
+## [1] "logical"
+```
+
+O R entende o `TRUE` sendo igual a 1 (um), e o `FALSE` sendo igual a 0 (zero).
+
+Isso significa que é possível realizar operações matemáticas com ele (por exemplo, somar):
+
+
+```r
+TRUE + FALSE + FALSE + TRUE + TRUE + TRUE + FALSE
+```
+
+```
+## [1] 4
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Textos
+
+**Qualquer** código entre aspas será interpretado como texto (`character`):
+
+
+```r
+class("TEXTO")
+```
+
+```
+## [1] "character"
+```
+
+```r
+escola &lt;- c("Médio", "Superior", "Fundamental", "Fundamental", "Médio")
+class(escola)
+```
+
+```
+## [1] "character"
+```
+
+```r
+class("3")
+```
+
+```
+## [1] "character"
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Fatores
+
+Os fatores (ou `factors`) são usados para representar categorias. 
+
+
+```r
+# Criando um factor
+
+escola_categorias &lt;- factor(
+  c("Médio", "Superior", "Fundamental", "Fundamental", "Médio")
+)
+escola_categorias
+```
+
+```
+## [1] Médio       Superior    Fundamental Fundamental Médio      
+## Levels: Fundamental Médio Superior
+```
+
+```r
+class(escola_categorias)
+```
+
+```
+## [1] "factor"
+```
+
+A função `as.factor()` cria um objeto do tipo `factor` ou converte um objeto já existente.
+
+Na linha `levels` aparecem os rótulos do fator.
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### NA
+
+**NA** representa um valor desconhecido ou ausente. As operações envolvendo um valor desconhecido também resultarão em valores desconhecidos.
+
+
+```r
+NA &gt; 10
+```
+
+```
+## [1] NA
+```
+
+```r
+NA + 10
+```
+
+```
+## [1] NA
+```
+
+```r
+NA / 5
+```
+
+```
+## [1] NA
+```
+
+```r
+10 == NA
+```
+
+```
+## [1] NA
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### NA
+
+
+```r
+NA == NA
+```
+
+```
+## [1] NA
+```
+
+----
+
+`is.na()` é a função que testa se um objeto é `NA`.
+
+
+```r
+vetor_numerico &lt;- c(NA, 1, 2, 3, 4, 5, NA)
+
+is.na(vetor_numerico)
+```
+
+```
+## [1]  TRUE FALSE FALSE FALSE FALSE FALSE  TRUE
+```
+
+```r
+!is.na(vetor_numerico)
+```
+
+```
+## [1] FALSE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### na.rm = TRUE
+
+Quando a função não sabe o valor dos elementos que contém `NA`, ela não consegue realizar os cálculos e devolve `NA`. Na maioria dos casos, se quer saber o resultado de um cálculo de um vetor apesar dos `NAs`. Para isso, é utilizado o argumento `na.rm = TRUE`.
+
+
+```r
+sum(vetor_numerico)
+```
+
+```
+## [1] NA
+```
+
+```r
+sum(vetor_numerico, na.rm = TRUE)
+```
+
+```
+## [1] 15
+```
+
+```r
+mean(vetor_numerico)
+```
+
+```
+## [1] NA
+```
+
+```r
+mean(vetor_numerico, na.rm = TRUE)
+```
+
+```
+## [1] 3
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="hhttps://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt; e &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Conversão de classes
+
+
+```r
+vetor_logical &lt;- c(TRUE, TRUE, FALSE, TRUE, FALSE)
+
+as.integer(vetor_logical) # converte para um número inteiro
+```
+
+```
+## [1] 1 1 0 1 0
+```
+
+```r
+as.numeric(vetor_logical) # converte para um número
+```
+
+```
+## [1] 1 1 0 1 0
+```
+
+```r
+as.character(vetor_logical) # converte para um texto
+```
+
+```
+## [1] "TRUE"  "TRUE"  "FALSE" "TRUE"  "FALSE"
+```
+
+```r
+as.factor(vetor_logical) # converte pra um fator
+```
+
+```
+## [1] TRUE  TRUE  FALSE TRUE  FALSE
+## Levels: FALSE TRUE
+```
+
+---
+
+### Conversão de classes
+
+
+```r
+frutas &lt;- c("amora", "banana", "melancia")
+
+as.integer(frutas)
+```
+
+```
+## [1] NA NA NA
+```
+
+```r
+as.numeric(frutas)
+```
+
+```
+## [1] NA NA NA
+```
+
+```r
+as.character(frutas)
+```
+
+```
+## [1] "amora"    "banana"   "melancia"
+```
+
+```r
+as.factor(frutas)
+```
+
+```
+## [1] amora    banana   melancia
+## Levels: amora banana melancia
+```
+
+
+---
+
+### Tipos de Objetos
+
+No **R**, os quatro principais objetos são: 
+
+  - Vetor;
+  
+  - Matriz;
+  
+  - Lista;
+  
+  - Data Frame
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Vetores
+
+- Armazenam elementos de uma `mesma classe`, em apenas `uma dimensão`.
+
+- Para criá-los, basta colocar os valores separados por vírgulas dentro da função `c()`.
+
+
+```r
+primeiro_semestre &lt;- c(
+  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho"
+)
+
+primeiro_semestre
+```
+
+```
+## [1] "Janeiro"   "Fevereiro" "Março"     "Abril"     "Maio"      "Junho"
+```
+
+```r
+# retorna o comprimento do vetor - quantos elementos ele tem?
+length(primeiro_semestre) 
+```
+
+```
+## [1] 6
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="hhttps://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt; e &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Vetores
+
+Para criar um vetor com uma sequência de números, basta utilizar o operador **:**
+
+
+```r
+# Vetor de 1 a 10
+1:10
+```
+
+```
+##  [1]  1  2  3  4  5  6  7  8  9 10
+```
+
+```r
+# Vetor de 10 a 1
+10:1
+```
+
+```
+##  [1] 10  9  8  7  6  5  4  3  2  1
+```
+
+```r
+# Vetor de -5 a 5
+-5:5
+```
+
+```
+##  [1] -5 -4 -3 -2 -1  0  1  2  3  4  5
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Vetores
+
+Por serem conjuntos indexados, cada valor dentro de um vetor tem uma posição. Essa posição é dada pela ordem em que os elementos foram dispostos no momento em que o vetor foi criado. Dessa forma, é possível acessar individualmente cada valor de um vetor.
+
+Para isso, basta colocar o índice do valor que se deseja acessar dentro de **conchetes** `[]`:
+
+
+```r
+# primeiro elemento do vetor
+primeiro_semestre[1]
+```
+
+```
+## [1] "Janeiro"
+```
+
+```r
+# primeiro e segundo elemento do vetor
+primeiro_semestre[1:2]
+```
+
+```
+## [1] "Janeiro"   "Fevereiro"
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="hhttps://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt; e &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Vetores
+
+
+```r
+# remove o primeiro elemento do vetor
+primeiro_semestre[-1]
+```
+
+```
+## [1] "Fevereiro" "Março"     "Abril"     "Maio"      "Junho"
+```
+
+```r
+# seleciona o elemento seis até o quarto (e muda a ordem dos elementos)
+primeiro_semestre[6:4]
+```
+
+```
+## [1] "Junho" "Maio"  "Abril"
+```
+
+É possível colocar um conjunto de índices dentro dos colchetes para pegar os valores contidos nessas posições:
+
+
+```r
+# seleciona o primeiro, o terceiro e o quinto elemento do vetor
+primeiro_semestre[c(1, 3, 5)]
+```
+
+```
+## [1] "Janeiro" "Março"   "Maio"
+```
+
+Essas operações são chamadas de *subsetting*, pois são acessados os subconjuntos de valores de um vetor.
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="hhttps://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt; e &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Vetores
+
+**Classe do Vetor:**
+
+Um vetor só pode guardar um tipo de objeto e ele terá sempre a mesma classe dos objetos que guarda.
+
+Para saber a classe de um vetor, basta rodar `class(nome_do_vetor)`.
+
+
+```r
+primeiro_semestre &lt;- c(
+  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho"
+)
+
+class(primeiro_semestre)
+```
+
+```
+## [1] "character"
+```
+
+```r
+anos_bissextos &lt;- c(2000, 2004, 2008, 2012, 2016, 2020, 2024)
+
+class(anos_bissextos)
+```
+
+```
+## [1] "numeric"
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Vetores
+
+**Coerção:**
+
+Ao tentar misturar duas classes de elementos dentro de um vetor, o **R** vai apresentar o comportamento conhecido como **coerção**.
+
+
+```r
+segundo_semestre &lt;- c(7, 8, 9, 10, 11, "Dezembro")
+
+segundo_semestre
+```
+
+```
+## [1] "7"        "8"        "9"        "10"       "11"       "Dezembro"
+```
+
+```r
+class(segundo_semestre)
+```
+
+```
+## [1] "character"
+```
+
+Todos os elemento do vetor se transformaram em `texto`. Como um vetor só pode ter uma classe de objeto dentro dele, classes mais fracas serão sempre reprimidas pelas classes mais fortes.
+
+.center[`character &gt; numeric &gt; integer &gt; logical`]
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Vetores
+
+**Operações com Vetores:**
+
+É possível realizar operações com vetores:
+
+
+```r
+vetor_numerico &lt;- c(0, 5, 10, 15, 20)
+
+vetor_numerico + 1
+```
+
+```
+## [1]  1  6 11 16 21
+```
+
+Ao rodar `vetor_numerico + 1`, o **R** adiciona 1 de cada um dos elementos do vetor. O mesmo acontece com qualquer outra operação aritmética 
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Vetores
+
+**Vetorização:**
+
+Também é possível fazer operações que envolvem mais de um vetor:
+
+
+```r
+vetor1 &lt;- c(1, 2, 3)
+vetor2 &lt;- c(10, 20, 30)
+
+vetor1 + vetor2
+```
+
+```
+## [1] 11 22 33
+```
+
+O **R** vai alinhar os dois vetores e somar elemento a elemento.
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Vetores
+
+**Reciclagem:**
+
+Ocorre quando os dois vetores não possuem o mesmo tamanho:
+
+
+```r
+vetor1 &lt;- c(1, 2)
+vetor2 &lt;- c(10, 20, 30, 40)
+
+vetor1 + vetor2
+```
+
+```
+## [1] 11 22 31 42
+```
+
+O **R** alinhou os dois vetores e, como eles não possuíam o mesmo tamanho, o primeiro foi repetido para ficar do mesmo tamanho do segundo. É como se o primeiro vetor fosse, na verdade, `c(1, 2, 1, 2)`.
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Vetores
+
+**Reciclagem:**
+
+Um caso interessante ocorre quando o comprimento dos vetores não são múltiplos um do outro:
+
+
+```r
+vetor1 &lt;- c(1, 2, 3)
+vetor2 &lt;- c(10, 20, 30, 40, 50)
+
+vetor1 + vetor2
+```
+
+```
+## Warning in vetor1 + vetor2: comprimento do objeto maior não é múltiplo do
+## comprimento do objeto menor
+```
+
+```
+## [1] 11 22 33 41 52
+```
+
+O **R** realizou a operação, repetindo cada valor do primeiro vetor até que os dois tivessem o mesmo tamanho. Na realidade, a operação realizada foi `c(1, 2, 3, 1, 2) + c(10, 20, 30, 40, 50)`.
+
+Como essa operação não é intuitiva, o **R** devolveu um aviso dizendo que o comprimento do primeiro vetor não é múltiplo do comprimento do segundo vetor.
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Vetores
+
+**Filtro:**
+
+
+```r
+numeros &lt;- c(-3, -1, 3, 5, 7, 10, 15)
+numeros &gt; 3
+```
+
+```
+## [1] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
+```
+
+```r
+numeros[numeros &gt; 3]
+```
+
+```
+## [1]  5  7 10 15
+```
+
+Na primeira operação, o **R** fez uso da Reciclagem. Ele transformou o valor 3 no vetor `c(3, 3, 3, 3, 3, 3, 3)` e testou se `c(-3, -1, 3, 5, 7, 10, 15) &gt; c(3, 3, 3, 3, 3, 3, 3)`.
+
+A segunda operação, retornou as posições que receberam `TRUE` e não retornou as posições que receberam `FALSE`. Portanto, a segunda operação é equivalente a:
+
+
+```r
+numeros[c(FALSE, FALSE, FALSE,  TRUE,  TRUE,  TRUE,  TRUE)]
+```
+
+```
+## [1]  5  7 10 15
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Matrizes
+
+São estruturas que correspondem às matrizes matemáticas, conjuntos bidimensionais contendo elementos dispostos em linhas e colunas. Assim como os vetores, todos os seus elementos são do mesmo tipo. São criados utilizando a função `matrix()`:
+
+
+```r
+matriz1 &lt;- matrix(c(1:12), nrow = 3, ncol = 4)
+matriz1
+```
+
+```
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    4    7   10
+## [2,]    2    5    8   11
+## [3,]    3    6    9   12
+```
+
+```r
+class(matriz1)
+```
+
+```
+## [1] "matrix" "array"
+```
+
+```r
+dim(matriz1)
+```
+
+```
+## [1] 3 4
+```
+
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://felipegalvao.com.br/pt/blog/basic-r-introduction-data-types-and-structures/"&gt;Felipe Galvão&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Matrizes
+
+É possível alterar a ordem de preenchimento da matriz (por linhas ao invés de colunas):
+
+
+```r
+matriz2 &lt;- matrix(c(1:12), nrow = 3, ncol = 4, byrow = TRUE)
+matriz2
+```
+
+```
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    2    3    4
+## [2,]    5    6    7    8
+## [3,]    9   10   11   12
+```
+
+```r
+class(matriz2)
+```
+
+```
+## [1] "matrix" "array"
+```
+
+```r
+dim(matriz2)
+```
+
+```
+## [1] 3 4
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="http://leg.ufpr.br/~fernandomayer/aulas/ce083-2016-2/02_funcoes_e_objetos.html"&gt;Fernando Mayer&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Matrizes
+
+Também é possível adicionar colunas com `cbind()` e linhas com `rbind()`
+
+
+```r
+cbind(matriz1, rep(99, 3))
+```
+
+```
+##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    1    4    7   10   99
+## [2,]    2    5    8   11   99
+## [3,]    3    6    9   12   99
+```
+
+```r
+rbind(matriz1, rep(99, 4))
+```
+
+```
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    4    7   10
+## [2,]    2    5    8   11
+## [3,]    3    6    9   12
+## [4,]   99   99   99   99
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="http://leg.ufpr.br/~fernandomayer/aulas/ce083-2016-2/02_funcoes_e_objetos.html"&gt;Fernando Mayer&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Matrizes
+
+**Operações com Matrizes:**
+
+
+```r
+matriz1 * 2
+```
+
+```
+##      [,1] [,2] [,3] [,4]
+## [1,]    2    8   14   20
+## [2,]    4   10   16   22
+## [3,]    6   12   18   24
+```
+
+```r
+matriz1 %% matriz2
+```
+
+```
+##      [,1] [,2] [,3] [,4]
+## [1,]    0    0    1    2
+## [2,]    2    5    1    3
+## [3,]    3    6    9    0
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="http://leg.ufpr.br/~fernandomayer/aulas/ce083-2016-2/02_funcoes_e_objetos.html"&gt;Fernando Mayer&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Listas
+
+São um tipo especial de vetor que podem conter uma coleção de diferentes classes. Possuem uma estrutura "unidimensional", contando apenas o número de elementos integrantes.São criados utilizando a função `list()`:
+
+
+```r
+lista &lt;- list(a = 1:10, b = c("T1", "T2", "T3", "T4"), TRUE, 2 + 2)
+lista
+```
+
+```
+## $a
+##  [1]  1  2  3  4  5  6  7  8  9 10
+## 
+## $b
+## [1] "T1" "T2" "T3" "T4"
+## 
+## [[3]]
+## [1] TRUE
+## 
+## [[4]]
+## [1] 4
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="http://leg.ufpr.br/~fernandomayer/aulas/ce083-2016-2/02_funcoes_e_objetos.html"&gt;Fernando Mayer&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Listas
+
+
+```r
+class(lista)
+```
+
+```
+## [1] "list"
+```
+
+```r
+dim(lista)
+```
+
+```
+## NULL
+```
+
+```r
+length(lista)
+```
+
+```
+## [1] 4
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="http://leg.ufpr.br/~fernandomayer/aulas/ce083-2016-2/02_funcoes_e_objetos.html"&gt;Fernando Mayer&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Data Frame
+
+São tabelas, que possuem duas dimensões (linhas e colunas), onde cada coluna pode ser de classes diferentes.
+
+
+|                  |  mpg| cyl|  disp|  hp| drat|    wt|  qsec| vs| am| gear| carb|
+|:-----------------|----:|---:|-----:|---:|----:|-----:|-----:|--:|--:|----:|----:|
+|Mazda RX4         | 21.0|   6| 160.0| 110| 3.90| 2.620| 16.46|  0|  1|    4|    4|
+|Mazda RX4 Wag     | 21.0|   6| 160.0| 110| 3.90| 2.875| 17.02|  0|  1|    4|    4|
+|Datsun 710        | 22.8|   4| 108.0|  93| 3.85| 2.320| 18.61|  1|  1|    4|    1|
+|Hornet 4 Drive    | 21.4|   6| 258.0| 110| 3.08| 3.215| 19.44|  1|  0|    3|    1|
+|Hornet Sportabout | 18.7|   8| 360.0| 175| 3.15| 3.440| 17.02|  0|  0|    3|    2|
+|Valiant           | 18.1|   6| 225.0| 105| 2.76| 3.460| 20.22|  1|  0|    3|    1|
+|Duster 360        | 14.3|   8| 360.0| 245| 3.21| 3.570| 15.84|  0|  0|    3|    4|
+|Merc 240D         | 24.4|   4| 146.7|  62| 3.69| 3.190| 20.00|  1|  0|    4|    2|
+|Merc 230          | 22.8|   4| 140.8|  95| 3.92| 3.150| 22.90|  1|  0|    4|    2|
+|Merc 280          | 19.2|   6| 167.6| 123| 3.92| 3.440| 18.30|  1|  0|    4|    4|
+
+---
+
+### Data Frame
+
+
+```r
+# retorna a classe
+class(mtcars)
+```
+
+```
+## [1] "data.frame"
+```
+
+```r
+# retorna o número de colunas
+ncol(mtcars)
+```
+
+```
+## [1] 11
+```
+
+```r
+# retorna o número de linhas 
+nrow(mtcars)
+```
+
+```
+## [1] 32
+```
+
+```r
+# retorna a dimensão do dataframe - o número de linhas e colunas
+dim(mtcars)
+```
+
+```
+## [1] 32 11
+```
+
+---
+
+### Data Frame
+
+
+```r
+# retorna algumas informações sobre a base
+str(mtcars)
+```
+
+```
+## 'data.frame':	32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...
+```
+
+---
+
+### Data Frame
+
+
+```r
+# retorna as seis primeiras linhas de uma tabela
+head(mtcars)
+```
+
+```
+##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
+```
+
+```r
+# retorna as seis últimas linhas de uma tabela
+tail(mtcars)
+```
+
+```
+##                 mpg cyl  disp  hp drat    wt qsec vs am gear carb
+## Porsche 914-2  26.0   4 120.3  91 4.43 2.140 16.7  0  1    5    2
+## Lotus Europa   30.4   4  95.1 113 3.77 1.513 16.9  1  1    5    2
+## Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.5  0  1    5    4
+## Ferrari Dino   19.7   6 145.0 175 3.62 2.770 15.5  0  1    5    6
+## Maserati Bora  15.0   8 301.0 335 3.54 3.570 14.6  0  1    5    8
+## Volvo 142E     21.4   4 121.0 109 4.11 2.780 18.6  1  1    4    2
+```
+
+---
+
+### Data Frame
+
+**Selecionando as Colunas:**
+
+Para selecionar as colunas de um Data Frame, utilize o `$`:
+
+`Dica:` após escrever o `nome_do_dataframe$`, aperte `Tab` para que o RStudio faça as sugestões de colunas da base.
+
+
+```r
+mtcars$cyl
+```
+
+```
+##  [1] 6 6 4 6 8 6 8 4 4 6 6 8 8 8 8 8 8 4 4 4 4 8 8 8 8 4 4 4 8 6 8 4
+```
+
+```r
+mtcars$gear
+```
+
+```
+##  [1] 4 4 4 3 3 3 3 4 4 4 4 3 3 3 3 3 3 4 4 4 3 3 3 3 3 4 5 5 5 5 5 4
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Data Frame
+
+**Subsetting:** Selecionar elementos utilizando colchetes: `data_frame[linha, coluna]`:
+
+
+```r
+# retorna o elemento presente na segunda linha da terceira coluna
+mtcars[2, 3]
+```
+
+```
+## [1] 160
+```
+
+```r
+# retorna todas as linhas da coluna 1
+mtcars[ , 1]
+```
+
+```
+##  [1] 21.0 21.0 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 17.8 16.4 17.3 15.2 10.4
+## [16] 10.4 14.7 32.4 30.4 33.9 21.5 15.5 15.2 13.3 19.2 27.3 26.0 30.4 15.8 19.7
+## [31] 15.0 21.4
+```
+
+```r
+# retorna todas as colunas da linha 1
+mtcars[1, ]
+```
+
+```
+##           mpg cyl disp  hp drat   wt  qsec vs am gear carb
+## Mazda RX4  21   6  160 110  3.9 2.62 16.46  0  1    4    4
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Data Frame
+
+**Subsetting:** Selecionar mais de uma coluna:
+
+
+```r
+mtcars[, c(1, 2, 4)]
+```
+
+```
+##                      mpg cyl  hp
+## Mazda RX4           21.0   6 110
+## Mazda RX4 Wag       21.0   6 110
+## Datsun 710          22.8   4  93
+## Hornet 4 Drive      21.4   6 110
+## Hornet Sportabout   18.7   8 175
+## Valiant             18.1   6 105
+## Duster 360          14.3   8 245
+## Merc 240D           24.4   4  62
+## Merc 230            22.8   4  95
+## Merc 280            19.2   6 123
+## Merc 280C           17.8   6 123
+## Merc 450SE          16.4   8 180
+## Merc 450SL          17.3   8 180
+## Merc 450SLC         15.2   8 180
+## Cadillac Fleetwood  10.4   8 205
+## Lincoln Continental 10.4   8 215
+## Chrysler Imperial   14.7   8 230
+## Fiat 128            32.4   4  66
+## Honda Civic         30.4   4  52
+## Toyota Corolla      33.9   4  65
+## Toyota Corona       21.5   4  97
+## Dodge Challenger    15.5   8 150
+## AMC Javelin         15.2   8 150
+## Camaro Z28          13.3   8 245
+## Pontiac Firebird    19.2   8 175
+## Fiat X1-9           27.3   4  66
+## Porsche 914-2       26.0   4  91
+## Lotus Europa        30.4   4 113
+## Ford Pantera L      15.8   8 264
+## Ferrari Dino        19.7   6 175
+## Maserati Bora       15.0   8 335
+## Volvo 142E          21.4   4 109
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Data Frame
+
+**Subsetting:** Selecionar mais de uma coluna:
+
+
+```r
+mtcars[, c("mpg", "cyl", "hp")]
+```
+
+```
+##                      mpg cyl  hp
+## Mazda RX4           21.0   6 110
+## Mazda RX4 Wag       21.0   6 110
+## Datsun 710          22.8   4  93
+## Hornet 4 Drive      21.4   6 110
+## Hornet Sportabout   18.7   8 175
+## Valiant             18.1   6 105
+## Duster 360          14.3   8 245
+## Merc 240D           24.4   4  62
+## Merc 230            22.8   4  95
+## Merc 280            19.2   6 123
+## Merc 280C           17.8   6 123
+## Merc 450SE          16.4   8 180
+## Merc 450SL          17.3   8 180
+## Merc 450SLC         15.2   8 180
+## Cadillac Fleetwood  10.4   8 205
+## Lincoln Continental 10.4   8 215
+## Chrysler Imperial   14.7   8 230
+## Fiat 128            32.4   4  66
+## Honda Civic         30.4   4  52
+## Toyota Corolla      33.9   4  65
+## Toyota Corona       21.5   4  97
+## Dodge Challenger    15.5   8 150
+## AMC Javelin         15.2   8 150
+## Camaro Z28          13.3   8 245
+## Pontiac Firebird    19.2   8 175
+## Fiat X1-9           27.3   4  66
+## Porsche 914-2       26.0   4  91
+## Lotus Europa        30.4   4 113
+## Ford Pantera L      15.8   8 264
+## Ferrari Dino        19.7   6 175
+## Maserati Bora       15.0   8 335
+## Volvo 142E          21.4   4 109
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Data Frame
+
+**Filtrando colunas:**
+
+
+```r
+mtcars[mtcars$cyl == 4, ]
+```
+
+```
+##                 mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+## Datsun 710     22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+## Merc 240D      24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+## Merc 230       22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+## Fiat 128       32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+## Honda Civic    30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+## Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+## Toyota Corona  21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1
+## Fiat X1-9      27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+## Porsche 914-2  26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+## Lotus Europa   30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+## Volvo 142E     21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Data Frame
+
+É possível utilizar funções nas colunas dos Data Frames:
+
+
+```r
+min(mtcars$mpg) # valor mínimo
+```
+
+```
+## [1] 10.4
+```
+
+```r
+max(mtcars$mpg) # valor máximo
+```
+
+```
+## [1] 33.9
+```
+
+```r
+mean(mtcars$mpg) # valor médio
+```
+
+```
+## [1] 20.09062
+```
+
+```r
+median(mtcars$mpg) # valor da mediana
+```
+
+```
+## [1] 19.2
+```
+
+---
+
+### Funções
+
+Enquanto os objetos são nomes que guardam valores, as **funções** são nomes que **guardam um código de R**. Sempre que rodar um função, o código que ela guarda será executado e um resultado será devolvido.
+
+Elas permitem **automatizar tarefas** comuns de maneira mais poderosa do que copiar e colar.
+
+As funções são tão comuns e intuitivas que, mesmo sem definir o que elas são, várias já foram utilizadas em seções anteriores:
+
+- `c()` para criar vetores;
+
+- `class()` para descobrir a classe de um objeto;
+
+- `dim()` para verificar a dimensão de um Data Frame ou de uma matriz;
+
+- `mean()` para encontrar a média de um vetor;
+
+- `max()` para encontrar o valor máximo de um vetor ...
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="hhttps://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt; e &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Funções
+
+**Estrutura de uma Função:**
+
+- **Nome:** é como ela fica salva no ambiente; é importante para usar ("chamar") a função;
+
+- **Argumentos:** são os parâmetros usados internamente pela função;
+
+- **Corpo:** o código que será utilizado.
+
+
+```r
+# estrutura para criar uma função
+nome_da_funcao &lt;- function(argumentos) {
+  corpo da função
+}
+
+# para usar a função
+nome_da_funcao(argumentos = ...)
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Funções
+
+**Argumentos:**
+
+Diferente dos objetos, **as funções podem receber argumentos**. Eles são valores que colocamos dentro dos parênteses e que as funções precisam para funcionar.
+
+Por exemplo, a função `c()` precisa saber quais são os valores que formarão o vetor que ela irá criar:
+
+
+```r
+c(1, 5, 10)
+```
+
+```
+## [1]  1  5 10
+```
+
+
+Os valores 1, 5 e 10 são os argumentos da função `c()`. 
+
+**Os argumentos da função são sempre separados por vírgulas.**
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="hhttps://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt; e &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Funções
+
+**Argumentos:**
+
+Cada função pode funcionar de um jeito diferente das demais, mesmo quando elas fazem tarefas parecidas. Por exemplo:
+
+
+```r
+sum(1, 3)
+```
+
+```
+## [1] 4
+```
+
+Essa função retorna a soma de seus argumentos. Também é possível passar um vetor como argumento, e ela retornará a soma dos elementos do vetor.
+
+
+```r
+sum(c(1, 3))
+```
+
+```
+## [1] 4
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Funções
+
+**Argumentos:**
+
+Em compensação, a função `mean()`, que calcula a média de um conjunto de valores, exige que se passe os valores na forma de um vetor.
+
+
+```r
+# só vai considerar o primeiro número na média
+mean(1, 3)
+```
+
+```
+## [1] 1
+```
+
+```r
+# considera todos os valores dentro do vetor na média
+mean(c(1, 3))
+```
+
+```
+## [1] 2
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Funções
+
+**Argumentos:** também têm nomes que podem (ou não) ser usados na hora de usar uma função. Por exemplo, a função `seq()`:
+
+
+```r
+seq(from = 4, to = 10, by = 2)
+```
+
+```
+## [1]  4  6  8 10
+```
+
+Essa função possui (entre outros) os argumentos `from= `, `to= ` e `by=`. E o que ela faz é criar uma sequência (vetor) de `by` em `by` que começa em `from` e termina em `to`. 
+
+Também é possível usar a mesma função sem colocar o nome dos argumentos:
+
+
+```r
+seq(4, 10, 2)
+```
+
+```
+## [1]  4  6  8 10
+```
+
+Nesse caso, é preciso colocar os valores na ordem em que os argumentos aparecem.
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Funções
+
+**Argumentos:**
+
+Escrevendo o nome dos argumentos, não há problema em alterar a ordem dos argumentos:
+
+
+```r
+seq(by = 2, to = 10, from = 4)
+```
+
+```
+## [1]  4  6  8 10
+```
+
+Mas se não especificar o nome dos argumentos, a ordem importa. Nesse caso, o resultado será diferente:
+
+
+```r
+seq(2, 10, 4)
+```
+
+```
+## [1]  2  6 10
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Funções
+
+**Algumas Funções importantes do R base:**
+
+| **Função**   |       **O que retorna?**      | **Função**   | **O que retorna?** |
+|:-------------|:-----------------------------:|:------------:|:------------------:|
+|   `head()`   |       6 primeiras linhas      |    `sum()`   |        soma        |
+|   `tail()`   |        6 últimas linhas       |   `mean()`   |        média       |
+|    `dim()`   |   número de linhas e colunas  |  `median()`  |       mediana      |
+|   `names()`  | nomes das colunas (variáveis) |    `var()`   |      variância     |
+|    `str()`   |    estrutura do data frame    |    `sd()`    |    desvio-padrão   |
+|   `cbind()`  |      acopla duas tabelas      |    `max()`   |    valor máximo    |
+|   `rbind()`  |      empilha duas tabelas     |    `min()`   |    valor mínimo    |
+|   `class()`  |        classe do objeto       |   `round()`  |  valor arredondado |
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="hhttps://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt; e &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Pacotes
+
+São coleções de funções, dados e documentação que estendem as capacidades do `R base`. 
+
+Eles precisam ser instalados e carregados.
+
+Um dos principais pacotes do **R** é o `tidyverse`.
+
+&lt;img src="img/slides/12-icon-packages.jpg" width="300px" style="display: block; margin: auto;" /&gt;
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Pacotes
+
+**Instalação dos Pacotes:**
+
+- Via CRAN:
+
+`install.packages("nome-do-pacote")`
+
+
+```r
+install.packages("tidyverse")
+```
+
+- Via GitHub:
+
+`devtools::install_github("nome-da-org/nome-do-repo)`
+
+
+```r
+devtools::install_github("tidyverse/dplyr")
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Pacotes
+
+**Carregar os Pacotes:**
+
+`library(nome-do-pacote)`
+
+
+```r
+library(tidyverse)
+```
+
+&lt;br&gt;
+
+**Dicas sobre os Pacotes:**   
+
+1. Só é preciso instalar o pacote uma vez, mas é necessário carregá-lo sempre que iniciar uma nova sessão;
+
+2. Para instalar o pacote use as aspas;
+
+3. Para carregar o pacote, não é necessário utilizar as aspas.
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/slidesR/introR/#1"&gt;Beatriz Milz&lt;/a&gt;&lt;/div&gt;
+
+---
+
+## Continue aprendendo! 
+
+.pull-left[
+#### Em Português:
+
+- [Material da Curso-R](https://livro.curso-r.com/)
+
+&lt;a href="http://material.curso-r.com/"&gt;
+&lt;img src="img/slides/17-cursor.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;/a&gt;
+]
+
+.pull-right[
+#### Em Inglês:
+
+- [Livro R for Data Science](https://r4ds.had.co.nz/)
+
+&lt;a href="https://r4ds.had.co.nz/"&gt;
+&lt;img src="img/slides/18-book-r4ds.png" width="60%" /&gt;
+&lt;/a&gt;
+]
+
+---
+
+# Obrigada!
+
+.pull-left[
+
+&lt;img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjFlNDgyOTRhMTk5MGE4ZTNmNjg5ZWMzM2NlZDU3ODBmZDU0OGFiNiZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/M9NbzZjAcxq9jS9LZJ/giphy.gif" width="65%" style="display: block; margin: auto;" /&gt;
+
+.center[Agradecimento especial à [Beatriz Milz](beamilz.com), [Curso-R](https://curso-r.com/) e [Haydée Svab](https://twitter.com/hsvab) pelos materiais.]
+
+.center[Slides criados usando os pacotes em R:]
+.center[[**xaringan**](https://github.com/yihui/xaringan)]
+.center[[**xaringanthemer**](https://github.com/gadenbuie/xaringanthemer)]
+
+.center[O chakra vem da biblioteca JavaScript [remark.js](https://remarkjs.com), [**knitr**](http://yihui.name/knitr), and [R Markdown](https://rmarkdown.rstudio.com).]
+]
+
+.pull-right[
+
+&lt;br&gt;
+
+&lt;img src="img/slides/19-luisa.jpg" width="55%" style="display: block; margin: auto;" /&gt;
+
+.center[&lt;i class="fas fa-home"&gt;&lt;/i&gt; [luisa.rbind.io](https://luisa.rbind.io/)]
+
+.center[&lt;i class="fab fa-twitter"&gt;&lt;/i&gt; [@lgiselebock](https://twitter.com/lgiselebock)]
+
+.center[&lt;i class="fab fa-github"&gt;&lt;/i&gt; [@lgiselebock](https://github.com/lgiselebock/)]
+
+.center[&lt;i class="far fa-envelope"&gt;&lt;/i&gt; [luisa.bock@acad.ufsm.br](mailto:luisa.bock@acad.ufsm.br)]
+]
+
+&lt;!-- inicio academic icons --&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css"&gt;
+&lt;!-- final academic icons --&gt;
+
+ 
+&lt;!-- inicio font awesome --&gt;
+&lt;script src="https://kit.fontawesome.com/1f72d6921a.js" crossorigin="anonymous"&gt;&lt;/script&gt;
+
+&lt;!-- final font awesome --&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
