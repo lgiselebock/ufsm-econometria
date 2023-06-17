@@ -82,8 +82,11 @@ Uma das vantagens de se utilizar o **R** é a existência de pacotes criados par
 - Um [exemplo](http://regisely.com/blog/mercado-de-trabalho-covid/){target="_blank"} do uso dos dados da PNAD Covid - Régis Ely
 
 Base dos Dados Mais (BD+): um repositório integrado de dados organizados e disponíveis na nuvem dentro da ferramenta BigQuery, da Google. Com algumas linhas de código, bases de dados que levariam dias para baixar e tratar podem ser acessadas dentro de alguns minutos.  - João Carabetta, Ricardo Dahis, Fred Israel e Fernanda  Scovino 
+
   - As bases disponíveis podem ser vistas neste [link](https://basedosdados.org/dataset/?download_type=BD+Mais){target="_blank"} 
+  
   - Neste [vídeo](https://www.youtube.com/watch?v=5_Ir8neyFf4&t=626s){target="_blank"} mostra-se como utilizar a BD+ no R.
+  
   - Há também um pacote no R (posterior ao vídeo) para acessar as bases de dados. Tutoriais podem ser encontrados neste [artigo](https://dev.to/basedosdados/como-usar-a-biblioteca-basedosdados-no-r-capitulo-1-46kb){target="_blank"} e neste [vídeo](https://www.youtube.com/watch?v=M9ayiseIjvI&t=5s){target="_blank"}.
   
   
