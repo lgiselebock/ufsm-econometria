@@ -37,5 +37,5 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ### Dados   
 
-+ [Pinguins](aula-r/slides/dados/pinguins)
++ [Pinguins](aula-r/dados/pinguins/)
 + [Educacionais](aula-r/dados/educacionais)
