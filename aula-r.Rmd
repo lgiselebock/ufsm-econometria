@@ -37,5 +37,5 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ### Dados   
 
-+ [Pinguins](aula-r/dados/pinguins/)
-+ [Educacionais](aula-r/dados/educacionais)
++ [Pinguins](https://drive.google.com/drive/folders/1bo_yxjfEiLECN3lorFcAjB5hH42LgHqG?usp=sharing)
++ [Educacionais](https://drive.google.com/drive/folders/1blaNOw-fdCCO-z8gUVPeu1FyoBgr5fth?usp=sharing)
