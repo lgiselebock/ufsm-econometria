@@ -90,31 +90,24 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_meta_tags-->
   <title>Monitoria Econometria I A</title>
 
-  <meta property="description" itemprop="description" content="Repositório com o material utilizado na monitoria de Econometria I A, além de materiais complementares."/>
 
 
-  <!--  https://schema.org/Article -->
-  <meta property="article:published" itemprop="datePublished" content="2023-06-01"/>
-  <meta property="article:created" itemprop="dateCreated" content="2023-06-01"/>
-  <meta name="article:author" content="Luísa Gisele Böck"/>
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
   <meta property="og:title" content="Monitoria Econometria I A"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="Repositório com o material utilizado na monitoria de Econometria I A, além de materiais complementares."/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:site_name" content="Monitoria Econometria I A"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
   <meta property="twitter:title" content="Monitoria Econometria I A"/>
-  <meta property="twitter:description" content="Repositório com o material utilizado na monitoria de Econometria I A, além de materiais complementares."/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","author","date","description","site"]}},"value":[{"type":"character","attributes":{},"value":["Monitoria Econometria I A"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Luísa Gisele Böck"]},{"type":"character","attributes":{},"value":["https://luisa.rbind.io"]},{"type":"character","attributes":{},"value":["Universidade Federal de Santa Maria (UFSM)"]},{"type":"character","attributes":{},"value":["https://ufsm.br"]}]}]},{"type":"character","attributes":{},"value":["06/01/2023"]},{"type":"character","attributes":{},"value":["Repositório com o material utilizado na monitoria de Econometria I A, além de materiais complementares.\n"]},{"type":"character","attributes":{},"value":["distill::distill_website"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site"]}},"value":[{"type":"character","attributes":{},"value":["Monitoria Econometria I A"]},{"type":"character","attributes":{},"value":["distill::distill_website"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2088,8 +2081,195 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
   <script src="site_libs/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
+  <style type="text/css">
+  @import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i&display=swap);
+  @import url(https://fonts.googleapis.com/css?family=Cabin:600,600i&display=swap);
+  @import url(https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700&display=swap);
+
+  body {
+    font-family: "Noto Sans";
+    /*color: #1f1f1f;*/
+    color: #005c8b;
+    font-size: 14px;
+  }
+
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Noto Sans";
+    letter-spacing: 2px;
+    line-height: 2rem; /* increases, so wrapping headers don't overlap */ 
+    color: #005c8b;
+    font-weight: 300;
+  }
+
+  d-title {
+    padding-top: 10rem; /*so that navbar doesn't overlap fixed title */
+  }
+
+  d-title h1,
+  d-article h2 {
+  	font-weight: 300;
+  }
+
+  /* --------------Navbar-------------------- */
+
+
+  /* background-image for fade-to-white color of navbar */
+  .distill-site-header{ 
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255,255,255,0.5));   
+    background-color: transparent;
+    font-size: 15px;
+    font-family: "Noto Sans";
+    letter-spacing: 0px;
+    /*text-transform: uppercase; */
+  }
+
+  .distill-site-header .logo img{
+    max-height: 40px; /* Makes logo bigger, default was 20px */
+  }
+
+  /* dropdown navbar color on mobile */
+
+  @media screen and (max-width: 768px){
+    .distill-site-header.responsive {
+        background: rgba(255,255,255,0.99);
+    }
+  }
+
+
+  /* Navbar Links with Animated Hover */ 
+
+
+  .distill-site-header a { /* A normal link in navbar */
+    color: #005c8b;
+    display: inline-block; /* This line and line below is so pseudo-element will work later */
+    position: relative; 
+    text-decoration: none;
+    padding-left: 0px; /* overrides default so animation looks Ok */
+    padding-right: 0px; /* overrides default so animation looks Ok */
+    margin: 10px 14px; /* replaces default padding values for margin values */
+  }
+
+
+  .distill-site-header a:hover { /* (unanimated) hover behavior for navbar links */
+    color: #0073ae;
+    padding-left: 0px; /* overrides default so animation looks Ok */
+    padding-right: 0px; /* overrides default so animation looks Ok */
+    margin: 10px 14px; /* replaces default padding values for margin values */
+  }
+
+  .distill-site-header a:before { /*Creates pseudoelement line under link */
+    background-color: #0073ae;
+    content: '';
+    height: 1px; 
+    position: absolute;
+    bottom: -1px;
+    transition: width 0.3s ease-in-out; /* animate the width */
+    width: 100%;
+  }
+
+  .distill-site-header a:hover:before {
+    width: 0; /* Shrinks width of pseudoelement to 0 when hovered */
+  }
+
+  /* Makes sure animation does NOT apply to Title or Logo links (or toggle on mobile) */
+
+  .distill-site-header a.title:before, .distill-site-nav a.logo:before, a.nav-toggle:before {
+    display: none;
+  }
+
+  .distill-site-header a.title, .distill-site-nav a.logo {
+    padding: 10px 0px;
+    margin: 10px 14px;
+  }
+
+
+  /* No navbar links on mobile except title and nav-toggle */
+
+  @media screen and (max-width: 768px) {
+    .distill-site-header a, .distill-site-header .nav-dropdown {
+      display: none;
+    }
+    
+    .distill-site-header a.title, .distill-site-header a.nav-toggle {
+      display: inline-block;
+      padding: 10px 0px;
+      margin: 10px 14px; 
+    }
+  }
+
+  /* -------------Appendix---------------- */
+
+  d-appendix {
+    background-color: #ebf6f7;
+    border-top: none !important;
+    color: #1a162d !important;
+  }
+
+  /* -------------Footer------------------*/
+
+  .distill-site-footer {
+    color: #4f95f0;
+    background-color: #005c8b;
+    margin-top: 0px;
+    padding: 50px 20px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    line-height: 12px;
+    
+  }
+
+  d-byline div.byline.grid div p,
+  d-byline,
+  d-byline p,
+  p.author,
+  p.affiliation,
+  d-byline h3,
+  .d-toc,
+  .d-toc-header,
+  .d-toc ul,
+  d-appendix p {
+  	font-size: 0.9rem;
+  }
+
+  d-appendix h3 + * {
+  	margin-top: 1.5em !important;
+  }
+
+
+  /*----- COLORED LIST BULLET----*/
+
+  d-article ul {
+    list-style: none; /* Remove default bullets */
+  }
+
+  d-article ul li::before {
+    content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+    color: #005c8b; /* Change the color */
+    font-weight: normal; /* If you want it to be bold */
+    display: inline-block; /* Needed to add space between the bullet and the text */
+    width: 1.5em; /* Also needed for space (tweak if needed) */
+    margin-left: -1.5em; /* Also needed for space (tweak if needed) */
+  }
+
+  d-article ul > li > p {
+    display: inline; /* to have content show up next to bullet */
+    line-height: 1.6em;
+  }
+
+  d-article ul > li { /*to add back in space between bullet items that I took away by making p display inline */
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+
+  .d-toc ul li::before {
+    content: " ";  /* Remove toc bullets */
+  }
+  </style>
   <!--/radix_placeholder_site_in_header-->
 
+  <link rel="stylesheet" href="styles.css" type="text/css"/>
 
 </head>
 
@@ -2098,7 +2278,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Monitoria Econometria I A","description":"Repositório com o material utilizado na monitoria de Econometria I A, além de materiais complementares.","authors":[{"author":"Luísa Gisele Böck","authorURL":"https://luisa.rbind.io","affiliation":"Universidade Federal de Santa Maria (UFSM)","affiliationURL":"https://ufsm.br","orcidID":""}],"publishedDate":"2023-06-01T00:00:00.000-03:00","citationText":"Böck, 2023"}
+{"title":"Monitoria Econometria I A","authors":[]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2109,6 +2289,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <a href="index.html" class="title">Monitoria Econometria I A</a>
 </div>
 <div class="nav-right">
+<a href="aula-r.html">R/RStudio</a>
+<a href="links-uteis.html">Links úteis</a>
 <a href="https://github.com/lgiselebock/ufsm-econometria">
 <i class="fab fa-github" aria-hidden="true"></i>
 </a>
@@ -2124,38 +2306,12 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <h1>Monitoria Econometria I A</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
-<p><p>Repositório com o material utilizado na monitoria de Econometria I A, além de materiais complementares.</p></p>
+
 </div>
 
-<div class="d-byline">
-  Luísa Gisele Böck <a href="https://luisa.rbind.io" class="uri">https://luisa.rbind.io</a> (Universidade Federal de Santa Maria (UFSM))<a href="https://ufsm.br" class="uri">https://ufsm.br</a>
-  
-<br/>06/01/2023
-</div>
 
 <div class="d-article">
-<h3 id="slides">Slides</h3>
-<ul>
-<li><a href="slides/01-introducao.html">01. Introdução</a></li>
-<li><a href="slides/02-importacao.html">02. Importação</a></li>
-<li><a href="slides/03-manipulacao.html">03. Manipulação</a></li>
-<li><a href="slides/04-visualizacao.html">04. Visualização</a></li>
-<li><a href="">05. Regressão</a></li>
-</ul>
-<h3 id="scripts">Scripts</h3>
-<ul>
-<li><a href="scripts/01-introducao.R">01. Introdução</a></li>
-<li><a href="scripts/02-importacao.R">02. Importação</a></li>
-<li><a href="scripts/03-manipulacao.R">03. Manipulação</a></li>
-<li><a href="scripts/04-visualizacao.R">04. Visualização</a></li>
-<li><a href="">05. Regressão</a>
-]</li>
-</ul>
-<h3 id="dados">Dados</h3>
-<ul>
-<li><a href="dados/pinguins/">Pinguins</a></li>
-<li><a href="dados/educacionais/">Educacionais</a></li>
-</ul>
+<p>Repositório de materiais utilizdos durante a Monitoria de Econometria I A do curso de Ciências Econômicas da UFSM, além de materiais complementares para quem deseja aprofundar os estudos.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

@@ -6,12 +6,19 @@ output_dir: "_site"
 repository_url: https://github.com/lgiselebock/ufsm-econometria
 navbar:
   right:
+    - text: "R/RStudio"
+      href: aula-r.html
+    - text: "Links úteis"
+      href: links-uteis.html
     - icon: fab fa-github
       href: https://github.com/lgiselebock/ufsm-econometria
-#     - text: "Home"
-#       href: index.html
+    # - text: "Home"
+    #   href: index.html
 #     - text: "About"
 #       href: about.html
-output: distill::distill_article
-    # toc: true
-    # css: styles.css
+    # - text: "Links Úteis"
+      # href: 
+output: 
+  distill::distill_article:
+    toc: true
+    css: styles.css

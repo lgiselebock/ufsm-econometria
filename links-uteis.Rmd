@@ -1,0 +1,109 @@
+---
+title: "Links úteis"
+description: |
+  Material de apoio para a Econometria e a Linguagem `R` 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+### Livros
+
+- [Avaliação econômica de projetos sociais](https://www.itausocial.org.br/wp-content/uploads/2018/05/avaliacao-economica-3a-ed_1513188151.pdf){target="_blank"} - Naercio Aquino Menezes Filho e Cristine Campos de Xavier Pinto (orgs.)
+
+- [Avaliação de Impacto na Prática](https://openknowledge.worldbank.org/bitstream/handle/10986/25030/9781464808890.pdf){target="_blank"} - Banco Mundial
+
+- [Causal Inference: The Mixtape](https://mixtape.scunning.com/index.html){target="_blank"} - Scott Cunningham
+
+- [Guia Brasileiro de Análise de Dados](https://repositorio.enap.gov.br/bitstream/1/6039/1/Guia%20BR%20de%20Ana%cc%81lise%20de%20Dados.pdf){target="_blank"} - Claudio D. Shikida, Leonardo Monasterio e Pedro Fernando Nery (eds.)
+
+- [Mastering Metrics: The Path from Cause to Effect](links-uteis/masterinmetrics.pdf){target="_blank"} - Joshua D. Angrist and Jörn-Steffen Pischke
+
+- [Mostly Harmeless Econometrics](links-uteis/mostlyharm.pdf){target="_blank"} - Joshua D. Angrist and Jörn-Steffen Pischke
+
+- [The Efect: An Introduction to Research Design and Causality](https://theeffectbook.net/){target="_blank"} - Nick Huntington-Klein
+
+
+### Artigos
+
+- [How to do Empirical Economics](https://www.redalyc.org/pdf/173/17330202.pdf){target="_blank"} - Kramarz (editor)
+
+- [Linear Regression: A Visual Introduction To (Almost) Everything You Should Know](https://mlu-explain.github.io/linear-regression/){target="_blank"} - Jared Wilber
+
+
+### Vídeos
+
+- Playlist [Econometria](https://www.youtube.com/playlist?list=PLxafIQjs0M97dPDvvFdsD4I6yn4qj_2ja){target="_blank"} - Estudar com Você
+
+- Playlist [Econometrics](https://www.youtube.com/playlist?list=PLcTBLulJV_ALLS7R_e7ig0aEcBrtp6B18){target="_blank"} - Nick Huntington-Klein
+
+- Playlist [Causality](https://www.youtube.com/playlist?list=PLcTBLulJV_AKmUTH-nUsxxFyRQoWnUzxU){target="_blank"} - Nick Huntington-Klein
+
+- Playlist [R for Economists](https://www.youtube.com/playlist?list=PLcTBLulJV_AIuXCxr__V8XAzWZosMQIfW){target="_blank"} - Nick Huntington-Klein
+
+- Playlist [Orientação de Pesquisa](https://www.youtube.com/playlist?list=PL5zwgb1bvX2Jz4CZUTgaeAAIF5FoMV_3F){target="_blank"} - Thomas Conti
+
+- Playlist [Mastering Econometrics with Joshua Angrist](https://www.youtube.com/playlist?list=PL-uRhZ_p-BM5ovNRg-G6hDib27OCvcyW8){target="_blank"} - Marginal Revolution University
+
+### Materiais para aprender a Linguagem R
+
+- [A very short introduction to Tidyverse](https://dominicroye.github.io/en/2020/a-very-short-introduction-to-tidyverse/){target="_blank"} - Dominic Royé
+
+- [An Introduction to Statistical Learning: with Applications in R](https://hastie.su.domains/ISLRv2_website.pdf){target="_blank"} - Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani
+
+- [Ciência de dados econômicos](https://tidyeconomics.netlify.app/){target="_blank"} - Felipe O. Gonçalves
+
+- [Cookbook for R](http://www.cookbook-r.com/){target="_blank"} - Paul Teetor
+
+- [Livro Curso-R](https://livro.curso-r.com/){target="_blank"} - Curso-R
+
+- [R for Data Science](https://r4ds.had.co.nz/){target="_blank"} -  Hadley Wickham and Garrett Grolemund
+
+- [R: Uma Introdução para economistas](https://danmrc.github.io/R-para-Economistas/){target="_blank"} - Daniel Coutinho
+
+
+
+Uma das vantagens de se utilizar o **R** é a existência de pacotes criados para trabalhar diretamente com os dados brasileiros. Por exemplo:
+
+- Pacotes para dados financeiros: [Importando e Manipulando Dados Financeiros no R](http://wilsonfreitas.github.io/slides/ser-maio-2018/index.html#1){target="_blank"} - Wilson Freitas
+
+- PNAD Contínua: [Análise de microdados da PNAD Contínua](https://rpubs.com/BragaDouglas/335574){target="_blank"} - Douglas Braga
+
+- Pacote [Brazilian Economic Time Series (BETS)](https://github.com/nmecsys/BETS){target="_blank"} - Pedro Costa Ferreira, Talitha Speranza e Jonatha Costa
+
+- Pacote [deflateBR](https://github.com/meirelesff/deflateBR){target="_blank"}: - Fernando Meirelles
+
+- Pacote [electionsBR](http://electionsbr.com/){target="_blank"}: dados eleitorais brasileiros - Denisson Silva, Fernando Meireles e Beatriz Costa
+
+- Pacote [geobr](https://cran.r-project.org/web/packages/geobr/vignettes/intro_to_geobr.html){target="_blank"}: mapas e outros dados espaciais brasileiros - Rafael H. M. Pereira e Caio Nogueira Goncalves
+
+- Um [exemplo](http://regisely.com/blog/mercado-de-trabalho-covid/){target="_blank"} do uso dos dados da PNAD Covid - Régis Ely
+
+Base dos Dados Mais (BD+): um repositório integrado de dados organizados e disponíveis na nuvem dentro da ferramenta BigQuery, da Google. Com algumas linhas de código, bases de dados que levariam dias para baixar e tratar podem ser acessadas dentro de alguns minutos.  - João Carabetta, Ricardo Dahis, Fred Israel e Fernanda  Scovino 
+  - As bases disponíveis podem ser vistas neste [link](https://basedosdados.org/dataset/?download_type=BD+Mais){target="_blank"} 
+  - Neste [vídeo](https://www.youtube.com/watch?v=5_Ir8neyFf4&t=626s){target="_blank"} mostra-se como utilizar a BD+ no R.
+  - Há também um pacote no R (posterior ao vídeo) para acessar as bases de dados. Tutoriais podem ser encontrados neste [artigo](https://dev.to/basedosdados/como-usar-a-biblioteca-basedosdados-no-r-capitulo-1-46kb){target="_blank"} e neste [vídeo](https://www.youtube.com/watch?v=M9ayiseIjvI&t=5s){target="_blank"}.
+  
+  
+### Materiais para aprender a Linguagem Python
+
+Além do **R**, o **Python** também é utilizado para a análise de dados. Aqui estão alguns materiais caso vocês tenham interesse em aprender outra linguagem de programação:
+
+- [Introduction to Python for Econometrics, Statistics and Data Analysis](https://bashtage.github.io/kevinsheppard.com/files/teaching/python/notes/python_introduction_2020.pdf){target="_blank"} - Kevin Sheppard
+
+- [Learn Python](https://www.learnpython.org/){target="_blank"} 
+
+- [Mini Curso de Python](https://estatsite.com.br/mini-curso-de-python-gratuito/){target="_blank"} - Estatsite
+
+
+### Visualização de dados
+
+- [An Economist’s Guide to Visualizing Data](https://pubs.aeaweb.org/doi/pdf/10.1257/jep.28.1.209){target="_blank"} - Jonathan A. Schwabish
+
+- [Extensões do ggplot2](https://exts.ggplot2.tidyverse.org/gallery/)
+
+- [Fundamentals of Data Visualization](https://clauswilke.com/dataviz/){target="_blank"} - Claus O. Wilke
+
+- [The pie chart](https://dominicroye.github.io/en/2018/the-pie-chart/){target="_blank"} - Dominic Royé

@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Análises Econométricas</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Luísa Gisele Böck" />
+    <script src="02-importacao_files/header-attrs/header-attrs.js"></script>
+    <script src="02-importacao_files/clipboard/clipboard.min.js"></script>
+    <link href="02-importacao_files/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="02-importacao_files/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <script src="02-importacao_files/xaringanExtra_fit-screen/fit-screen.js"></script>
+    <link href="02-importacao_files/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <link href="02-importacao_files/panelset/panelset.css" rel="stylesheet" />
+    <script src="02-importacao_files/panelset/panelset.js"></script>
+    <link href="02-importacao_files/shareon/shareon.min.css" rel="stylesheet" />
+    <script src="02-importacao_files/shareon/shareon.min.js"></script>
+    <link href="02-importacao_files/xaringanExtra-shareagain/shareagain.css" rel="stylesheet" />
+    <script src="02-importacao_files/xaringanExtra-shareagain/shareagain.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+    <link rel="stylesheet" href="footer-header.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+
+
+&lt;!-- inicio font awesome --&gt;
+&lt;script src="https://kit.fontawesome.com/1f72d6921a.js" crossorigin="anonymous"&gt;&lt;/script&gt;
+&lt;!-- final font awesome --&gt;
+
+&lt;!-- inicio github buttons  --&gt;
+&lt;script async defer src="https://buttons.github.io/buttons.js"&gt;&lt;/script&gt;
+&lt;!-- final github buttons  --&gt;
+
+
+.pull-left[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+## Análises Econométricas
+
+### Importação de Dados
+
+**[Luísa Gisele Böck](https://luisa.rbind.io/)**&amp;nbsp;&amp;nbsp;    &lt;a href='mailto:luisa.bock@acad.ufsm.br'&gt;&lt;i class="far fa-envelope"&gt;&lt;/i&gt;&lt;/a&gt;    &lt;a href='https://twitter.com/lgiselebock'&gt;&lt;i class="fab fa-twitter"&gt;&lt;/i&gt;   &lt;a href='https://github.com/lgiselebock'&gt;&lt;i class="fab fa-github"&gt;&lt;/i&gt;&lt;/a&gt;
+
+__.can-edit[Junho de 2023]__
+
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="img/slides/27-intro-allison-horst-02.png" width="500px" /&gt;
+
+.center[Ilustração por [Allison Horst](https://allisonhorst.com/)]
+]
+
+---
+
+### Projetos
+
+Um projeto é uma pasta no seu computador. Nessa pasta estarão todos os arquivos que você usará ou criará na sua análise.
+
+A principal razão para a utilização dos Projetos é a **organização**. Com eles, é muito mais fácil importar bases de dados para dentro do `R`, criar análises reprodutíveis e compartilhar o trabalho.
+
+**Habitue-se, desde cedo, a criar um projeto para cada nova análise.**
+
+Para **criar um projeto**, clique em `New Project` no Menu `File`. Na caixa de diálogo que aparecerá, clique em `New Directory` para criar o projeto em uma nova pasta ou `Existing Directory` para criar em uma pasta existente.
+
+Ao criar um Projeto, o `RStudio` criará na pasta escolhida um arquivo `nome-do-projeto.Rproj`. É possível usar esse arquivo para iniciar o `RStudio` já com o respectivo projeto aberto.
+
+.footnote[Com o `Git` instalado, pode usar projetos para conectar com repositórios do GitHub (p. ex.). Para isso, basta clicar `Version Control`. Para maiores informações, acesse o [Zen do R](https://blog.curso-r.com/posts/2019-07-23-zen-do-r-4/) e o &lt;i&gt;workshop&lt;/i&gt; [Introdução a utilização do Git e Github no RStudio](https://www.youtube.com/watch?v=uQL6NOSd9cc) da [Beatriz Milz](https://twitter.com/BeaMilz).]
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Projetos
+
+**Criando um novo Projeto:**
+
+&lt;img src="img/slides/20-criar-projeto.gif" width="100%" style="display: block; margin: auto;" /&gt;
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/2020-R-Ladies-SP-Basico/#1"&gt;R-Ladies São Paulo&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Projetos
+
+**RStudio com um Projeto aberto:**
+
+&lt;img src="img/slides/21-exemplo-projeto-aberto.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Projetos
+
+**Navegando entre os Projetos:**
+
+&lt;img src="img/slides/22-exemplo-lista-projetos.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Pacote: `tidyverse`
+
+É uma coleção de pacotes de `R` desenvolvidos para a Ciência de Dados. 
+
+Os pacotes do `tidyverse` compartilham uma mesma filosofia de desenvolvimento, sintaxe e estruturas de dados. 
+
+Embora o `tidyverse` instale diversos outros pacotes, apenas esses são carrregados: 
+
+
+|     **Pacote**    |                      **Função**                      |
+|:-----------------:|:----------------------------------------------------:|
+|      `tibble`     |               _data frames_ repaginados              |
+|      `readr`      | leitura e importação de dados (e.g. `.csv` e `.txt`) |
+| `tidyr` e `dplyr` |           arrumação e manipulação de dados           |
+|     `stringr`     |                  trabalha com textos                 |
+|     `forcats`     |                 trabalha com fatores                 |
+|      `purrr`      |                 programação funcional                |
+|     `ggplot2`     |           visualização de dados (gráficos)           |
+  
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/02-introducao-ao-r.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+class: inverse center middle
+
+# Importação de dados
+
+.center[(Acompanhe no arquivo `02-importacao.R`)]
+
+---
+
+### Caminhos
+
+É importante na tarefa de *importação de dados* saber onde está o arquivo que se quer importar. Toda função de importação vai exigir um caminho (uma *string*) que representa o endereço do arquivo no computador.
+
+----
+
+**Diretório de trabalho (*working directory*):**
+
+É a pasta em que o **R** vai procurar os arquivos na hora de ler as informações ou gravar os arquivos na hora de salvar os objetos.
+
+Se está dentro de um projeto, o diretório de trabalho será, por padrão, a pasta raiz do projeto (é a pasta que contém o arquivo `.Rproj`).
+
+Se não estiver usando um projeto ou não souber qual é o diretório de trabalho, é possível descobri-lo usando a função `getwd()`. Ela vai devolver uma *string* com o caminho do diretório de trabalho.
+
+A função `setwd()` pode ser utilizada para mudar o diretório de trabalho. Como argumento, ela recebe o caminho para o novo diretório.
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/03-importacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Caminhos
+
+**Caminhos absolutos:**
+
+São aqueles que têm início na pasta raiz do computador/usuário. Por exemplo: `"G:/Meu Drive/Repositorio/ufsm-monitoria-aula-r/"`.
+
+Caminhos absolutos são uma **má prática**. Se você trocar de computador ou passar o script para outra pessoa rodar, o código não vai funcionar. Isso ocorre porque o caminho absoluto de um arquivo, muito provavelmente, será diferente entre os computadores.
+
+----
+
+**Caminhos relativos:**
+
+São aqueles que têm início no diretório de trabalho da sessão. Usando o exemplo de caminho absoluto acima, o caminho relativo é: `/ufsm-monitoria-aula-r`.
+
+O uso de caminhos relativos dentro de um projeto é considerado uma **boa prática**, pois quando a pasta do projeto for compartilhada com alguém, todos os caminhos existentes no código continuarão funcionando em qualquer computador.
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/03-importacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Tibbles
+
+São uma evolução da classe *Data Frame*. 
+
+As funções do **`tidyverse`** para importação, arrumação e manipulação de bases devolvem sempre `tibbles` em vez de *data frames*.
+
+Embora existam outras diferenças entre as classes, a mais importante é a forma como a tabela é mostrada no Console.
+
+Quanto a isso, as diferenças são:
+
+- `tibbles` mostram o número de linhas, o número de colunas e a classe das variáveis;
+
+- `tibbles` mostram apenas as 10 primeiras linhas;
+
+- `tibbles` mostram o número de colunas que couber na tela; e
+
+- `tibbles` não nomeiam linhas (`row.names`).
+
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/03-importacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Tibbles
+
+**Exemplo: base `mtcars` como *data frame*:**
+
+&lt;br&gt;
+
+
+```
+##                     mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4          21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag      21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710         22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive     21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout  18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2
+## Valiant            18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+## Duster 360         14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4
+## Merc 240D          24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+## Merc 230           22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+## Merc 280           19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+## Merc 280C          17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+## Merc 450SE         16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+## Merc 450SL         17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+## Merc 450SLC        15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+## Cadillac Fleetwood 10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4
+```
+
+---
+
+### Tibbles
+
+**Exemplo: base `mtcars` como *tibble*:**
+
+
+```r
+tibble::as_tibble(mtcars)
+```
+
+```
+## # A tibble: 32 × 11
+##      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4
+##  2  21       6  160    110  3.9   2.88  17.0     0     1     4     4
+##  3  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
+##  4  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
+##  5  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2
+##  6  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
+##  7  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
+##  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
+##  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
+## 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
+## # ℹ 22 more rows
+```
+
+Perceba que a coluna com os modelos dos veículos é excluída na `tibble`. Isso acontece porque, apesar de parecer uma coluna no *Data Frame*, ela não é considerada uma coluna na `tibble`.
+
+---
+
+### Tibbles
+
+**Exemplo: base `mtcars` como *tibble*:**
+
+Uma maneira de adicionar a coluna com os modelos dos veículos é adicionar o argumento `rownames = "nome_da_coluna"` na função `as_tibble`. Assim, a nova `tibble` possuirá 12 colunas, uma a mais se comparada com a anterior.
+
+
+```r
+tibble::as_tibble(mtcars, rownames = "cars")
+```
+
+```
+## # A tibble: 32 × 12
+##    cars          mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+##    &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 Mazda RX4    21       6  160    110  3.9   2.62  16.5     0     1     4     4
+##  2 Mazda RX4 …  21       6  160    110  3.9   2.88  17.0     0     1     4     4
+##  3 Datsun 710   22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
+##  4 Hornet 4 D…  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
+##  5 Hornet Spo…  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2
+##  6 Valiant      18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
+##  7 Duster 360   14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
+##  8 Merc 240D    24.4     4  147.    62  3.69  3.19  20       1     0     4     2
+##  9 Merc 230     22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
+## 10 Merc 280     19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
+## # ℹ 22 more rows
+```
+
+---
+
+### [Cheat Sheets](https://posit.co/resources/cheatsheets/) 
+
+[![Cheat Sheets](img/slides/48-cheatsheet-readr.png)](https://posit.co/resources/cheatsheets/)
+
+---
+
+### Importação de arquivos
+
+- Pacote `readr`: utilizados para ler arquivos de texto
+
+  - `read_csv`
+  - `read_csv2`
+  - `read_delim`
+  - `read_log`
+  - `read_rds`
+  
+&lt;br&gt;
+  
+- Pacote `readxl`: utilizado para ler arquivos Excel
+
+  - `read_excel`
+  
+&lt;br&gt;
+  
+- Pacote `heaven`: utilizado para ler arquivos de outros *softwares* estatísticos
+
+  - `read_sas`
+  - `read_spss`
+  - `read_stata`
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/2020-R-Ladies-SP-Basico/#1"&gt;R-Ladies São Paulo&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Importação de arquivos
+
+Para ler arquivos de texto (`.csv` ou `.txt`), são utilizadas funções do pacote `readr`.
+
+Como exemplo, vamos utilizar a base dos Pinguins, originalmente disponibilizado no pacote [`palmerpenguins`](https://allisonhorst.github.io/palmerpenguins/), mas que também pode ser encontrado traduzido para o português no pacote [`dados`](https://cienciadedatos.github.io/dados/). 
+
+Vamos importar essa base para o **R** lendo o arquivo `pinguins.csv` que está dentro da pasta "dados". Para isso, utilizamos a função `read_csv()`. Se o arquivo estiver bem formatado, a função só precisará do caminho até o arquivo para funcionar.
+
+
+```r
+library(readr) # carrega o pacote responsável pela importação
+
+pinguins_csv &lt;- read_csv("dados/pinguins/pinguins.csv")
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/03-importacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Importação de arquivos
+
+O objeto resultante será uma `tibble`:
+
+
+```r
+pinguins_csv
+```
+
+```
+## # A tibble: 344 × 8
+##    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+##    &lt;chr&gt;   &lt;chr&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;dbl&gt;       &lt;dbl&gt;
+##  1 Adelie  Torgersen           39.1          18.7               181        3750
+##  2 Adelie  Torgersen           39.5          17.4               186        3800
+##  3 Adelie  Torgersen           40.3          18                 195        3250
+##  4 Adelie  Torgersen           NA            NA                  NA          NA
+##  5 Adelie  Torgersen           36.7          19.3               193        3450
+##  6 Adelie  Torgersen           39.3          20.6               190        3650
+##  7 Adelie  Torgersen           38.9          17.8               181        3625
+##  8 Adelie  Torgersen           39.2          19.6               195        4675
+##  9 Adelie  Torgersen           34.1          18.1               193        3475
+## 10 Adelie  Torgersen           42            20.2               190        4250
+## # ℹ 334 more rows
+## # ℹ 2 more variables: sex &lt;chr&gt;, year &lt;dbl&gt;
+```
+
+---
+
+### Importação de arquivos
+
+Em alguns países, como o Brasil, as vírgulas são utilizadas para separar as casas decimais dos números, inviabilizando os arquivos `.csv`.
+
+Nesses casos, os arquivos `.csv` são separados por ponto-e-vírgula (;). Para ler essas bases no R, basta usar a função `read_csv2()`.
+
+
+```r
+pinguins_csv2 &lt;- read_csv2("dados/pinguins/pinguins2.csv")
+```
+
+----
+
+Arquivos `.txt` podem ser lidos com a função `read_delim()`. Nesse caso, além do caminho até o arquivo, é preciso indicar qual é o caractere utilizado para separar as colunas da base.
+
+Um arquivo separado por tabulação, por exemplo, pode ser lido utilizando o código abaixo. O código `\t` é uma forma textual de representar a tecla  `TAB`.
+
+
+```r
+pinguins_txt &lt;- read_delim("dados/pinguins/pinguins.txt", delim = "\t")
+```
+
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/03-importacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Importação de arquivos
+
+**Arquivos direto da Internet:** É possível importar dados diretamente da internet. Para isso, basta colocar o *link* da tabela entre aspas no caminho do arquivo.
+
+
+```r
+titanic &lt;- read_csv(
+  "https://raw.githubusercontent.com/beatrizmilz/2020-R-Ladies-SP-Basico/master/docs/data/titanic.csv"
+)
+```
+
+----
+
+**Arquivos Excel:**
+
+Para ler planilhas do Excel (arquivos `.xlsx` ou `.xls`) utilizamos a função `read_excel()` do pacote `readxl`. Como esse pacote não consta no `tidyverse`, é necessário instalar ele antes caso ainda não tenha instalado.
+
+
+```r
+library(readxl) # carrega o pacote
+
+readxl::pinguins_xlsx &lt;- read_excel("dados/pinguins/pinguins.xlsx")
+```
+
+
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/03-importacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+&lt;!-- &lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/03-importacao.html"&gt;Curso-R&lt;/a&gt; e &lt;a href="https://beatrizmilz.github.io/2020-R-Ladies-SP-Basico/#1"&gt;R-Ladies São Paulo&lt;/a&gt;&lt;/div&gt; --&gt;
+
+---
+
+### Importação de arquivos
+
+**Arquivos Excel: argumentos úteis:**
+
+Como essas planilhas são facilmente editáveis, é comum recebermos bases de dados desconfiguradas, isto é, em um formato que o **R** não consegue importar. 
+
+Para não precisarmos arrumar o arquivo na mão, correndo o risco de cometermos algum erro e alterarmos algum dado, a função `read_excel()` tem alguns argumentos úteis para essa situação:
+
+- `sheet =` para definir em qual aba estão os dados;
+
+- `col_names =` indica se a primeira linha representa o nome das colunas;
+
+- `col_types =` define a classe das colunas;
+
+- `skip =` pula linhas; e
+
+- `NA =` indica quais strings devem ser interpretadas como `NA`.
+
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/03-importacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Exportação de arquivos
+
+Exportar objetos do **R** significa gravar as bases (ou objetos) em um arquivo no disco rígido (HD).
+
+Geralmente, para cada função `read_*()` existe uma função `write_*()`. As funções de escrita são bem simples: é preciso passar para elas o objeto que quer gravar e o caminho/nome do arquivo que será criado (ou sobrescrito). **O nome do arquivo deve conter a extensão**.
+
+
+```r
+library(readr) # pacote necessário
+
+# CSV (vírgula) e CSV2 (ponto-e-vírgula)
+write_csv(pinguins, "dados/pinguins/pinguins.csv")
+write_csv2(pinguins, "dados/pinguins/pinguins2.csv")
+
+# TXT por tabulação
+write_delim(pinguins, "dados/pinguins/pinguins.txt", delim = "\t")
+
+# EXCEL
+writexl::write_xlsx(pinguins, "dados/pinguins/pinguins.xlsx")
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/03-importacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Importação e exportação de arquivos
+
+**A extensão `.rds`**
+
+A extensão `.rds` representa uma estrutura binária de arquivos nativa do R. Ela pode ser utilizada para salvarmos no disco rígido (HD) qualquer objeto do R, não apenas as bases de dados (data frames ou tibbles).
+
+Quando usamos para gravar base de dados, por ser binária, essa estrutura pode ser compactada para gerar arquivos muito menores. Para criar e ler arquivos `.rds`, utilizamos as funções `write_rds()` e `read_rds()`, respectivamente, do pacote `readr`.
+
+
+```r
+library (readr) # pacote necessário
+
+# escrevendo SEM compactação
+write_rds(pinguins, "dados/pinguins.rds")
+# escrevendo COM compactação
+write_rds(pinguins, "dados/pinguins.rds", compress = "gz")
+
+# lendo a base
+read_rds("dados/pinguins.rds")
+# importanto a base
+pinguins_rds &lt;- read_rds("dados/pinguins.rds")
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://curso-r.github.io/main-r4ds-1/slides/03-importacao.html"&gt;Curso-R&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Visualização de um objeto
+
+**Para visualizar um objeto em aba separada:**
+
+É possível visualizar com facilidade os dados (ou parte deles) clicando no respectivo objeto no `Global Enviroment`, na aba `Enviroment` ou usando a função `View(nome_do_objeto)`.
+
+
+```r
+View(pinguins_csv)
+```
+
+&lt;img src="img/slides/26-view-pinguins.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/2020-R-Ladies-SP-Basico/#1"&gt;R-Ladies São Paulo&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### Visualização de um objeto
+
+  **Para visualizar um objeto no Console:**
+
+É possível "espiar" os dados utilizando a função `glimpse()` do pacote `dplyr`. Ela oferece uma noção geral com informações a respeito do número de observações (linhas) e variáveis (colunas), o nome das colunas, o tipo das colunas e os primeiros valores de cada coluna.
+
+
+```r
+library(dplyr) # carrega o pacote necessário
+
+glimpse(pinguins_csv)
+```
+
+```
+## Rows: 344
+## Columns: 8
+## $ species           &lt;chr&gt; "Adelie", "Adelie", "Adelie", "Adelie", "Adelie", "A…
+## $ island            &lt;chr&gt; "Torgersen", "Torgersen", "Torgersen", "Torgersen", …
+## $ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, …
+## $ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, …
+## $ flipper_length_mm &lt;dbl&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186…
+## $ body_mass_g       &lt;dbl&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, …
+## $ sex               &lt;chr&gt; "male", "female", "female", NA, "female", "male", "f…
+## $ year              &lt;dbl&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007…
+```
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://beatrizmilz.github.io/2020-R-Ladies-SP-Basico/#1"&gt;R-Ladies São Paulo&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### &lt;span style='color:#34a15a'&gt;BASE DOS DADOS&lt;/span&gt;
+
+É uma organização não-governamental, sem fins lucrativos e *open source* que atua para universalizar o acesso a dados de qualidade. 
+
+No seu repositório consta &lt;span style='color:#34a15a'&gt;&lt;b&gt;dados brasileiros já tratados, limpos e padronizados&lt;/b&gt;&lt;/span&gt; que podem ser importados direto para o **R** através de um pacote chamado `basedosdados`.
+
+Os responsáveis pela &lt;span style='color:#34a15a'&gt;Base dos Dados&lt;/span&gt; também disponibilizam um repositório com o códigos das análises publicadas por eles em *workshops*, redes sociais, artigos e tutoriais.
+
+[![GitHub da Base dos Dados](img/slides/28-base-dos-dados-github.png)](https://github.com/basedosdados/analises)
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://basedosdados.org/"&gt;Base dos Dados&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### &lt;span style='color:#34a15a'&gt;BASE DOS DADOS&lt;/span&gt;
+
+É possível realizar o *download* de arquivos `.csv` completos de tabelas diretamente do site. Entretanto, esse tipo de consulta não está disponível para os arquivos grandes.
+
+----
+
+Para os arquivos maiores, utiliza-se o &lt;span style='color:#34a15a'&gt;&lt;font size = '5'&gt;&lt;b&gt;BigQuery:&lt;/b&gt;&lt;/font&gt;&lt;/span&gt;
+
+Serviço de banco de dados em nuvem da Google, onde é possível realizar consultas em linguagem `SQL` direto do navegador com:
+
+- &lt;span style='color:#34a15a'&gt;&lt;b&gt;Rapidez:&lt;/b&gt;&lt;/span&gt; mesmo *queries* muito longas demoram apenas minutos para serem processadas;
+
+- &lt;span style='color:#34a15a'&gt;&lt;b&gt;Escala:&lt;/b&gt;&lt;/span&gt; o *BigQuery* escala magicamente para hexabytes se necessário;
+
+- &lt;span style='color:#34a15a'&gt;&lt;b&gt;Economia:&lt;/b&gt;&lt;/span&gt; todo usuário possui *1 TB gratuito por mês* para a consulta dos dados.
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://basedosdados.org/"&gt;Base dos Dados&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### &lt;span style='color:#34a15a'&gt;BASE DOS DADOS&lt;/span&gt;
+
+&lt;span style='color:#34a15a'&gt;&lt;b&gt;Como criar um Projeto na BigQuery:&lt;/b&gt;&lt;/span&gt;
+
+Para criar um projeto no Google Cloud basta ter um e-mail cadastrado no Google.
+É necessário ter um projeto seu, mesmo que vazio, para que você possa *queries* no *datalake* público da &lt;span style='color:#34a15a'&gt;Base dos Dados&lt;/span&gt;.
+
+1. [Acesse o Google Cloud](https://console.cloud.google.com/projectselector2/home/dashboard). Caso for sua primeira vez, aceite o Tempo de Serviços.
+
+2. Clique em `Create Project/Criar Projeto`. Escolha um nome bacana para o projeto.
+
+3. Clique em `Create/Criar`.
+
+Para maiores informações de como criar um projeto, [acesse a documentação](https://cloud.google.com/bigquery/docs/sandbox/?hl=pt).
+
+.footnote[**Por que é preciso criar um projeto no Google Cloud?** A Google fornece 1 TB gratuito por mês de uso do BigQuery para cada projeto que você possui. **Não é necessário adicionar nenhum cartão ou forma de pagamento - O BigQuery inicia automaticamente no modo Sandbox, que permite você utilizar seus recursos sem adicionar um modo de pagamento.**]
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://basedosdados.org/"&gt;Base dos Dados&lt;/a&gt;&lt;/div&gt;
+
+---
+
+### &lt;span style='color:#34a15a'&gt;BASE DOS DADOS&lt;/span&gt;
+
+&lt;span style='color:#34a15a'&gt;&lt;b&gt;Como criar um Projeto na BigQuery:&lt;/b&gt;&lt;/span&gt;
+
+&lt;span style='color:#34a15a'&gt;&lt;b&gt;Habilitar o projeto no R:&lt;/b&gt;&lt;/span&gt;
+
+
+```r
+install.packages("basedosdados") # instala o pacote
+
+library(basedosdados) # carrega o pacote
+
+# identificar o projeto sempre que iniciar uma nova sessão no R
+set_billing_id("id-do-projeto") 
+```
+
+Na primeira vez que acessar o Google Cloud no **R**, irá abrir uma página do Google pedindo autorização para realizar a ligação entre o pacote `basedosdados` e a conta do Google.
+
+----
+
+No canal da [Base dos Dados](https://www.youtube.com/@BasedosDados) no Youtube, eles apresentaram um Workshop ensinando a acessar os dados públicos em R: [acesse aqui](https://www.youtube.com/watch?v=M9ayiseIjvI).
+
+No blog da [Base dos Dados](https://dev.to/basedosdados) eles escreveram um tutorial de como usar a biblioteca `basedosdados` no **R**: [acesse aqui](https://dev.to/basedosdados/como-usar-a-biblioteca-basedosdados-no-r-capitulo-1-46kb).
+
+---
+
+### &lt;span style='color:#34a15a'&gt;BASE DOS DADOS&lt;/span&gt;
+
+&lt;span style='color:#34a15a'&gt;&lt;b&gt;Como criar um Projeto na BigQuery:&lt;/b&gt;&lt;/span&gt;
+
+&lt;img src="img/slides/31-big-query-projeto-r.gif" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### &lt;span style='color:#34a15a'&gt;BASE DOS DADOS&lt;/span&gt;
+
+&lt;span style='color:#34a15a'&gt;&lt;b&gt;Como fixar o projeto da Base dos Dados (BD) no seu BigQuery:&lt;/b&gt;&lt;/span&gt;
+
+&lt;img src="img/slides/32-fixa-bd-no-bigquery.gif" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+&lt;div class="my-header"&gt;Fonte: &lt;a href="https://basedosdados.org/"&gt;Base dos Dados&lt;/a&gt;&lt;/div&gt;
+---
+
+### &lt;span style='color:#34a15a'&gt;BASE DOS DADOS: SQL&lt;/span&gt;
+
+*Structured Query Language* ou *Linguagem de Consulta Estruturada* é a linguagem de pesquisa declarativa padrão para banco de dados relacional (base de dados relacional). 
+
+&lt;br&gt;
+
+&lt;span style='color:#34a15a'&gt;&lt;b&gt;Palavras-Chave - Cláusulas:&lt;/b&gt;&lt;/span&gt;
+
+&lt;b&gt;SELECT:&lt;/b&gt; seleciona as colunas (é o principal comando usado no SQL) &lt;br&gt;
+&lt;b&gt;FROM:&lt;/b&gt; especifica a tabela utilizada para selecionar os dados &lt;br&gt;
+&lt;b&gt;WHERE:&lt;/b&gt; especifica as condições/filtros que devem reunir os dados selecionados &lt;br&gt;
+&lt;b&gt;GROUP BY:&lt;/b&gt; separa os dados selecionados em grupos específicos &lt;br&gt;
+&lt;b&gt;HAVING:&lt;/b&gt; expressa a condição que deve satisfazer cada grupo &lt;br&gt;
+&lt;b&gt;ORDER BY:&lt;/b&gt; ordena os dados selecionados em uma ordem específica &lt;br&gt;
+&lt;b&gt;DISTINCT:&lt;/b&gt; seleciona dados sem repetição &lt;br&gt;
+&lt;b&gt;UNION:&lt;/b&gt; combina os resultados de duas consultas SQL em uma única tabela
+
+---
+
+### &lt;span style='color:#34a15a'&gt;BASE DOS DADOS: SQL&lt;/span&gt;
+
+&lt;span style='color:#34a15a'&gt;&lt;b&gt;Palavras-Chave - Operadores Lógicos:&lt;/b&gt;&lt;/span&gt;
+
+&lt;b&gt;AND:&lt;/b&gt; avalia as condições e devolve um valor verdadeiro caso ambos sejam corretos &lt;br&gt;
+&lt;b&gt;OR:&lt;/b&gt; avalia as condições e devolve um valor verdadeiro se algum for correto &lt;br&gt;
+&lt;b&gt;NOT:&lt;/b&gt; devolve o valor contrário da expressão &lt;br&gt;
+
+&lt;br&gt;
+
+&lt;span style='color:#34a15a'&gt;&lt;b&gt;Palavras-Chave - Funções de Agregação:&lt;/b&gt;&lt;/span&gt;
+
+&lt;b&gt;AVG:&lt;/b&gt; calcula a média dos valores de um campo determinado &lt;br&gt;
+&lt;b&gt;COUNT:&lt;/b&gt; devolve o número de registros da seleção &lt;br&gt; 
+&lt;b&gt;SUM:&lt;/b&gt; devolve a soma de todos os valores de um campo determinado &lt;br&gt;
+&lt;b&gt;MAX:&lt;/b&gt; devolve o valor mais alto de um campo especificado &lt;br&gt;
+&lt;b&gt;MIN:&lt;/b&gt; devolve o valor mais baixo de um campo especificado &lt;br&gt;
+&lt;b&gt;STDDEV:&lt;/b&gt; utilizada para funções estatísticas de desvio-padrão &lt;br&gt;
+&lt;b&gt;VARIANCE:&lt;/b&gt; utilizada para funções estatísticas de variância &lt;br&gt;
+
+---
+
+### &lt;span style='color:#34a15a'&gt;BASE DOS DADOS: SQL&lt;/span&gt;
+
+&lt;span style='color:#34a15a'&gt;&lt;b&gt;Palavras-Chave - Operadores relacionais:&lt;/b&gt;&lt;/span&gt;
+
+&lt;b&gt; &lt; MENOR: &lt;/b&gt; seleciona todos os registros que possuem valores menores que a condição especificada &lt;br&gt;
+&lt;b&gt; &gt;	MAIOR: &lt;/b&gt;seleciona todos os registros que possuem valores maiores que a condição especificada &lt;br&gt; 
+&lt;b&gt; &lt;= MENOR OU IGUAL: &lt;/b&gt; seleciona todos os registros que possuem valores menores ou iguais que a condição especificada &lt;br&gt;
+&lt;b&gt; &gt;= MAIOR OU IGUAL: &lt;/b&gt; seleciona todos os registros que possuem valores maiores ou iguais que a condição especificada &lt;br&gt;
+&lt;b&gt; =	IGUAL:	&lt;/b&gt; seleciona todos os registros que possuem valores iguais que a condição especificada &lt;br&gt;
+&lt;b&gt; &lt;&gt;	DIFERENTE: &lt;/b&gt; seleciona todos os registros que possuem valores diferentes da condição especificada &lt;br&gt;
+&lt;br&gt;
+&lt;b&gt;BETWEEN:&lt;/b&gt; especifica valores dentro de um intervalo fechado &lt;br&gt;
+&lt;b&gt;LIKE:&lt;/b&gt; compara um modelo e especifica registros de um banco de dados &lt;br&gt;
+&lt;b&gt;IN:&lt;/b&gt; verifica se o valor procurado está dentro de uma lista
+
+---
+
+### &lt;span style='color:#34a15a'&gt;BASE DOS DADOS: SQL&lt;/span&gt;
+
+&lt;div class="panelset"&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Ex. Fictício&lt;/div&gt;
+
+```sql
+# exemplo sem filtro
+
+"SELECT coluna1, coluna2, coluna3,
+coluna4 AS apelido_da_coluna
+FROM `tabela`" 
+```
+
+Imagine que a base é muito grande e você não vai utilizar todos os dados. 
+O recomendado é filtrar a base antes de colocá-la para dentro do **R**.
+
+
+```sql
+# exemplo com filtro
+
+"SELECT coluna1, coluna2, coluna3,
+coluna4 AS apelido_da_coluna
+FROM `tabela`
+WHERE coluna1 = valor AND coluna2 = valor"
+```
+&lt;/div&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Ex. Real (sem filtro)&lt;/div&gt;
+
+```sql
+"SELECT id_municipio, nome_regiao
+FROM `basedosdados.br_bd_diretorios_brasil.municipio`" 
+```
+
+&lt;br&gt;
+
+Para selecionar todas as colunas de uma tabela, basta digitar `*` logo após o `SELECT`.
+
+
+```sql
+"SELECT *
+FROM `basedosdados.br_bd_diretorios_brasil.municipio`" 
+```
+&lt;/div&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Ex. Real (com filtro)&lt;/div&gt;
+
+```sql
+"SELECT id_municipio, ano, AVG(taxa_aprovacao) as tx_aprov, 
+ensino, AVG(ideb) as ideb
+FROM `basedosdados.br_inep_ideb.municipio`
+WHERE ano = 2021
+GROUP BY id_municipio, ano, ensino" 
+```
+&lt;/div&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-name"&gt;Ex. com JOIN&lt;/div&gt;
+
+```sql
+"SELECT pib.id_municipio, pib.ano, pop.id_municipio, pop.populacao
+FROM `basedosdados.br_ibge_pib.municipio` AS pib
+LEFT JOIN `basedosdados.br_ibge_populacao.municipio` AS pop
+ON pib.id_municipio = pop.id_municipio"
+```
+&lt;br&gt;
+&lt;br&gt;
+&lt;span style='color:#34a15a'&gt;&lt;b&gt;Palavras-Chave:&lt;/b&gt;&lt;/span&gt;
+
+&lt;b&gt;AS:&lt;/b&gt; define um "apelido" para a coluna e/ou para a tabela&lt;br&gt;
+&lt;b&gt;LEFT JOIN:&lt;/b&gt;une duas tabelas em uma mesma base de dados.&lt;br&gt;
+&lt;b&gt;ON: define a "chave" que liga as duas tabelas&lt;/b&gt; 
+&lt;/div&gt;
+&lt;/div&gt;
+---
+
+### &lt;span style='color:#34a15a'&gt;BASE DOS DADOS: SQL&lt;/span&gt;
+
+&lt;img src="img/slides/33-ex-download-bigquery-r.gif" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### &lt;span style='color:#34a15a'&gt;BASE DOS DADOS&lt;/span&gt;
+
+Para que o **R** consiga importar a base de dados desejada, é necessário incluir a função `read_sql()` do pacote `basedosdados` ao final da *query*.
+
+Para isso, há duas formas:
+
+- criando um objeto intermediário (obj_intermediario) e, depois, o objeto final (base_final):
+
+
+```r
+obj_intermediario &lt;- "SELECT id_municipio, nome_regiao
+FROM `basedosdados.br_bd_diretorios_brasil.municipio`"
+
+base_final &lt;- basedosdados::read_sql(obj_intermediario)
+```
+
+- utilizando o `pipe` (`%&gt;%`) e criando apenas o objeto final (base_final):
+
+
+```r
+base_final &lt;- "SELECT id_municipio, nome_regiao
+FROM `basedosdados.br_bd_diretorios_brasil.municipio`" %&gt;% 
+  basedosdados::read_sql()
+```
+
+---
+
+# Obrigada!
+
+.pull-left[
+
+&lt;img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjFlNDgyOTRhMTk5MGE4ZTNmNjg5ZWMzM2NlZDU3ODBmZDU0OGFiNiZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/M9NbzZjAcxq9jS9LZJ/giphy.gif" width="65%" style="display: block; margin: auto;" /&gt;
+
+.center[Agradecimento especial a [Base dos Dados](https://basedosdados.org/), a [Curso-R](https://curso-r.com/) e a [R-Ladies São Paulo](https://twitter.com/RLadiesSaoPaulo) pelos materiais.]
+
+.center[Slides criados usando os pacotes em R:]
+.center[[**xaringan**](https://github.com/yihui/xaringan)]
+.center[[**xaringanthemer**](https://github.com/gadenbuie/xaringanthemer)]
+
+.center[O chakra vem da biblioteca JavaScript [remark.js](https://remarkjs.com), [**knitr**](http://yihui.name/knitr), and [R Markdown](https://rmarkdown.rstudio.com).]
+]
+
+.pull-right[
+
+&lt;br&gt;
+
+&lt;img src="img/slides/19-luisa.jpg" width="55%" style="display: block; margin: auto;" /&gt;
+
+.center[&lt;i class="fas fa-home"&gt;&lt;/i&gt; [luisa.rbind.io](https://luisa.rbind.io/)]
+
+.center[&lt;i class="fab fa-twitter"&gt;&lt;/i&gt; [@lgiselebock](https://twitter.com/lgiselebock)]
+
+.center[&lt;i class="fab fa-github"&gt;&lt;/i&gt; [@lgiselebock](https://github.com/lgiselebock/)]
+
+.center[&lt;i class="far fa-envelope"&gt;&lt;/i&gt; [luisa.bock@acad.ufsm.br](mailto:luisa.bock@acad.ufsm.br)]
+]
+
+&lt;!-- inicio academic icons --&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css"&gt;
+&lt;!-- final academic icons --&gt;
+
+ 
+&lt;!-- inicio font awesome --&gt;
+&lt;script src="https://kit.fontawesome.com/1f72d6921a.js" crossorigin="anonymous"&gt;&lt;/script&gt;
+
+&lt;!-- final font awesome --&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

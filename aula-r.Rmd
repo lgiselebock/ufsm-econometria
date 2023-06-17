@@ -1,0 +1,41 @@
+---
+title: "Aula R/RStudio"
+author:
+  - name: Luísa Gisele Böck
+    url: https://luisa.rbind.io
+    affiliation: Universidade Federal de Santa Maria (UFSM)
+    affiliation_url: https://ufsm.br
+date: "06/01/2023"
+description: |
+  Repositório com o material utilizado na aula sobre Linguagem R e RStudio.
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+### Slides
+
++ [01. Introdução](aula-r/slides/01-introducao.html){target="_blank"}
++ [02. Importação](aula-r/slides/02-importacao.html){target="_blank"}
++ [03. Manipulação](aula-r/slides/03-manipulacao.html){target="_blank"} 
++ [04. Visualização](aula-r/slides/04-visualizacao.html){target="_blank"}
++ [05. Regressão](aula-r/slides/05-regressao.html){target="_blank"}
+
+
+### Scripts 
+
+É só copiar e colar o código em um arquivo `.R`
+
++ [01. Introdução](aula-r/scripts/01-introducao.R){target="_blank"}
++ [02. Importação](aula-r/scripts/02-importacao.R){target="_blank"}
++ [03. Manipulação](aula-r/scripts/03-manipulacao.R){target="_blank"}
++ [04. Visualização](aula-r/scripts/04-visualizacao.R){target="_blank"}
++ [05. Regressão](aula-r/scripts/05-regressao.R){target="_blank"}
+
+
+### Dados   
+
++ [Pinguins](aula-r/dados/pinguins/){target="_blank"}
++ [Educacionais](aula-r/dados/educacionais/){target="_blank"}
