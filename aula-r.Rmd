@@ -37,5 +37,5 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ### Dados   
 
-+ [Pinguins](aula-r/dados/pinguins){target="_blank"}
-+ [Educacionais](aula-r/dados/educacionais){target="_blank"}
++ [Pinguins](https://github.com/lgiselebock/ufsm-econometria-monitoria/tree/main/aula-r/dados/pinguins){target="_blank"}
++ [Educacionais](https://github.com/lgiselebock/ufsm-econometria-monitoria/tree/main/aula-r/dados/educacionais){target="_blank"}
