@@ -37,5 +37,9 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ### Dados   
 
+Para fazer o download, clique sobre a base desejada e depois no botão `Dowload raw file`.
+
 + [Pinguins](https://github.com/lgiselebock/ufsm-econometria-monitoria/tree/main/aula-r/dados/pinguins){target="_blank"}
 + [Educacionais](https://github.com/lgiselebock/ufsm-econometria-monitoria/tree/main/aula-r/dados/educacionais){target="_blank"}
+
+![Exemplo de como realizar o Download](raw/ex-download.png){width=200px}
