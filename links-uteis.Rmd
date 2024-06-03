@@ -19,15 +19,15 @@ knitr::opts_chunk$set(echo = FALSE)
 
 - [Guia Brasileiro de Análise de Dados](https://repositorio.enap.gov.br/bitstream/1/6039/1/Guia%20BR%20de%20Ana%cc%81lise%20de%20Dados.pdf){target="_blank"} - Claudio D. Shikida, Leonardo Monasterio e Pedro Fernando Nery (eds.)
 
-- [Linear Regression Models Applications in R](links-uteis/linearregressionmodelsapplicationsinr.pdf){target="_blank"} - John P. Hoffmann
+- [Linear Regression Models Applications in R](links-uteis/hoffmann-linear-regression-models-applications-in-r.pdf){target="_blank"} - John P. Hoffmann
 
-- [Mastering Metrics: The Path from Cause to Effect](links-uteis/masterinmetrics.pdf){target="_blank"} - Joshua D. Angrist and Jörn-Steffen Pischke
+- [Mastering Metrics: The Path from Cause to Effect](links-uteis/angrist_pischke-mastering-metrics-the-path-from-cause-to-effect.pdf){target="_blank"} - Joshua D. Angrist and Jörn-Steffen Pischke
 
-- [Mostly Harmeless Econometrics](links-uteis/mostlyharm.pdf){target="_blank"} - Joshua D. Angrist and Jörn-Steffen Pischke
+- [Mostly Harmless Econometrics](links-uteis/angrist_pischke-mostly-harmless-econometrics-an-empiricists-companion.pdf){target="_blank"} - Joshua D. Angrist and Jörn-Steffen Pischke
 
 - [The Efect: An Introduction to Research Design and Causality](https://theeffectbook.net/){target="_blank"} - Nick Huntington-Klein
 
-- [Using R for Introductory Econometris](links-uteis/usingrforintroductoryeconometris.pdf){target="_blank"} - Florian Heiss
+- [Using R for Introductory Econometris](links-uteis/heiss-using-r-for-introductory-econometrics-2nd-edition.pdf){target="_blank"} - Florian Heiss
 
 
 ### Artigos
@@ -104,7 +104,7 @@ Além do **R**, o **Python** também é utilizado para a análise de dados. Aqui
 
 - [Mini Curso de Python](https://estatsite.com.br/mini-curso-de-python-gratuito/){target="_blank"} - Estatsite
 
-- [Using Python for Introductory Econometris](links-uteis/usingpythonforintroductoryeconometris.pdf){target="_blank"} - Florian Heiss and Daniel Brunner
+- [Using Python for Introductory Econometris](links-uteis/heiss_brunner-using-python-for-introductory-econometrics-1st-ed.pdf){target="_blank"} - Florian Heiss and Daniel Brunner
 
 
 ### Visualização de dados
