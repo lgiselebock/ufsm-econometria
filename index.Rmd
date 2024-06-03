@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 
-Repositório de materiais utilizdos durante a Monitoria de Econometria I A do curso de Ciências Econômicas da UFSM, além de materiais complementares para quem deseja aprofundar os estudos.
+Repositório de materiais utilizados durante a Monitoria de Econometria I A do curso de Ciências Econômicas da UFSM, além de materiais complementares para quem deseja aprofundar os estudos.
 
 
 
