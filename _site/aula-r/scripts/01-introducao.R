@@ -66,16 +66,16 @@ LETTERS
 
 
 
-nome <- "Camilo Sobreira de Santana"
+nome <- "Fernanda Oliveira Costa"
 nome
 
-idade <- 54
+idade <- 40
 idade
 
-cargo_ou_funcao <- "Ministro da Educação"
+cargo_ou_funcao <- "Gerente de Projetos"
 cargo_ou_funcao
 
-salario <- 39293.32
+salario <- 12000.00
 salario
 
 
